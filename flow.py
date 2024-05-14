@@ -4,11 +4,13 @@
 
 # instance recieves command to process data
 
-# instance uses batch or scan to pull CDR data from S3 input bucket
+# instance downloads CDR data object from S3 input bucket
 
 # bring data -2D CSV array- into scope
 
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
+
+# select optimal k (decision to make on method - depends on data)
 
 # run k-means clustering algorithm with vectorised data
 
@@ -19,7 +21,5 @@
     # calculate new centroid coordinates
 
     # repeat 19 and 21 until no reassignments take place
-
-# select optimal k (decision to make on method - depends on data)
 
 # push clustered data to S3 output bucket
