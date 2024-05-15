@@ -2,7 +2,7 @@
 # ||function library for k-means program||
 
 # cluster data using k-means algorithm
-def kmeans(k, data_array):
+def kmeans(k: int, data_array: list[list[int]]) -> list[list[int]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
     centroids_new = centroids
@@ -28,25 +28,25 @@ def kmeans(k, data_array):
         centroids = centroids_new
 
 # get data from S3 bucket
-def get_data():
+def get_data() -> str:
     pass
 
 # randomly select initial centroids from unclustered data
-def k_means_pp(k, data):
+def k_means_pp(k: int, data: list[list[int]]) -> list[list[int]]:
     pass
 
 # calculate distance between record and centroid
-def distance_to_centroid(record, centroid):
+def distance_to_centroid(record: list[int], centroid: list[float]) -> tuple[float, int]:
     pass
 
 # reduce list of input vectors into a single vector representing the average of input vectors
-def average(records):
+def average(records: list[list[int]]) -> list[float]:
     pass
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data_list):
+def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int, list[list[int]]]:
     pass
 
 # parse non-numeric data into a form that enables vector operations to be performed with data
-def vectorise(attribute):
+def vectorise(attribute: str) -> int:
     pass
