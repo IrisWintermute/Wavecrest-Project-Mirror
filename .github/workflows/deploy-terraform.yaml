@@ -52,7 +52,7 @@ jobs:
 
             # Check if the bucket already exists
             bucket_exists=false
-            if aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
+            if [ aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null ]; then
                 echo "Bucket '$bucket_name' already exists."
             else
                 echo "Bucket '$bucket_name' does not exist. Creating..."
@@ -72,7 +72,7 @@ jobs:
             # Check if the DynamoDB table already exists
             table_exists=false
             echo aws dynamodb describe-table --table-name "$lock_table_name"
-            if aws dynamodb describe-table --table-name "$lock_table_name" 2>/dev/null; then
+            if [ aws dynamodb describe-table --table-name "$lock_table_name" 2>/dev/null ]; then
                 echo "DynamoDB table '$lock_table_name' already exists."
             else
                 echo "DynamoDB table '$lock_table_name' does not exist. Creating..."
