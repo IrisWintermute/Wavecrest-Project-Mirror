@@ -71,6 +71,7 @@ jobs:
 
             # Check if the DynamoDB table already exists
             table_exists=false
+            echo aws dynamodb describe-table --table-name "$lock_table_name"
             if aws dynamodb describe-table --table-name "$lock_table_name" 2>/dev/null; then
                 echo "DynamoDB table '$lock_table_name' already exists."
             else
