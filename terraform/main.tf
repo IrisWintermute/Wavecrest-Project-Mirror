@@ -39,8 +39,18 @@ resource "aws_subnet" "db_subnets" {
  }), local.common_tags)
 }
 
+resource "aws_instance" "ec2" {
+  ami           = "ami-04e914639d0cca79a"
+  instance_type = "t2.micro"
 
+  tags = {
+    Name = "EC2Instance"
+  }
+}
 
+provider "aws" {
+  region  = "us-west-2"
+}
 
 ### Required terraform setup ###
 
