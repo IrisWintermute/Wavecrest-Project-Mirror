@@ -1,0 +1,63 @@
+name: Ec2 Destroy
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+# Only allow one run at a time for this environment
+concurrency: terraform
+
+# Required because we are using OIDC
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  TERRAFORM_VERSION: "1.6.4"
+  TERRAFORM_EC2: "ai-project-ec2"
+
+jobs:
+  tf_code_apply:
+    name: Ec2 Destroy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          # ref: 'check-output' #for debug usage
+          set-safe-directory: '/home/runner/work/AI-Project'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::579662209389:role/GithubActionsRoleForConnectOpsAccount
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.0.0
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Destroy ec2
+        shell: 'script -q -e -f -c "bash {0}"'
+        run: |
+            ec2_name="${{ ENV.TERRAFORM_EC2 }}"
+            # Check if the ec2 does not exists
+            if [ aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name 2>/dev/null ]; then
+                echo "EC2 instance $ec2_name exists. Destroying..."
+                # destroy ec2 instance
+                $ec2_id = aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name \
+                  --query "Reservations[*].Instances[*].InstanceId" \
+                  --output text
+                aws ec2 terminate-instances --instance-ids $ec2_id
+                echo "EC2 instance $ec2_name with ID $ec2_id has been destroyed."
+                
+            else
+                echo "EC2 instance $ec2_name does not exist."
+            fi
+        env:
+          TERM: xterm-256color
