@@ -36,20 +36,14 @@ jobs:
           role-to-assume: arn:aws:iam::579662209389:role/GithubActionsRoleForConnectOpsAccount
           aws-region: eu-west-1
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3.0.0
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
-
       - name: Setup ec2
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
             # Check if the ec2 already exists
-            $ec2_exists=aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name Name=instance-state-code,Values=16 --output text
-            echo $ec2_exists
-            if [ $ec2_exists != "" ]; then
+            ec2_exists=aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name Name=instance-state-code,Values=16 --output text
+            echo "$ec2_exists"
+            if [ "$ec2_exists" != "" ]; then
                 echo "EC2 $ec2_name exists."
             else
                 # Create ec2 instance
@@ -58,7 +52,8 @@ jobs:
                   --image-id ami-0776c814353b4814d \
                   --count 1 --instance-type t2.micro \
                   --subnet-id subnet-05e1f256bd1c79ca2 \
-                  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='$ec2_name'}]'
+                  --key-pair ai-project-key \
+                  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=/"$ec2_name/"}]"
                 echo "EC2 instance $ec2_name created."
             fi
         env:
