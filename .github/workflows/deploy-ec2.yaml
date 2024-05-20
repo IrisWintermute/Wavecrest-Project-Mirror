@@ -50,7 +50,7 @@ jobs:
             if [ aws ec2 describe-instance-types --filters "Name=$ec2_name" 2>/dev/null ]; then
                 echo "ec2 $ec2_name exists"
             else
-                aws ec2 run-instances --image-id ami-0776c814353b4814d --count 1 --instance-type t2.micro
+                aws ec2 run-instances --image-id ami-0776c814353b4814d --count 1 --instance-type t2.micro --subnet-id subnet-05e1f256bd1c79ca2
             fi
         env:
           TERM: xterm-256color
