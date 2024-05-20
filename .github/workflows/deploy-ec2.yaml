@@ -48,16 +48,16 @@ jobs:
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
             # Check if the ec2 already exists
             if [ aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name 2>/dev/null ]; then
-                echo "EC2 '$ec2_name' exists"
+                echo "EC2 $ec2_name exists."
             else
                 # Create ec2 instance
-                echo "EC2 instance '$ec2_name' does not exist. Creating..."
+                echo "EC2 instance $ec2_name does not exist. Creating..."
                 aws ec2 run-instances \
                   --image-id ami-0776c814353b4814d \
                   --count 1 --instance-type t2.micro \
                   --subnet-id subnet-05e1f256bd1c79ca2 \
                   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='$ec2_name'}]'
-                echo "EC2 instance '$ec2_name' created."
+                echo "EC2 instance $ec2_name created."
             fi
         env:
           TERM: xterm-256color
