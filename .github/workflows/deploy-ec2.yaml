@@ -47,7 +47,7 @@ jobs:
         run: |
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
             # Check if the ec2 already exists
-            $ec2_exists=aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name Name=instance-state-code,Values=16
+            $ec2_exists=aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name Name=instance-state-code,Values=16 --output text
             echo $ec2_exists
             if [ ec2_exists != "" ]; then
                 echo "EC2 $ec2_name exists."
