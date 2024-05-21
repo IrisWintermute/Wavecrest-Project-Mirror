@@ -7,3 +7,10 @@ sudo apt install git
 git remote add ai-project https://github.com/Wavecrest/AI-Project
 git fetch ai-project
 
+mkdir data
+cd data
+touch test.txt
+echo "This is test data" > test.txt
+cd ..
+
+
