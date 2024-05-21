@@ -53,7 +53,7 @@ jobs:
                   --count 1 --instance-type t2.micro \
                   --subnet-id subnet-05e1f256bd1c79ca2 \
                   --key-name ai-project-key \
-                  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=/"$ec2_name/"}]" \
+                  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value="$ec2_name"}]" \
                   --user-data file://config/user_data.txt
                 echo "EC2 instance $ec2_name created."
             fi
