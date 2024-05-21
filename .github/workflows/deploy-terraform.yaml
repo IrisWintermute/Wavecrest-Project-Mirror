@@ -17,6 +17,7 @@ permissions:
 env:
   TERRAFORM_VERSION: "1.6.4"
   TERRAFORM_STATE_BUCKET: "wavecrest-ai-terraform-state"
+  TERRAFORM_OUTPUT_BUCKET: "wavecrest-ai-terraform-output"
   TERRAFORM_LOCK_TABLE: "terraform-locking"
 
 jobs:
@@ -43,34 +44,55 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
 
-      - name: Setup state and dynamodb lock table
+      - name: Setup state, output buckets and dynamodb lock table
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
-            bucket_name="${{ ENV.TERRAFORM_STATE_BUCKET }}"
+            state_bucket_name="${{ ENV.TERRAFORM_STATE_BUCKET }}"
+            
+            output_bucket_name="${{ ENV.TERRAFORM_OUTPUT_BUCKET }}"
 
             lock_table_name="${{ ENV.TERRAFORM_LOCK_TABLE }}"
 
-            # Check if the bucket already exists
-            bucket_exists=false
-            if [ aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null ]; then
-                echo "Bucket $bucket_name already exists."
+            # Check if the state bucket already exists
+            # state_bucket_exists=false
+            if [ aws s3api head-bucket --bucket "$state_bucket_name" 2>/dev/null ]; then
+                echo "Bucket $state_bucket_name already exists."
             else
-                echo "Bucket $bucket_name does not exist. Creating..."
-                aws s3api create-bucket --bucket "$bucket_name" --create-bucket-configuration LocationConstraint=eu-west-1
-                echo "Bucket $bucket_name created."
+                echo "Bucket $state_bucket_name does not exist. Creating..."
+                aws s3api create-bucket --bucket "$state_bucket_name" --create-bucket-configuration LocationConstraint=eu-west-1
+                echo "Bucket $state_bucket_name created."
 
                 # Enable versioning on the bucket
-                aws s3api put-bucket-versioning --bucket "$bucket_name" --versioning-configuration Status=Enabled
-                echo "Versioning enabled on bucket $bucket_name."
+                aws s3api put-bucket-versioning --bucket "$state_bucket_name" --versioning-configuration Status=Enabled
+                echo "Versioning enabled on bucket $state_bucket_name."
 
                 # Enable encryption on the bucket
-                aws s3api put-bucket-encryption --bucket "$bucket_name" --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
+                aws s3api put-bucket-encryption --bucket "$state_bucket_name" --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
 
-                echo "Encryption enabled on bucket $bucket_name."
+                echo "Encryption enabled on bucket $state_bucket_name."
+            fi
+
+            # Check if the state bucket already exists
+            # output_bucket_exists=false
+            if [ aws s3api head-bucket --bucket "$output_bucket_name" 2>/dev/null ]; then
+                echo "Bucket $output_bucket_name already exists."
+            else
+                echo "Bucket $output_bucket_name does not exist. Creating..."
+                aws s3api create-bucket --bucket "$output_bucket_name" --create-bucket-configuration LocationConstraint=eu-west-1
+                echo "Bucket $output_bucket_name created."
+
+                # Enable versioning on the bucket
+                aws s3api put-bucket-versioning --bucket "$output_bucket_name" --versioning-configuration Status=Enabled
+                echo "Versioning enabled on bucket $output_bucket_name."
+
+                # Enable encryption on the bucket
+                aws s3api put-bucket-encryption --bucket "$output_bucket_name" --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
+
+                echo "Encryption enabled on bucket $output_bucket_name."
             fi
 
             # Check if the DynamoDB table already exists
-            table_exists=false
+            # table_exists=false
             echo aws dynamodb describe-table --table-name "$lock_table_name"
             if [ aws dynamodb describe-table --table-name "$lock_table_name" 2>/dev/null ]; then
                 echo "DynamoDB table $lock_table_name already exists."
@@ -93,7 +115,7 @@ jobs:
             cd terraform
             echo "Currently at ${PWD}"
 
-            terraform init -backend-config="bucket=${{ env.TERRAFORM_STATE_BUCKET }}" -backend-config="key=ai-project.tfstate" -backend-config="dynamodb_table=${{ env.TERRAFORM_LOCK_TABLE }}" -reconfigure
+            terraform init -backend-config="bucket=${{ env.TERRAFORM_STATE_BUCKET }}" -backend-config="bucket=${{ env.TERRAFORM_OUTPUT_BUCKET }}" -backend-config="key=ai-project.tfstate" -backend-config="dynamodb_table=${{ env.TERRAFORM_LOCK_TABLE }}" -reconfigure
 
             terraform plan -out=plan.out -input=false
         env:
