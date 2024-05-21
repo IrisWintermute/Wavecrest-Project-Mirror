@@ -11,6 +11,7 @@ mkdir data
 cd data
 touch test.txt
 echo "This is test data" > test.txt
+[ec2-user ~]$ aws s3 sync s3://wavecrest-ai-terraform-state
 cd ..
 
 
