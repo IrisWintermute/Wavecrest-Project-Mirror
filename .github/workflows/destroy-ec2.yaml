@@ -46,6 +46,7 @@ jobs:
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
+            echo $ec2_name
             ec2_exists=aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" --output text
             echo $ec2_exists
             # Check if the ec2 does not exists
