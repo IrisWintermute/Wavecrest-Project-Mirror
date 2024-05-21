@@ -20,5 +20,6 @@ test_script.py < echo 'path_to_file = sys.argv[1]; \
                        file.close(); \
                        print(string + \" processed with Python\")'
 
-output.txt < $(python3 -c ./test_script.py ./data/test.txt)
-aws s3api put-object --bucket s3://wavecrest-ai-terraform-output --key ./output.txt
+out=$(python3 -c ./test_script.py ./data/test.txt)
+echo "$out" > output.txt
+aws s3api put-object --bucket s3://wavecrest-ai-terraform-output --key ./output.txt --body ./output.txt
