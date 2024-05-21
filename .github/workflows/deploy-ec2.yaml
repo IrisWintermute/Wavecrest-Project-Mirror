@@ -54,7 +54,7 @@ jobs:
                   --subnet-id subnet-05e1f256bd1c79ca2 \
                   --key-name ai-project-key \
                   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=/"$ec2_name/"}]" \
-                  --user-data file://../config/user_data.sh
+                  --user-data file://../../config/user_data.sh
                 echo "EC2 instance $ec2_name created."
             fi
         env:
