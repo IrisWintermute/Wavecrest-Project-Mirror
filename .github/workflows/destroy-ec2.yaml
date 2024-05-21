@@ -46,13 +46,13 @@ jobs:
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
-            ec2_exists="aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name --output text"
+            ec2_exists="aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" --output text"
             echo $ec2_exists
             # Check if the ec2 does not exists
             if [ "$ec2_exists" != "" ]; then
                 echo "EC2 instance $ec2_name exists. Destroying..."
                 # destroy ec2 instance
-                $ec2_id = "aws ec2 describe-instances --filters Name=tag:Name,Values=$ec2_name Name=instance-state-code,Values=16 \
+                $ec2_id = "aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" Name=instance-state-code,Values=16 \
                   --query "Reservations[*].Instances[*].InstanceId" \
                   --output text"
                 aws ec2 terminate-instances --instance-ids $ec2_id
