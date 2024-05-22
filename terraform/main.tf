@@ -6,16 +6,16 @@ resource "aws_vpc" "ai-project-vpc" {
  }), local.common_tags)
 }
 
-# resource "aws_subnet" "public_subnets" {
-#  count             = length(local.vpc_public_subnets)
-#  vpc_id            = aws_vpc.ai-project-vpc.id
-#  cidr_block        = element(local.vpc_public_subnets, count.index)
-#  availability_zone = element(local.azs, count.index)
+ resource "aws_subnet" "public_subnets" {
+  count             = length(local.vpc_public_subnets)
+  vpc_id            = aws_vpc.ai-project-vpc.id
+  cidr_block        = element(local.vpc_public_subnets, count.index)
+  availability_zone = element(local.azs, count.index)
 
-#  tags = {
-#    Name = "Public Subnet ${count.index + 1}"
-#  }
-# }
+  tags = {
+   Name = "Public Subnet ${count.index + 1}"
+  }
+ }
 
 resource "aws_subnet" "private_subnets" {
  count             = length(local.vpc_private_subnets)

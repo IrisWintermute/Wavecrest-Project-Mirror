@@ -10,7 +10,7 @@ locals {
 
   split_cidr = cidrsubnets(var.vpc_cidr,3,3,3, 3,3,3, 5,5,5)
 
-#   vpc_public_subnets = [local.split_cidr[0], local.split_cidr[1], local.split_cidr[2]]
+  vpc_public_subnets = [local.split_cidr[0], local.split_cidr[1], local.split_cidr[2]]
 
   #256 IPs per AZ
   vpc_private_subnets = [local.split_cidr[3], local.split_cidr[4], local.split_cidr[5]]
