@@ -14,12 +14,5 @@ echo "This is test data" > test.txt
 [ec2-user ~]$ aws s3 sync s3://wavecrest-ai-terraform-state
 cd ..
 
-test_script.py < echo 'path_to_file = sys.argv[1]; \
-                       file = open(path_to_file, \"r\"); \
-                       string = file.read(); \
-                       file.close(); \
-                       print(string + \" processed with Python\")'
-
-out=$(python3 -c ./test_script.py ./data/test.txt)
-echo "$out" > output.txt
+python3 -c ./test_script.py ./data/test.txt
 aws s3api put-object --bucket s3://wavecrest-ai-terraform-output --key ./output.txt --body ./output.txt
