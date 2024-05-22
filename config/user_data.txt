@@ -11,8 +11,16 @@ mkdir data
 cd data
 touch test.txt
 echo "This is test data" > test.txt
-[ec2-user ~]$ aws s3 sync s3://wavecrest-ai-terraform-state
+aws s3 sync s3://wavecrest-ai-terraform-state
 cd ..
+
+
+
+
+
+
+
+
 
 python3 -c ./test_script.py ./data/test.txt
 aws s3api put-object --bucket s3://wavecrest-ai-terraform-output --key ./output.txt --body ./output.txt
