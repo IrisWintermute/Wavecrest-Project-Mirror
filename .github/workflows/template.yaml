@@ -1,0 +1,72 @@
+Description: Jump server to allow human access into VPC via SSM
+
+Parameters:
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    # Latest Image - see https://aws.amazon.com/blogs/compute/query-for-the-latest-amazon-linux-ami-ids-using-aws-systems-manager-parameter-store/
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+  Subnet:
+    Type: String
+
+  VpcId:
+    Type: String
+
+Resources:
+
+  # Doesn't need a key pair since we are only accessing via SSM
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref LatestAmiId
+      # t2.micro is covered by free tier as of 2022-12-07
+      InstanceType: t2.micro
+      IamInstanceProfile: !Ref InstanceProfile
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: false
+          DeleteOnTermination: true
+          Description: 'Jump Server'
+          DeviceIndex: "0"
+          GroupSet: [ !Ref SecurityGroup ]
+          SubnetId: !Ref Subnet
+      Tags:
+        - Key: Name
+          Value: jump-server
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [ !Ref InstanceRole ]
+
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ ec2.amazonaws.com ]
+          Action: [ sts:AssumeRole ]
+      ManagedPolicyArns:
+        # Allows SSM to access this instance
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: jump-server
+      GroupDescription: Jump Server Security Group
+      VpcId: !Ref VpcId
+      # No Ingress allowed - we only allow access via SSM
+      SecurityGroupIngress: []
+      SecurityGroupEgress:
+        - Description: 'Unrestricted Egress'
+          IpProtocol: '-1'
+          CidrIp: '0.0.0.0/0'
+      Tags:
+        - Key: Name
+          Value: jump-server
+
+Outputs:
+  InstanceId:
+    Value: !Ref Ec2Instance
