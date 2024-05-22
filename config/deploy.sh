@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TEMPLATE=../.github/workflows/template.yaml
+TEMPLATE=template.yaml
 STACK_NAME=jump-server
 
 echo Linting template...
