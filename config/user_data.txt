@@ -8,8 +8,6 @@ git remote add ai-project https://github.com/Wavecrest/AI-Project
 git fetch ai-project
 
 mkdir data
-touch test.txt
-echo "This is test data" > test.txt
 aws s3 sync ./data s3://wavecrest-ai-terraform-state
 
 python3 -c ./test_script.py ./data/test.txt
