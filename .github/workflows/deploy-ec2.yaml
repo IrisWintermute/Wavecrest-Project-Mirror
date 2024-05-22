@@ -55,7 +55,9 @@ jobs:
                   --key-name ai-project-key \
                   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value="$ec2_name"}]" \
                   --user-data file://config/user_data.txt \
-                  --output text
+                  --output text > log.txt
+                cat log.txt
+                rm log.txt
                 echo "EC2 instance $ec2_name created."
             fi
         env:
