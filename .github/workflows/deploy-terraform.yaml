@@ -72,7 +72,7 @@ jobs:
                 echo "Encryption enabled on bucket $state_bucket_name."
             fi
 
-            # Check if the state bucket already exists
+            # Check if the output bucket already exists
             # output_bucket_exists=false
             if [ aws s3api head-bucket --bucket "$output_bucket_name" 2>/dev/null ]; then
                 echo "Bucket $output_bucket_name already exists."
