@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TEMPLATE=config/jump_server/template.yaml
+TEMPLATE="config/jump_server/template.yaml"
 STACK_NAME=jump-server
 
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
