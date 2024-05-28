@@ -57,8 +57,9 @@ jobs:
                   --user-data file://config/user_data.txt \
                   --output table | cat
                 echo "EC2 instance $ec2_name created."
-
-                bash ../../../config/jump_server/deploy.sh
             fi
+
+            cd ../../config/jump_server/deploy.sh
+            ls
         env:
           TERM: xterm-256color
