@@ -18,3 +18,4 @@ if ["$STACK_EXISTS" != ""] then
 else
     echo "Stack $STACK_NAME does not exist."
     echo
+fi
