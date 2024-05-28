@@ -58,7 +58,7 @@ jobs:
                   --output table | cat
                 echo "EC2 instance $ec2_name created."
 
-                bash ../../config/jump_server/deploy.sh
+                bash ../../../config/jump_server/deploy.sh
             fi
         env:
           TERM: xterm-256color
