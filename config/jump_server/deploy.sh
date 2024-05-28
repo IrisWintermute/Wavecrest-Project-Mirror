@@ -9,7 +9,7 @@ REGION=$2
 
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
 echo "$STACK_EXISTS"
-if ["$STACK_EXISTS" == ""] then
+if ["$STACK_EXISTS" == ""]; then
     echo Linting template...
     echo
     cfn-lint $TEMPLATE
