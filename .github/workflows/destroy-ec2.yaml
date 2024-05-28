@@ -47,7 +47,7 @@ jobs:
         run: |
             ec2_name="${{ ENV.TERRAFORM_EC2 }}"
             echo $ec2_name
-            ec2_exists=$(aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" --output text)
+            ec2_exists=$(aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" --output table)
             echo $ec2_exists
             # Check if the ec2 does not exists
             if [ "$ec2_exists" != "" ]; then
@@ -55,7 +55,7 @@ jobs:
                 # destroy ec2 instance
                 ec2_id=$(aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" Name=instance-state-code,Values=16 \
                   --query Reservations[*].Instances[*].InstanceId \
-                  --output text)
+                  --output table)
                 aws ec2 terminate-instances --instance-ids "$ec2_id"
                 echo "EC2 instance $ec2_name with ID $ec2_id has been destroyed."
 
