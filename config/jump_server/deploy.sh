@@ -7,9 +7,11 @@ STACK_NAME=jump-server
 ACCOUNT_ID=$1
 REGION=$2
 
-STACK_EXISTS=$(aws cloudformation describe-stack-instance --stack-set-name "$STACK_NAME" --stack-instance-account "$ACCOUNT_ID" --stack-instance-region "$REGION" --output text) || ""
-echo "$STACK_EXISTS"
-if ["$STACK_EXISTS" == ""] then
+if STACK_EXISTS=$(aws cloudformation describe-stack-instance --stack-set-name "$STACK_NAME" --stack-instance-account "$ACCOUNT_ID" --stack-instance-region "$REGION" --output text) ; then
+    echo "$STACK_EXISTS"
+    echo
+    echo "Stack exists"
+else
     echo Linting template...
     echo
     cfn-lint $TEMPLATE
@@ -36,6 +38,4 @@ if ["$STACK_EXISTS" == ""] then
     INSTANCE_ID=$(get_cfn_output "$STACK_NAME" 'InstanceId')
     echo "Jump server running as instance $INSTANCE_ID"
     echo
-else
-    echo "Stack $STACK_NAME already exists."
-    echo
+fi
