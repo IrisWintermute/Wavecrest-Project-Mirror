@@ -61,6 +61,15 @@ jobs:
                 echo "EC2 instance $ec2_name created."
             fi
 
-            bash config/jump_server/deploy.sh ${{ ENV.ACCOUNT_ID }} ${{ ENV.REGION }}
         env:
           TERM: xterm-256color
+
+      - name: Lint Jump Server Template
+        uses: scottbrenner/cfn-lint-action@v2
+        with:
+          command: cfn-lint -t ./template.yaml
+
+      - name: Setup Jump Server
+        shell: 'script -q -e -f -c "bash {0}"'
+        run: |
+            bash config/jump_server/deploy.sh ${{ ENV.ACCOUNT_ID }} ${{ ENV.REGION }}
