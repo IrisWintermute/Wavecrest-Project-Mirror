@@ -4,7 +4,8 @@ set -euo pipefail
 
 STACK_NAME=jump-server
 
-STACK_EXISTS=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE --output text)
+# could take --stack-status-filter CREATE_COMPLETE as argument
+STACK_EXISTS=$(aws cloudformation list-stacks --output text --query "[?StackStatus == 'CREATE_COMPLETE']")
 echo "checking if $STACK_NAME exists"
 echo "$STACK_EXISTS"
 if ["$STACK_EXISTS" != ""]; then
