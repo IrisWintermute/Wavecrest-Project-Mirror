@@ -67,7 +67,7 @@ jobs:
       - name: Lint Jump Server Template
         uses: scottbrenner/cfn-lint-action@v2
         with:
-          command: cfn-lint -t ./template.yaml
+          command: cfn-lint -t config/jump_server/template.yaml
 
       - name: Setup Jump Server
         shell: 'script -q -e -f -c "bash {0}"'
