@@ -13,7 +13,7 @@ echo "$STACK_EXISTS"
 if [ "$STACK_EXISTS" == "" ] ; then
     echo Linting template...
     echo
-    aws cloundformation cfn-lint $TEMPLATE
+    cfn-lint $TEMPLATE
 
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
