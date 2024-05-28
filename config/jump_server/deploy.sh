@@ -4,8 +4,6 @@ set -euo pipefail
 
 TEMPLATE=template.yaml
 STACK_NAME=jump-server
-ACCOUNT_ID=$1
-REGION=$2
 
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
 echo "checking if $STACK_NAME exists"
