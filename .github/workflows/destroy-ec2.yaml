@@ -55,7 +55,7 @@ jobs:
                 # destroy ec2 instance
                 ec2_id=$(aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" Name=instance-state-code,Values=16 \
                   --query Reservations[*].Instances[*].InstanceId \
-                  --output table)
+                  --output text)
                 aws ec2 terminate-instances --instance-ids "$ec2_id"
                 echo "EC2 instance $ec2_name with ID $ec2_id has been destroyed."
 
