@@ -5,12 +5,10 @@ set -euo pipefail
 TEMPLATE="config/jump_server/template.yaml"
 STACK_NAME=jump-server
 
-STACK_EXISTS=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE --output table)
+STACK_EXISTS=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE --output text)
 echo "checking if $STACK_NAME exists"
 echo "$STACK_EXISTS"
-if [ "$STACK_EXISTS" == "------------ \
-                         |ListStacks| \
-                         +----------+" ] ; then
+if [ "$STACK_EXISTS" == "" ] ; then
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
     # "private-org-opsSubnet1"
