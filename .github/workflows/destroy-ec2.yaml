@@ -58,6 +58,8 @@ jobs:
                   --output text)
                 aws ec2 terminate-instances --instance-ids "$ec2_id"
                 echo "EC2 instance $ec2_name with ID $ec2_id has been destroyed."
+
+                bash ../../../config/jump_server/destroy.sh
             else
                 echo "EC2 instance $ec2_name does not exist."
             fi
