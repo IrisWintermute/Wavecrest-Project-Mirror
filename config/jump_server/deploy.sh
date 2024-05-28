@@ -14,7 +14,6 @@ if [ "$STACK_EXISTS" == "" ] ; then
     echo Linting template...
     echo
     cfn-lint $TEMPLATE
-    aws cloudformation cfn-lint $TEMPLATE
 
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
