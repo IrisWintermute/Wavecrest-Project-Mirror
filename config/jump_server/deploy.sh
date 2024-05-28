@@ -8,7 +8,9 @@ STACK_NAME=jump-server
 STACK_EXISTS=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE --output table)
 echo "checking if $STACK_NAME exists"
 echo "$STACK_EXISTS"
-if [ "$STACK_EXISTS" == "" ] ; then
+if [ "$STACK_EXISTS" == "------------
+                         |ListStacks|
+                         +----------+" ] ; then
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
     # "private-org-opsSubnet1"
