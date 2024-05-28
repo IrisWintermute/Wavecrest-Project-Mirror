@@ -10,10 +10,10 @@ REGION=$2
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
 echo "checking if $STACK_NAME exists"
 echo "$STACK_EXISTS"
-if ["$STACK_EXISTS" == ""]; then
+if [ "$STACK_EXISTS" == "" ] ; then
     echo Linting template...
     echo
-    cfn-lint $TEMPLATE
+    aws cloundformation cfn-lint $TEMPLATE
 
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
