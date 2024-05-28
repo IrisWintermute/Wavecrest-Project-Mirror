@@ -7,7 +7,7 @@ STACK_NAME=jump-server
 ACCOUNT_ID=$1
 REGION=$2
 
-STACK_EXISTS=$(aws cloudformation list-stack-instances --stack-set-name "$STACK_NAME" --stack-instance-account "$ACCOUNT_ID" --stack-instance-region "$REGION" --output text)
+STACK_EXISTS=$(aws cloudformation wait stack-exists --stack-name "$STACK_NAME" --output text)
 echo "$STACK_EXISTS"
 if ["$STACK_EXISTS" == ""] then
     echo Linting template...
