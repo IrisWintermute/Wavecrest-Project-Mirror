@@ -35,7 +35,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
-          role-to-assume: arn:aws:iam::${{ ENV.ACCOUNT_ID }}:role/GithubActionsRoleForConnectOpsAccount
+          role-to-assume: arn:aws:iam::${{ ENV.ACCOUNT_ID }}:role/GithubActionsRoleForConnectOpsAccountWithAdminPermissions 
           aws-region: ${{ ENV.REGION }}
 
       - name: Setup ec2
