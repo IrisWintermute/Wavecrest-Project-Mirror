@@ -8,6 +8,7 @@ ACCOUNT_ID=$1
 REGION=$2
 
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
+echo "checking if $STACK_NAME exists"
 echo "$STACK_EXISTS"
 if ["$STACK_EXISTS" == ""]; then
     echo Linting template...
