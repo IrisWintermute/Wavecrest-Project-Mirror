@@ -25,8 +25,7 @@ aws cloudformation deploy \
     --no-fail-on-empty-changeset
 
 echo
-INSTANCE_ID=$(get_cfn_output "$STACK_NAME" 'InstanceId')
-echo "Jump server running as instance $INSTANCE_ID"
+echo "Jump server running"
 echo
 
 STACK_EXISTS=$(aws cloudformation list-stacks --output text)
