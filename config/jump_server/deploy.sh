@@ -7,7 +7,7 @@ STACK_NAME=jump-server
 
 STACK_EXISTS=$(aws cloudformation describe-stack-instances --filters Name=tag:Name,Values="$STACK_NAME" Name=instance-state-code,Values=16 --output text)
 echo "$STACK_EXISTS"
-if ["$STACK_EXISTS" != ""] then
+if ["$STACK_EXISTS" == ""] then
     echo Linting template...
     echo
     cfn-lint $TEMPLATE
@@ -34,4 +34,6 @@ if ["$STACK_EXISTS" != ""] then
     INSTANCE_ID=$(get_cfn_output "$STACK_NAME" 'InstanceId')
     echo "Jump server running as instance $INSTANCE_ID"
     echo
-fi
+else
+    echo "Stack $STACK_NAME already exists."
+    echo
