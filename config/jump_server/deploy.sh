@@ -4,8 +4,10 @@ set -euo pipefail
 
 TEMPLATE=template.yaml
 STACK_NAME=jump-server
+ACCOUNT_ID=$1
+REGION=$2
 
-STACK_EXISTS=$(aws cloudformation describe-stack-instance --filters Name=tag:Name,Values="$STACK_NAME" Name=instance-state-code,Values=16 --output text)
+STACK_EXISTS=$(aws cloudformation describe-stack-instance --stack-set-name "$STACK_NAME" --stack-instance-account "$ACCOUNT_ID" --stack-instance-region "$REGION" --output text)
 echo "$STACK_EXISTS"
 if ["$STACK_EXISTS" == ""] then
     echo Linting template...

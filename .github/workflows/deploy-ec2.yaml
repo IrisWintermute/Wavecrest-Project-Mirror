@@ -17,6 +17,8 @@ permissions:
 env:
   TERRAFORM_VERSION: "1.6.4"
   TERRAFORM_EC2: "ai-project-ec2"
+  ACCOUNT_ID: 579662209389
+  REGION: eu-west-1
 
 jobs:
   tf_code_apply:
@@ -33,8 +35,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
-          role-to-assume: arn:aws:iam::579662209389:role/GithubActionsRoleForConnectOpsAccount
-          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::${{ ENV.ACCOUNT_ID }}:role/GithubActionsRoleForConnectOpsAccount
+          aws-region: ${{ ENV.REGION }}
 
       - name: Setup ec2
         shell: 'script -q -e -f -c "bash {0}"'
@@ -59,6 +61,6 @@ jobs:
                 echo "EC2 instance $ec2_name created."
             fi
 
-            bash config/jump_server/deploy.sh
+            bash config/jump_server/deploy.sh ${{ ENV.ACCOUNT_ID }} ${{ ENV.REGION }}
         env:
           TERM: xterm-256color
