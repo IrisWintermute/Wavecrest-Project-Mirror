@@ -61,6 +61,6 @@ jobs:
                 echo "EC2 instance $ec2_name created."
             fi
 
-            bash config/jump_server/deploy.sh ${{ ENV.ACCOUNT_ID }} ${{ ENV.REGION }}
+            bash config/jump_server/deploy.sh
         env:
           TERM: xterm-256color
