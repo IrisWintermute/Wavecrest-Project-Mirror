@@ -39,3 +39,4 @@ if ["$STACK_EXISTS" == ""] then
 else
     echo "Stack $STACK_NAME already exists."
     echo
+fi
