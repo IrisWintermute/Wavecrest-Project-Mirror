@@ -1,5 +1,3 @@
-# Description: Jump server to allow human access into VPC via SSM
-
 Parameters:
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
