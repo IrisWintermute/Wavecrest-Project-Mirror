@@ -1,4 +1,4 @@
-Description: Jump server to allow human access into VPC via SSM
+# Description: Jump server to allow human access into VPC via SSM
 
 Parameters:
   LatestAmiId:
