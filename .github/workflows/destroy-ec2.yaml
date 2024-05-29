@@ -51,7 +51,7 @@ jobs:
               --filters Name=tag:Name,Values="$ec2_name" Name=instance-state-code,Values=16 --output text)
             echo $ec2_exists
             # Check if the ec2 does not exists
-            if [ "$ec2_exists" != "" ]; then
+            if [[ "$ec2_exists" != "" ]]; then
                 echo "EC2 instance $ec2_name exists. Destroying..."
                 # destroy ec2 instance
                 ec2_id=$(aws ec2 describe-instances --filters Name=tag:Name,Values="$ec2_name" Name=instance-state-code,Values=16 \
@@ -63,7 +63,7 @@ jobs:
             else
                 echo "EC2 instance $ec2_name does not exist."
             fi
-            
+
             bash config/jump_server/destroy.sh
         env:
           TERM: xterm-256color 
