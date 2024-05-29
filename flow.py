@@ -3,13 +3,6 @@
 # ||running inside an AWS EC2 instance||
 from lib import *
 
-attribute_map = {
-    0 : "country",
-    1 : "region",
-    2 : "group",
-}
-max_k = 20
-
 # instance recieves command to process data
 
 # instance downloads CDR data object from S3 input bucket
@@ -20,12 +13,7 @@ data_csv = get_data()
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
 data_array = [[attribute for attribute in record.split(",")].append(0) for record in data_csv.split("\n")]
 
-data_array_univ = []
-for record in data_array:
-    record_univ = []
-    for i, attribute in enumerate(record):
-        record_univ.append(vectorise(attribute, attribute_map.get(i)) if attribute_map.get(i) else attribute)
-    data_array_univ.append(record_univ)
+data_array_univ = [vectorise(record) for record in data_array]
     
 
 clustered_data_list = []

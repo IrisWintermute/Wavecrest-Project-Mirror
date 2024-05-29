@@ -77,5 +77,8 @@ def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int,
     pass
 
 # parse non-numeric data into a form that enables vector operations to be performed with data
-def vectorise(attribute: str, label: str) -> int:
-    pass
+def vectorise(record: list[str]) -> list[int]:
+    with open("attributes.txt", "r") as file:
+        attributes = file.read().split(",")
+    for i, attribute in enumerate(attributes):
+        pass
