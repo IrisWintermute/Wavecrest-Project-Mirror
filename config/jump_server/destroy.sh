@@ -12,8 +12,7 @@ if [ "$STACK_EXISTS" != "" ]; then
     echo Destroying Stack $STACK_NAME...
 
     aws cloudformation delete-stack \
-        --stack-name "$STACK_NAME" \
-        --deletion-mode FORCE_DELETE_STACK
+        --stack-name "$STACK_NAME"
 
     echo
     echo "Jump server with name $STACK_NAME destroyed."
