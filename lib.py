@@ -80,5 +80,17 @@ def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int,
 def vectorise(record: list[str]) -> list[int]:
     with open("attributes.txt", "r") as file:
         attributes = file.read().split(",")
+    preprocessed_record = []
     for i, attribute in enumerate(attributes):
+        # enrich, truncate and translate CDR data
         pass
+    vector = []
+    for attribute in preprocessed_record:
+        # map each attribute to a numerical position in the n-dimensional vector space
+        pass
+
+    for attribute in preprocessed_record:
+        # normalise vector
+        pass
+
+    return vector
