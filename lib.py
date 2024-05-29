@@ -1,6 +1,7 @@
 
 # ||function library for k-means program||
 import random
+import requests
 
 # cluster data using k-means algorithm
 def kmeans(k: int, data_array: list[list[int]]) -> list[list[int]]:
@@ -83,7 +84,10 @@ def vectorise(record: list[str]) -> list[int]:
     preprocessed_record = []
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
-        pass
+        if attribute == "Cust. EP IP":
+            ip_data = extract_ip_data(record[i])
+            preprocessed_record.append(ip_data)
+
     vector = []
     for attribute in preprocessed_record:
         # map each attribute to a numerical position in the n-dimensional vector space
@@ -94,3 +98,14 @@ def vectorise(record: list[str]) -> list[int]:
         pass
 
     return vector
+
+def extract_ip_data(ip_address: str) -> dict[str]:
+    response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
+    data = [
+        response.get("city"),
+        response.get("region"),
+        response.get("country_calling_code"),
+        response.get("utc_offset"),
+        response.get("currency")
+    ]
+    return data
