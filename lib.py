@@ -81,12 +81,17 @@ def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int,
 def vectorise(record: list[str]) -> list[int]:
     with open("attributes.txt", "r") as file:
         attributes = file.read().split(",")
+    with open("persistent_attributes.txt", "r") as file:
+        persist = file.read().split(",")
     preprocessed_record = []
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
         if attribute == "Cust. EP IP":
             ip_data = extract_ip_data(record[i])
             preprocessed_record.append(ip_data)
+        elif attribute in persist:
+            preprocessed_record.append(record[i])
+        
 
     vector = []
     for attribute in preprocessed_record:
