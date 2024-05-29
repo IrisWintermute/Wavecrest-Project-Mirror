@@ -12,7 +12,7 @@ if [ "$STACK_EXISTS" == "" ] ; then
     # "org-vpc"
     VPC_ID=vpc-0507b30241a1b5d56
     # "private-org-opsSubnet1"
-    SUBNET=subnet-0d9541b56ee0d37e6
+    SUBNET=subnet-064b44b1a0d046b04
     
     echo "Subnet = $SUBNET"
     echo "VpcId = $VPC_ID"
