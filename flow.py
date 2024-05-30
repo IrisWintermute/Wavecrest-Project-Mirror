@@ -13,13 +13,17 @@ data_csv = get_data()
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
 data_array = [[attribute for attribute in record.split(",")].append(0) for record in data_csv.split("\n")]
 
-data_array_univ = [vectorise(record) for record in data_array]
+data_array_preprocessed = [preprocess(record) for record in data_array]
+
+vector_array = vectorise(data_array_preprocessed)
+
+vector_array_n = normalise(vector_array)
     
 max_k = 20
 clustered_data_list = []
 for k in range(1, max_k):
     # run k-means clustering algorithm with vectorised data
-    clustered_data_list.append(kmeans(k, data_array_univ))
+    clustered_data_list.append(kmeans(k, vector_array_n))
 
 # select optimal k (decision to make on method - depends on data)
 (k_optimal, clustered_data) = optimal_k_decision(clustered_data_list)
