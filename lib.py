@@ -79,36 +79,35 @@ def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int,
 
 # parse non-numeric data into a form that enables vector operations to be performed with data
 def vectorise(record: list[str]) -> list[int]:
-    with open("attributes.txt", "r") as file:
-        attributes = file.read().split(",")
-    with open("persistent_attributes.txt", "r") as file:
-        persist = file.read().split(",")
+    with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
+        attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
-        if attribute == "Cust. EP IP" or "Prov. EP IP":
-            ip_data = extract_ip_data(record[i])
-            preprocessed_record.extend(ip_data)
+        match attribute:
+            case "Cust. EP IP" | "Prov. EP IP":
+                ip_data = extract_ip_data(record[i])
+                preprocessed_record.extend(ip_data)
 
-        elif attribute == "EG Duration (min)":
-            difference = record[i] - record[i + 1]
-            preprocessed_record.append(difference)
+            case "EG Duration (min)":
+                difference = record[i] - record[i + 1]
+                preprocessed_record.append(difference)
 
-        elif attribute == "IG Setup Time":
-            time = record[i].split(" ")[2].split(":")
-            time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
-            preprocessed_record.append(time_seconds)
+            case "IG Setup Time":
+                time = record[i].split(" ")[2].split(":")
+                time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
+                preprocessed_record.append(time_seconds)
         
-        elif attribute == "IG Packet Recieved":
-            difference = record[i + 3] - record[i]
-            preprocessed_record.append(time_seconds)
+            case "IG Packet Recieved":
+                difference = record[i + 3] - record[i]
+                preprocessed_record.append(time_seconds)
 
-        elif attribute == "EG Packet Recieved":
-            difference = record[i + 1] - record[i]
-            preprocessed_record.append(time_seconds)
+            case "EG Packet Recieved":
+                difference = record[i + 1] - record[i]
+                preprocessed_record.append(time_seconds)
 
-        elif attribute in persist:
-            preprocessed_record.append(record[i])
+            case attribute if attribute in persist:
+                preprocessed_record.append(record[i])
         
 
     vector = []
