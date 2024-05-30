@@ -89,9 +89,16 @@ def vectorise(record: list[str]) -> list[int]:
         if attribute == "Cust. EP IP" or "Prov. EP IP":
             ip_data = extract_ip_data(record[i])
             preprocessed_record.extend(ip_data)
+
         elif attribute == "EG Duration (min)":
             difference = record[i] - record[i + 1]
             preprocessed_record.append(difference)
+
+        elif attribute == "IG Setup Time":
+            time = record[i].split(" ")[2].split(":")
+            time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
+            preprocessed_record.append(time_seconds)
+            
         elif attribute in persist:
             preprocessed_record.append(record[i])
         
