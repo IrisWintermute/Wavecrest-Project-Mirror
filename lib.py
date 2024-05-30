@@ -98,7 +98,15 @@ def vectorise(record: list[str]) -> list[int]:
             time = record[i].split(" ")[2].split(":")
             time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
             preprocessed_record.append(time_seconds)
-            
+        
+        elif attribute == "IG Packet Recieved":
+            difference = record[i + 3] - record[i]
+            preprocessed_record.append(time_seconds)
+
+        elif attribute == "EG Packet Recieved":
+            difference = record[i + 1] - record[i]
+            preprocessed_record.append(time_seconds)
+
         elif attribute in persist:
             preprocessed_record.append(record[i])
         
