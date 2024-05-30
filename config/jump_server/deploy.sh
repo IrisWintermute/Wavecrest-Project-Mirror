@@ -3,7 +3,7 @@
 set -euo pipefail
 
 TEMPLATE="config/jump_server/template.yaml"
-STACK_NAME="ai-projectjump-server"
+STACK_NAME=jump-server
 
 STACK_EXISTS=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE --output text)
 echo "checking if $STACK_NAME exists"
