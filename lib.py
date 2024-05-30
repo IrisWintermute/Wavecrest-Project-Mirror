@@ -111,7 +111,30 @@ def preprocess(record: list[str]) -> list[int]:
     return preprocessed_record
 
 def vectorise(data_array: list[list[str]]) -> list[list[int]]:
-    pass
+    # naive general solution
+    len_vec = len(data_array[0])
+    vector_array = [[0] * len_vec] * len(data_array)
+    for i in range(len_vec):
+        values = []
+        count = 0
+
+        for j, record in enumerate(data_array):
+            if type(record[i]) == int:
+                vector_array[j][i] = record[i]
+            elif record[i] in values:
+                vector_array[j][i] = count
+            else:
+                values.append(record[i])
+                count += 1
+                vector_array[j][i] = count
+
+        with open("values_dump.txt", "a") as f:
+            values.insert(0, f"Values for attribute at index {i}: \n")
+            values_to_write = "\n".join(values)
+            f.write(values_to_write)
+    return vector_array
+
+
 
 def normalise(vector_array: list[list[int]]) -> list[list[int]]:
     pass
