@@ -86,9 +86,12 @@ def vectorise(record: list[str]) -> list[int]:
     preprocessed_record = []
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
-        if attribute == "Cust. EP IP":
+        if attribute == "Cust. EP IP" or "Prov. EP IP":
             ip_data = extract_ip_data(record[i])
-            preprocessed_record.append(ip_data)
+            preprocessed_record.extend(ip_data)
+        elif attribute == "EG Duration (min)":
+            difference = record[i] - record[i + 1]
+            preprocessed_record.append(difference)
         elif attribute in persist:
             preprocessed_record.append(record[i])
         
