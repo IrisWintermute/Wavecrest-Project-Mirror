@@ -134,10 +134,18 @@ def vectorise(data_array: list[list[str]]) -> list[list[int]]:
             f.write(values_to_write)
     return vector_array
 
-
-
-def normalise(vector_array: list[list[int]]) -> list[list[int]]:
-    pass
+def normalise(vector_array: list[list[int]]) -> list[list[float]]:
+    len_vec = len(vector_array[0])
+    for i in range(len_vec):
+        min, max = 0, 1
+        for record in vector_array:
+            if record[i] > max: max = record[i]
+            if record[i] < min: min = record[i]
+        range = float(max - min)
+        for record in vector_array:
+            record[i] /= range
+    return vector_array
+    
 
 def extract_ip_data(ip_address: str) -> dict[str]:
     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
