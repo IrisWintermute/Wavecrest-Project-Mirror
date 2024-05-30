@@ -141,7 +141,7 @@ def normalise(vector_array: list[list[int]]) -> list[list[float]]:
         for record in vector_array:
             if record[i] > max: max = record[i]
             if record[i] < min: min = record[i]
-        range = float(max - min)
+        range = max - min
         for record in vector_array:
             record[i] /= range
     return vector_array
