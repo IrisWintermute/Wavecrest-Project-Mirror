@@ -110,6 +110,12 @@ def preprocess(record: list[str]) -> list[int]:
                 preprocessed_record.append(record[i])
     return preprocessed_record
 
+def vectorise(data_array: list[list[str]]) -> list[list[int]]:
+    pass
+
+def normalise(vector_array: list[list[int]]) -> list[list[int]]:
+    pass
+
 def extract_ip_data(ip_address: str) -> dict[str]:
     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
     data = [
