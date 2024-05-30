@@ -77,8 +77,8 @@ def average(records: list[list[int]]) -> list[float]:
 def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int, list[list[int]]]:
     pass
 
-# parse non-numeric data into a form that enables vector operations to be performed with data
 def preprocess(record: list[str]) -> list[int]:
+    # truncate and expand record attributes
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
@@ -111,7 +111,7 @@ def preprocess(record: list[str]) -> list[int]:
     return preprocessed_record
 
 def vectorise(data_array: list[list[str]]) -> list[list[int]]:
-    # naive general solution
+    # [naive general solution] Convert each record entry to a numeric representation
     len_vec = len(data_array[0])
     vector_array = [[0] * len_vec] * len(data_array)
     for i in range(len_vec):
@@ -135,15 +135,11 @@ def vectorise(data_array: list[list[str]]) -> list[list[int]]:
     return vector_array
 
 def normalise(vector_array: list[list[int]]) -> list[list[float]]:
-    len_vec = len(vector_array[0])
-    for i in range(len_vec):
-        min, max = 0, 1
-        for record in vector_array:
-            if record[i] > max: max = record[i]
-            if record[i] < min: min = record[i]
-        range = max - min
-        for record in vector_array:
-            record[i] /= range
+    # normalise each vector to have a length of 1
+    for vector in vector_array:
+        length = sum([val * 2 for val in vector]) ** 0.5
+        for attribute in vector:
+            attribute /= length
     return vector_array
     
 
