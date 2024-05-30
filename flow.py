@@ -15,7 +15,7 @@ data_array = [[attribute for attribute in record.split(",")].append(0) for recor
 
 data_array_univ = [vectorise(record) for record in data_array]
     
-
+max_k = 20
 clustered_data_list = []
 for k in range(1, max_k):
     # run k-means clustering algorithm with vectorised data
