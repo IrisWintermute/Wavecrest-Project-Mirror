@@ -78,7 +78,7 @@ def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int,
     pass
 
 # parse non-numeric data into a form that enables vector operations to be performed with data
-def vectorise(record: list[str]) -> list[int]:
+def preprocess(record: list[str]) -> list[int]:
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
@@ -108,18 +108,7 @@ def vectorise(record: list[str]) -> list[int]:
 
             case attribute if attribute in persist:
                 preprocessed_record.append(record[i])
-        
-
-    vector = []
-    for attribute in preprocessed_record:
-        # map each attribute to a numerical position in the n-dimensional vector space
-        pass
-
-    for attribute in preprocessed_record:
-        # normalise vector
-        pass
-
-    return vector
+    return preprocessed_record
 
 def extract_ip_data(ip_address: str) -> dict[str]:
     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
