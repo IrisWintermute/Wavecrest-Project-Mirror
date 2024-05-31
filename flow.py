@@ -20,12 +20,14 @@ vector_array = vectorise(data_array_preprocessed)
 vector_array_n = normalise(vector_array)
     
 max_k = 20
-clustered_data_list = []
+clustered_data_optimal = ([], 0)
 for k in range(1, max_k):
     # run k-means clustering algorithm with vectorised data
     clustered_data, centroids = kmeans(k, vector_array_n)
+    # select optimal k
+    ch_index = optimal_k_decision(clustered_data, centroids)
+    if ch_index > clustered_data_optimal[1]:
+        clustered_data_optimal = (clustered_data, ch_index)
 
-# select optimal k (decision to make on method - depends on data)
-(k_optimal, clustered_data) = optimal_k_decision(clustered_data_list)
 
 # push clustered data to S3 output bucket
