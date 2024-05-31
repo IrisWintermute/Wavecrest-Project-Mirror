@@ -85,9 +85,10 @@ def preprocess(record: list[str]) -> list[int]:
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
         match attribute:
-            case "Cust. EP IP" | "Prov. EP IP":
-                ip_data = extract_ip_data(record[i])
-                preprocessed_record.extend(ip_data)
+            
+            #case "Cust. EP IP" | "Prov. EP IP":
+                #ip_data = extract_ip_data(record[i])
+                #preprocessed_record.extend(ip_data)
 
             case "EG Duration (min)":
                 difference = record[i] - record[i + 1]
@@ -142,7 +143,7 @@ def normalise(vector_array: list[list[int]]) -> list[list[float]]:
             attribute /= length
     return vector_array
     
-
+""" 
 def extract_ip_data(ip_address: str) -> dict[str]:
     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
     data = [
@@ -153,3 +154,4 @@ def extract_ip_data(ip_address: str) -> dict[str]:
         response.get("currency")
     ]
     return data
+ """
