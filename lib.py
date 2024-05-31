@@ -74,7 +74,7 @@ def average(records: list[list[int]]) -> list[float]:
 
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data_list: list[list[list[int]]]) -> tuple[int, list[list[int]]]:
+def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[float]]) -> tuple[list[list[float]], int]:
     pass
 
 def preprocess(record: list[str]) -> list[int]:
