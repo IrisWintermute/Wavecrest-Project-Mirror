@@ -23,7 +23,7 @@ max_k = 20
 clustered_data_list = []
 for k in range(1, max_k):
     # run k-means clustering algorithm with vectorised data
-    clustered_data_list.append(kmeans(k, vector_array_n))
+    clustered_data, centroids = kmeans(k, vector_array_n)
 
 # select optimal k (decision to make on method - depends on data)
 (k_optimal, clustered_data) = optimal_k_decision(clustered_data_list)

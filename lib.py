@@ -19,11 +19,11 @@ def kmeans(k: int, data_array: list[list[int]]) -> list[list[int]]:
                 no_reassignments = False
 
         # stop algorithm when no records are reassigned
-        if no_reassignments: return centroids
+        if no_reassignments: return data_array, centroids
 
         # calculate new centroid coordinates
-        for i in range(centroids):
-            owned_records = [record.pop() for record in data_array if record[-1] == i]
+        for i, _ in enumerate(centroids):
+            owned_records = [record for record in data_array if record[-1] == i]
             centroids_new[i] = average(owned_records)
 
         centroids = centroids_new
