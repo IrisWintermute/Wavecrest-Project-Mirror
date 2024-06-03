@@ -25,7 +25,8 @@ if [ "$STACK_EXISTS" == "" ] ; then
         --template-file "$TEMPLATE" \
         --parameter-overrides Subnet="$SUBNET" VpcId="$VPC_ID" \
         --capabilities CAPABILITY_NAMED_IAM \
-        --no-fail-on-empty-changeset
+        --no-fail-on-empty-changeset \
+        --output table
 
     echo "creating endpoints for the jump server"
     echo
