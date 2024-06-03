@@ -28,7 +28,9 @@ if [ "$STACK_EXISTS" == "" ] ; then
         --no-fail-on-empty-changeset \
         --output table
 
-    echo "creating endpoints for the jump server"
+    echo
+    echo "Jump server running."
+    echo "creating endpoints for the jump server..."
     echo
 
     aws ec2 create-vpc-endpoint \
@@ -64,7 +66,7 @@ if [ "$STACK_EXISTS" == "" ] ; then
         --output table | cat
 
     echo
-    echo "Jump server running"
+    echo "Endpoints created."
     echo
 else
     echo "Stack $STACK_NAME already exists."
