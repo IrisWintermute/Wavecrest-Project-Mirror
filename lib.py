@@ -152,13 +152,12 @@ def vectorise(data_array: list[list[str]]) -> list[list[int]]:
             f.write(values_to_write)
     return vector_array
 
-def normalise(vector_array: list[list[int]]) -> list[list[float]]:
-    # normalise each vector to have a length of 1
-    for vector in vector_array:
-        length = sum([val * 2 for val in vector]) ** 0.5
-        for attribute in vector:
-            attribute /= length
-    return vector_array
+def normalise(vector: list[int]) -> list[float]:
+    # normalise vector to have a length of 1
+    length = sum([val * 2 for val in vector]) ** 0.5
+    for attribute in vector:
+        attribute /= length
+    return vector
     
 """ 
 def extract_ip_data(ip_address: str) -> dict[str]:

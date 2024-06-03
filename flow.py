@@ -17,7 +17,7 @@ data_array_preprocessed = [preprocess(record) for record in data_array]
 
 vector_array = vectorise(data_array_preprocessed)
 
-vector_array_n = normalise(vector_array)
+vector_array_n = [normalise(vector) for vector in vector_array]
     
 max_k = 20
 clustered_data_optimal = ([], 0)
