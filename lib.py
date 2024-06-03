@@ -4,7 +4,7 @@ import random
 import requests
 
 # cluster data using k-means algorithm
-def kmeans(k: int, data_array: list[list[int]]) -> list[list[int]]:
+def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
     centroids_new = centroids
@@ -34,7 +34,7 @@ def get_data() -> str:
 
 # K++ algorithm
 # randomly select initial centroids from unclustered data
-def k_means_pp(k: int, data: list[list[int]]) -> list[list[int]]:
+def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
     chosen_indexes = [random.randint(0, len(data) - 1)]
     centroids = [data[chosen_indexes[0]]]
     square_distances = {}
@@ -55,16 +55,16 @@ def k_means_pp(k: int, data: list[list[int]]) -> list[list[int]]:
     return centroids
 
 # calculate distance between record and centroid
-def distance_to_centroid(record: list[int], centroid: list[float]) -> float:
+def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
     return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)]) ** 0.5
 
 # returns tuple of distance between record and nearest centroid, and index of nearest centroid
-def get_closest_centroid(record: list[int], centroids: list[list[float]]) -> tuple[float, int]:
+def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     return distances.sort(key = lambda d, _: d)[0]
 
 # reduce list of input vectors into a single vector representing the average of input vectors
-def average(records: list[list[int]]) -> list[float]:
+def average(records: list[list[float]]) -> list[float]:
     sum = [0 for _ in records[0]]
     for record in records:
         for i, attribute in enumerate(record):
