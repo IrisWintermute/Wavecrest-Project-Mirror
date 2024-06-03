@@ -32,6 +32,7 @@ def kmeans(k: int, data_array: list[list[int]]) -> list[list[int]]:
 def get_data() -> str:
     pass
 
+# K++ algorithm
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data: list[list[int]]) -> list[list[int]]:
     chosen_indexes = [random.randint(0, len(data) - 1)]
