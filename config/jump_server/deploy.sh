@@ -26,7 +26,38 @@ if [ "$STACK_EXISTS" == "" ] ; then
         --parameter-overrides Subnet="$SUBNET" VpcId="$VPC_ID" \
         --capabilities CAPABILITY_NAMED_IAM \
         --no-fail-on-empty-changeset
+
+    echo "creating endpoints for the jump server"
+    echo
+
+    aws ec2 create-vpc-endpoint \
+        --service-name com.amazonaws.eu-west-1.ssm \
+        --vpc-endpoint-type Interface \
+        --vpc-id "$VPC_ID" \
+        --subnet-ids "$SUBNET" \
+        --output table
     
+    aws ec2 create-vpc-endpoint \
+        --service-name com.amazonaws.eu-west-1.ssmmessages \
+        --vpc-endpoint-type Interface \
+        --vpc-id "$VPC_ID" \
+        --subnet-ids "$SUBNET" \
+        --output table
+
+    aws ec2 create-vpc-endpoint \
+        --service-name com.amazonaws.eu-west-1.ec2 \
+        --vpc-endpoint-type Interface \
+        --vpc-id "$VPC_ID" \
+        --subnet-ids "$SUBNET" \
+        --output table
+    
+    aws ec2 create-vpc-endpoint \
+        --service-name com.amazonaws.eu-west-1.ec2messages \
+        --vpc-endpoint-type Interface \
+        --vpc-id "$VPC_ID" \
+        --subnet-ids "$SUBNET" \
+        --output table
+
     echo
     echo "Jump server running"
     echo
