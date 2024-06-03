@@ -55,7 +55,7 @@ def k_means_pp(k: int, data: list[list[int]]) -> list[list[int]]:
 
 # calculate distance between record and centroid
 def distance_to_centroid(record: list[int], centroid: list[float]) -> float:
-    return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)])
+    return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)]) ** 0.5
 
 # returns tuple of distance between record and nearest centroid, and index of nearest centroid
 def get_closest_centroid(record: list[int], centroids: list[list[float]]) -> tuple[float, int]:
@@ -74,8 +74,24 @@ def average(records: list[list[int]]) -> list[float]:
 
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[float]]) -> tuple[list[list[float]], int]:
-    pass
+def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[float]]) -> float:
+    vectors = len(clustered_data) * len(clustered_data[0])
+    clusters = len(centroids)
+    overall_centroid = average(centroids)
+    # calculate between-cluster sum of squares
+    bcss = 0
+    for i, centroid in enumerate(centroids):
+        vectors_in_centroid = len([vector for vector in clustered_data if vector[-1] == i]) 
+        bcss += vectors_in_centroid * (distance_to_centroid(centroid, overall_centroid) ** 2)
+    # calculate within-cluster sum of squares
+    wcss = 0
+    for i, centroid in enumerate(centroids):
+        vectors_in_centroid = [vector for vector in clustered_data if vector[-1] == i]
+        wcss += [distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid]
+    # calculate Calinski–Harabasz (CH) index
+    return bcss * (vectors - clusters) / (wcss * (clusters - 1))
+    
+
 
 def preprocess(record: list[str]) -> list[int]:
     # truncate and expand record attributes
