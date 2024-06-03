@@ -14,8 +14,6 @@ if [ "$STACK_EXISTS" != "" ]; then
     aws cloudformation delete-stack \
         --stack-name "$STACK_NAME"
 
-    aws ec2 delete-security-group --group-name "jump-server"
-
     echo
     echo "Jump server with name $STACK_NAME destroyed."
     echo
