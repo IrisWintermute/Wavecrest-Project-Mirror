@@ -36,32 +36,32 @@ if [ "$STACK_EXISTS" == "" ] ; then
         --vpc-endpoint-type Interface \
         --vpc-id "$VPC_ID" \
         --subnet-ids "$SUBNET" \
-        --output table | cat \
-        --no-private-dns-enabled
+        --no-private-dns-enabled \
+        --output table | cat
     
     aws ec2 create-vpc-endpoint \
         --service-name com.amazonaws.eu-west-1.ssmmessages \
         --vpc-endpoint-type Interface \
         --vpc-id "$VPC_ID" \
         --subnet-ids "$SUBNET" \
-        --output table | cat \
-        --no-private-dns-enabled
+        --no-private-dns-enabled \
+        --output table | cat
 
     aws ec2 create-vpc-endpoint \
         --service-name com.amazonaws.eu-west-1.ec2 \
         --vpc-endpoint-type Interface \
         --vpc-id "$VPC_ID" \
         --subnet-ids "$SUBNET" \
-        --output table | cat \
-        --no-private-dns-enabled
+        --no-private-dns-enabled \
+        --output table | cat
     
     aws ec2 create-vpc-endpoint \
         --service-name com.amazonaws.eu-west-1.ec2messages \
         --vpc-endpoint-type Interface \
         --vpc-id "$VPC_ID" \
         --subnet-ids "$SUBNET" \
-        --output table | cat \
-        --no-private-dns-enabled
+        --no-private-dns-enabled \
+        --output table | cat
 
     echo
     echo "Jump server running"
