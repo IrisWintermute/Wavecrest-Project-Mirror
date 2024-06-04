@@ -25,20 +25,20 @@ Resources:
       InstanceType: t2.micro
       IamInstanceProfile: !Ref InstanceProfile
       NetworkInterfaces:
-      - AssociatePublicIpAddress: false
-        DeleteOnTermination: true
-        Description: 'Jump Server'
-        DeviceIndex: "0"
-        GroupSet: [!Ref SecurityGroup]
-        SubnetId: !Ref Subnet
+        - AssociatePublicIpAddress: false
+          DeleteOnTermination: true
+          Description: 'Jump Server'
+          DeviceIndex: "0"
+          GroupSet: [ !Ref SecurityGroup ]
+          SubnetId: !Ref Subnet
       Tags:
-      - Key: Name
-        Value: jump-server
+        - Key: Name
+          Value: jump-server
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      Roles: [!Ref InstanceRole]
+      Roles: [ !Ref InstanceRole ]
 
   InstanceRole:
     Type: AWS::IAM::Role
@@ -47,11 +47,11 @@ Resources:
         Statement:
         - Effect: Allow
           Principal:
-            Service: [ec2.amazonaws.com]
-          Action: ['sts:AssumeRole']
+            Service: [ ec2.amazonaws.com ]
+          Action: [ 'sts:AssumeRole' ]
       ManagedPolicyArns:
       # Allows SSM to access this instance
-      - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -62,12 +62,12 @@ Resources:
       # No Ingress allowed - we only allow access via SSM
       SecurityGroupIngress: []
       SecurityGroupEgress:
-      - Description: 'Unrestricted Egress'
-        IpProtocol: '-1'
-        CidrIp: '0.0.0.0/0'
+        - Description: 'Unrestricted Egress'
+          IpProtocol: '-1'
+          CidrIp: '0.0.0.0/0'
       Tags:
-      - Key: Name
-        Value: jump-server
+        - Key: Name
+          Value: jump-server
 
 Outputs:
   InstanceId:
