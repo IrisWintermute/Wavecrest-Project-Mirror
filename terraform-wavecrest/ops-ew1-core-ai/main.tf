@@ -19,7 +19,9 @@ module "app" {
   asg_max_size         = 1
   asg_desired_capacity = 1
   disk_size            = 20
-  instance_memory      = 1
+  instance_memory      = 12
+  instance_num_cpus    = 2
+  instance_family      = "t3"
   key_name             = "devops"
   location_subnet      = "private"
   nlb_subnet           = ""
