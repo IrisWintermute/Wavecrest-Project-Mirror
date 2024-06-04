@@ -143,6 +143,9 @@ fi
 
 #reverse order of deploy to avoid dependencies
 
+boldlog "Destroy ${envname} Core AI server"
+destroy_terraform ${envname}-${core_reg}-core-ai
+
 boldlog "Destroy ${envname} Core Jump server"
 destroy_terraform ${envname}-${core_reg}-core-jump
 

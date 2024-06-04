@@ -161,4 +161,7 @@ run_terraform ${envname}-${short_region}-${colour}-vpc
 boldlog "${auto} deploy ${envname}-${short_region}-${colour} Jump Server"
 run_terraform ${envname}-${short_region}-${colour}-jump
 
+boldlog "${auto} deploy ${envname}-${short_region}-${colour} AI Server"
+run_terraform ${envname}-${short_region}-${colour}-ai
+
 boldlog "Finished with ${envname} ${short_region} ${colour} environment"
