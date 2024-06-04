@@ -1,0 +1,98 @@
+# make v2
+
+#WARNING - needs tabs infront of recipe shell commands, not spaces
+
+# define INIT_EXTRA_ARGS if needed. e.g.
+# make init INIT_EXTRA_ARGS="-reconfigure"
+
+### Setup environment variables
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+export project_name := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+export envname=$(word 1, $(subst -, ,$(project_name)))
+export short_region=$(word 2, $(subst -, ,$(project_name)))
+
+ifndef envname
+$(error envname is not set from $(project_name) ? Are you in the config directory?)
+endif
+
+ifndef short_region
+$(error short_region is not set from $(project_name) ? Are you in the config directory?)
+endif
+
+ifneq ($(envname),${AWS_PROFILE})
+$(warning Your AWS_PROFILE environment is ${AWS_PROFILE} and not the same as $(envname) - are you sure?)
+$(warning Try " export AWS_PROFILE=$(envname) " first, depending on if you have that config profile in ~/.aws/config)
+endif
+
+SHELL=/bin/bash
+
+region=$(shell ../_scripts/region.sh $(short_region))
+$(info Region is $(region))
+
+### end of Setup environment variables
+
+all: reconfig plan apply
+
+clean:
+	rm -rf .terraform
+	rm -f plan.out
+	rm -f .terraform.lock.hcl
+
+init:
+	terraform get
+	terraform init \
+		-get=true \
+		-backend=true \
+		-backend-config="bucket=wavecrest-terraform-$(envname)-$(short_region)" \
+		-backend-config="key=$(project_name).tfstate" \
+		-backend-config="region=${region}" \
+		-backend-config="encrypt=true" \
+		-backend-config="dynamodb_table=terraform-base-infra" \
+		$(INIT_EXTRA_ARGS)
+
+reconfig:
+	terraform get
+	terraform init \
+		-get=true \
+		-backend=true \
+		-backend-config="bucket=wavecrest-terraform-$(envname)-$(short_region)" \
+		-backend-config="key=$(project_name).tfstate" \
+		-backend-config="region=${region}" \
+		-backend-config="encrypt=true" \
+		-backend-config="dynamodb_table=terraform-base-infra" \
+		-reconfigure
+
+upgrade:
+	terraform get
+	terraform init \
+		-get=true \
+		-backend=true \
+		-backend-config="bucket=wavecrest-terraform-$(envname)-$(short_region)" \
+		-backend-config="key=$(project_name).tfstate" \
+		-backend-config="region=${region}" \
+		-backend-config="encrypt=true" \
+		-backend-config="dynamodb_table=terraform-base-infra" \
+		-upgrade
+
+plan:
+	terraform plan -out=plan.out $(EXTRA_ARGS)
+
+planjson:
+	terraform plan -out tfplan.binary $(EXTRA_ARGS)
+	terraform show -json tfplan.binary > tfplan.json
+	rm tfplan.binary
+
+apply:
+	terraform apply $(EXTRA_ARGS) plan.out
+
+destroy-plan:
+	terraform plan -destroy $(EXTRA_ARGS)
+
+destroy-apply:
+	terraform destroy -auto-approve $(EXTRA_ARGS)
+
+destroy:
+	terraform destroy $(EXTRA_ARGS)
+
+provision:
+	./connect-kafka.sh ${region}
