@@ -8,7 +8,10 @@ from lib import *
 # instance downloads CDR data object from S3 input bucket
 
 # bring data -2D CSV array- into scope
-data_csv = get_data()
+data_csv = get_data(cdr_filename)
+# bring MDL into local repository
+write_data(mdl_filename)
+
 
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
 data_array = [[attribute for attribute in record.split(",")].append(0) for record in data_csv.split("\n")]

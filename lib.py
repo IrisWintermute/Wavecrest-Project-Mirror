@@ -2,6 +2,8 @@
 # ||function library for k-means program||
 import random
 import requests
+import re
+import phonenumbers
 
 # cluster data using k-means algorithm
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
@@ -29,8 +31,14 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
         centroids = centroids_new
 
 # get data from S3 bucket
-def get_data() -> str:
+def get_data(cdr_filename) -> str:
     pass
+
+# write MDL data to file in local repository
+def write_data(mdl_filename):
+    mdl = get_data(mdl_filename)
+    with open("mdl.csv", "w") as f:
+        f.write(mdl)
 
 # K++ algorithm
 # randomly select initial centroids from unclustered data
@@ -92,8 +100,34 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
+def get_destination(number):
+    with open("mdl.csv", "r") as f:
+        lines = f.readlines()
+        match = ("", "")
+        for line in lines:
+            line_list = line.split(",")
+            # check if prefix matches start of number
+            # obtain the longest matching prefix - most precise destination
+            if re.search(f"^{line_list[4]}", number) and match[0] < line_list[4]:
+                match = (line_list[4], line_list[1])
+        (dest, _) = match
+        return dest
 
-
+def get_day_from_date(date):
+    # takes date and returns int in range 0-7, corresponding to monday-sunday
+    (month, day, year) = tuple([int(val) for val in date.split("/")])
+    year_code = (year + (year // 4)) % 7
+    month_map = "033614625035"
+    month_code = int(month_map[month])
+    century_code = 6 # valid for dates in the 21st century
+    year += 2000
+    # check if year is leap year
+    leap_year_code = 0
+    if ((year // 4 == 0 and year // 100 != 0) or (year // 400 == 0)) and (month in [1, 2]):
+        leap_year_code = 1
+    return (year_code + month_code + century_code + day - leap_year_code - 1) % 7
+    
+    
 def preprocess(record: list[str]) -> list[int]:
     # truncate and expand record attributes
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
@@ -112,17 +146,37 @@ def preprocess(record: list[str]) -> list[int]:
                 preprocessed_record.append(difference)
 
             case "IG Setup Time":
-                time = record[i].split(" ")[2].split(":")
-                time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
+                datetime = record[i].split(" ")
+                time = datetime[2].split(":")
+                half_day = 3600 * 12 * (datetime[4] == "PM")
+                time_seconds = time[0] * 3600 + time[1] * 60 + time[2] + half_day
                 preprocessed_record.append(time_seconds)
+                day_seq = get_day_from_date(datetime[1])
+                preprocessed_record.append(day_seq)
+
+            case "Calling Number":
+                num = record[i]
+                # convert number to international format
+                p = phonenumbers.parse(num, None)
+                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                preprocessed_record.append(p_int)
+
+            case "Called Number":
+                num = record[i]
+                # convert number to international format
+                p = phonenumbers.parse(num, None)
+                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                preprocessed_record.append(p_int)
+                # get destination from number
+                preprocessed_record.append(get_destination(num))
         
             case "IG Packet Recieved":
                 difference = record[i + 3] - record[i]
-                preprocessed_record.append(time_seconds)
+                preprocessed_record.append(difference)
 
             case "EG Packet Recieved":
                 difference = record[i + 1] - record[i]
-                preprocessed_record.append(time_seconds)
+                preprocessed_record.append(difference)
 
             case attribute if attribute in persist:
                 preprocessed_record.append(record[i])
