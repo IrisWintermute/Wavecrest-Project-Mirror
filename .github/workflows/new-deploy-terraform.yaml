@@ -46,6 +46,7 @@ jobs:
         run: |
             cd terraform-wavecrest/ops-ew1-common-setup
             ./create_dynamodb_table.sh
+            ./create_s3_bucket.sh
             cd ..
             ./deploy.sh
         env:
