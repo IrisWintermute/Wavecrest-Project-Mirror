@@ -1,7 +1,6 @@
 
 # ||function library for k-means program||
 import random
-import requests
 import re
 import phonenumbers
 
@@ -31,14 +30,8 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
         centroids = centroids_new
 
 # get data from S3 bucket
-def get_data(cdr_filename) -> str:
-    pass
-
-# write MDL data to file in local repository
-def write_data(mdl_filename):
-    mdl = get_data(mdl_filename)
-    with open("mdl.csv", "w") as f:
-        f.write(mdl)
+# when user_data script is run upon EC2 deployment, all data in s3 bucket is synced to ./data repository
+# data copied will include CDR and MDL data
 
 # K++ algorithm
 # randomly select initial centroids from unclustered data
@@ -101,7 +94,7 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
 def get_destination(number):
-    with open("mdl.csv", "r") as f:
+    with open("./data/mdl.csv", "r") as f:
         lines = f.readlines()
         match = ("", "")
         for line in lines:

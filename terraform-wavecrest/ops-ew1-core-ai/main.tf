@@ -54,13 +54,13 @@ module "app" {
               git fetch ai-project
 
               mkdir data
-              aws s3 sync s3://wavecrest-ai-terraform-state ./data --exclude "*.tfstate"
+              aws s3 sync s3://wavecrest-terraform-ops-ew1 ./data --exclude "*.tfstate"
 
               pip install requests
               pip install phonenumbers
 
               python3 -c ./test_script.py ./data/test.txt
-              aws s3api put-object --bucket s3://wavecrest-ai-terraform-output --key ./output.txt --body ./output.txt
+              aws s3api put-object --bucket s3://wavecrest-terraform-ops-ew1 --key ./output.txt --body ./output.txt
               # Additional setup and commands can be added here
               EOF
 
