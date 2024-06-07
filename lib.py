@@ -148,18 +148,24 @@ def preprocess(record: list[str]) -> list[int]:
                 preprocessed_record.append(day_seq)
 
             case "Calling Number":
-                num = record[i]
-                # convert number to international format
-                p = phonenumbers.parse(num, None)
-                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                preprocessed_record.append(p_int)
+                num = record[i] 
+                if num != "anonymous":
+                    # convert number to international format
+                    p = phonenumbers.parse(num, None)
+                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                    preprocessed_record.append(p_int)
+                else:
+                    preprocessed_record.append(0)
 
             case "Called Number":
                 num = record[i]
-                # convert number to international format
-                p = phonenumbers.parse(num, None)
-                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                preprocessed_record.append(p_int)
+                if num != "anonymous":
+                    # convert number to international format
+                    p = phonenumbers.parse(num, None)
+                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                    preprocessed_record.append(p_int)
+                else:
+                    preprocessed_record.append(0)
                 # get destination from number
                 preprocessed_record.append(get_destination(num))
         
