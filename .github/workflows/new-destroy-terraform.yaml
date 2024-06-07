@@ -19,7 +19,7 @@ env:
 
 jobs:
   tf_code_apply:
-    name: New Terraform Deploy
+    name: New Terraform Destroy
     runs-on: ubuntu-latest
 
     steps:
