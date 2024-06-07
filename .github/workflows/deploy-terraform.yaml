@@ -16,8 +16,7 @@ permissions:
 
 env:
   TERRAFORM_VERSION: "1.6.4"
-  TERRAFORM_STATE_BUCKET: "wavecrest-ai-terraform-state"
-  TERRAFORM_OUTPUT_BUCKET: "wavecrest-ai-terraform-output"
+  TERRAFORM_OUTPUT_BUCKET: "wavecrest-terraform-ops-ew1"
   TERRAFORM_LOCK_TABLE: "terraform-locking"
 
 jobs:
