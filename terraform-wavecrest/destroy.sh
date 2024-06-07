@@ -3,7 +3,7 @@
 envname=${1:-ops}
 short_region=${2:-ew1}
 colour=${3:-core}
-force=${4:-false}
+force=${4:-true}
 core_reg=${5:-ew1}
 auto=${6:-auto} #can be interactive
 
