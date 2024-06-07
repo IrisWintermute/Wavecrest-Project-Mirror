@@ -94,7 +94,7 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
 def get_destination(number):
-    with open("./data/mdl.csv", "r") as f:
+    with open("./data/MDL_160524.csv", "r") as f:
         lines = f.readlines()
         match = ("", "")
         for line in lines:
