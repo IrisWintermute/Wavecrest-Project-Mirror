@@ -3,7 +3,7 @@
 envname=${1:-ops}
 short_region=${2:-ew1}
 colour=${3:-core}
-auto=${4:-Setup} # or auto or check
+auto=${4:-auto} # or Setup or check
 config_dir=${5}
 called_action=${6}
 
