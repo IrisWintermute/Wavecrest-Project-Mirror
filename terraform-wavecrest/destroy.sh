@@ -5,7 +5,7 @@ short_region=${2:-ew1}
 colour=${3:-core}
 force=${4:-false}
 core_reg=${5:-ew1}
-auto=${6:-interactive}
+auto=${6:-auto} #can be interactive
 
 #setup colours and smart terminal outputs
 if [[ "${TERM}" = "xterm" ]] || [[ "${TERM}" = "xterm-256color" ]] || [[ "${TERM}" = "dumb" ]]; then
