@@ -44,6 +44,6 @@ if [ "$table_exists" = false ]; then
         --attribute-definitions AttributeName=LockID,AttributeType=S \
         --key-schema AttributeName=LockID,KeyType=HASH \
         --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
-        --region $region
+        --region $region | cat
     echo "DynamoDB table '$lock_table_name' created."
 fi
