@@ -1,4 +1,4 @@
-name: New Terraform Deploy
+name: New Terraform Destroy
 
 on:
   # push:
