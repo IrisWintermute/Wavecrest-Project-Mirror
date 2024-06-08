@@ -95,33 +95,28 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     
 def get_destination(number):
     with open("./data/MDL_160524.csv", "r") as f:
-        lines = f.readlines()
+        lines = [(line.split(",")[4], line.split(",")[1]) for line in f.readlines()]
         match = ("", "")
-        for line in lines:
-            line_list = line.split(",")
+        for (prefix, destination) in lines:
             # check if prefix matches start of number
             # obtain the longest matching prefix - most precise destination
-            if re.search(f"^{line_list[4]}", number) and match[0] < line_list[4]:
-                match = (line_list[4], line_list[1])
-        (dest, _) = match
-        return dest
+            if re.search(f"^{prefix}", number) and len(match[0]) < len(prefix):
+                match = (prefix, destination)
+        return match[1]
 
 def get_day_from_date(date):
     # takes date and returns int in range 0-7, corresponding to monday-sunday
     (month, day, year) = tuple([int(val) for val in date.split("/")])
-    year_code = (year + (year // 4)) % 7
-    month_map = "033614625035"
-    month_code = int(month_map[month])
-    century_code = 6 # valid for dates in the 21st century
     year += 2000
-    # check if year is leap year
-    leap_year_code = 0
-    if ((year // 4 == 0 and year // 100 != 0) or (year // 400 == 0)) and (month in [1, 2]):
-        leap_year_code = 1
-    return (year_code + month_code + century_code + day - leap_year_code - 1) % 7
+    if month in [1, 2]:
+        month += 12
+        year -= 1
+    k = year % 100
+    j = year // 100
+    return (day + ((13 * (month + 1)) // 5) + k + (k // 4) + (j // 4) - (2 * j) - 2) % 7
     
     
-def preprocess(record: list[str]) -> list[int]:
+def preprocess(record: list[str]) -> list[str]:
     # truncate and expand record attributes
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
@@ -135,23 +130,23 @@ def preprocess(record: list[str]) -> list[int]:
                 #preprocessed_record.extend(ip_data)
 
             case "EG Duration (min)":
-                difference = record[i] - record[i + 1]
+                difference = int(record[i]) - int(record[i + 1])
                 preprocessed_record.append(difference)
 
             case "IG Setup Time":
                 datetime = record[i].split(" ")
-                time = datetime[2].split(":")
-                half_day = 3600 * 12 * (datetime[4] == "PM")
+                time = [int(v) for v in datetime[2].split(":")]
+                half_day = 3600 * 12 * (datetime[3] == "PM")
                 time_seconds = time[0] * 3600 + time[1] * 60 + time[2] + half_day
                 preprocessed_record.append(time_seconds)
-                day_seq = get_day_from_date(datetime[1])
+                day_seq = get_day_from_date(datetime[0])
                 preprocessed_record.append(day_seq)
 
             case "Calling Number":
                 num = record[i] 
                 if num != "anonymous":
                     # convert number to international format
-                    p = phonenumbers.parse(num, None)
+                    p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                     preprocessed_record.append(p_int)
                 else:
@@ -161,7 +156,7 @@ def preprocess(record: list[str]) -> list[int]:
                 num = record[i]
                 if num != "anonymous":
                     # convert number to international format
-                    p = phonenumbers.parse(num, None)
+                    p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                     preprocessed_record.append(p_int)
                 else:
@@ -169,12 +164,12 @@ def preprocess(record: list[str]) -> list[int]:
                 # get destination from number
                 preprocessed_record.append(get_destination(num))
         
-            case "IG Packet Recieved":
-                difference = record[i + 3] - record[i]
+            case "IG Packet Received":
+                difference = int(record[i + 3]) - int(record[i])
                 preprocessed_record.append(difference)
 
-            case "EG Packet Recieved":
-                difference = record[i + 1] - record[i]
+            case "EG Packet Received":
+                difference = int(record[i + 1]) - int(record[i])
                 preprocessed_record.append(difference)
 
             case attribute if attribute in persist:
