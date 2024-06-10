@@ -3,11 +3,17 @@
 import random
 import re
 import phonenumbers
+import matplotlib.pyplot as plt
 
 # cluster data using k-means algorithm
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
+    #d_plt = diagonal_mirror(data_array)
+    #c_plt = diagonal_mirror(centroids)
+    #plt.plot(d_plt[0], d_plt[1], "ro")
+    #plt.plot(c_plt[0], c_plt[1], "bo")
+    #plt.show()
     centroids_new = centroids
 
     while True:
@@ -19,6 +25,7 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
                 record[-1] = closest_centroid_index
                 no_reassignments = False
 
+        print([record[-1] for record in data_array])
         # stop algorithm when no records are reassigned
         if no_reassignments: return data_array, centroids
 
@@ -63,7 +70,11 @@ def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
-    return distances.sort(key = lambda d, _: d)[0]
+    def func(t):
+        (d, _) = t
+        return d
+    distances.sort(key = func)
+    return distances[0]
 
 def average(records: list[list[float]]) -> list[float]:
     # reduce list of input vectors into a single vector representing the average of input vectors
