@@ -26,6 +26,8 @@ def test_clustering():
     d = [[int(v) for v in record.split(",")] + [0] for record in d_raw]
     d_plt = diagonal_mirror(d)
     out, centroids = kmeans(3, d)
+    print(out)
+    print(centroids)
 
 if __name__ == "__main__":
     test_clustering()

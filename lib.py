@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
-    d_plt = diagonal_mirror(data_array)
-    c_plt = diagonal_mirror(centroids)
-    plt.plot(d_plt[0], d_plt[1], "ro")
-    plt.plot(c_plt[0], c_plt[1], "bo")
-    plt.show()
+    #d_plt = diagonal_mirror(data_array)
+    #c_plt = diagonal_mirror(centroids)
+    #plt.plot(d_plt[0], d_plt[1], "ro")
+    #plt.plot(c_plt[0], c_plt[1], "bo")
+    #plt.show()
     centroids_new = centroids
 
     while True:
@@ -32,7 +32,7 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
 
         # calculate new centroid coordinates
         for i, _ in enumerate(centroids):
-            owned_records = [record for record in data_array if record[-1] == i]
+            owned_records = [record[0:len(record) - 2] for record in data_array if record[-1] == i]
             centroids_new[i] = average(owned_records)
 
         centroids = centroids_new
@@ -44,6 +44,7 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
 # K++ algorithm
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
+    data.pop()
     chosen_indexes = [random.randint(0, len(data) - 1)]
     centroids = [data[chosen_indexes[0]]]
     square_distances = {}
@@ -66,7 +67,7 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
 
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
     # calculate distance between record and centroid
-    return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)]) ** 0.5
+    return sum([abs(record[i] - attribute) ** 2 for i, attribute in enumerate(centroid)]) ** 0.5
 
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
@@ -75,6 +76,7 @@ def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> t
     #     (d, _) = t
     #     return d
     distances.sort()
+    #print(distances)
     return distances[0]
 
 def average(records: list[list[float]]) -> list[float]:
