@@ -71,10 +71,10 @@ def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
-    def func(t):
-        (d, _) = t
-        return d
-    distances.sort(key = func)
+    # def func(t):
+    #     (d, _) = t
+    #     return d
+    distances.sort()
     return distances[0]
 
 def average(records: list[list[float]]) -> list[float]:
