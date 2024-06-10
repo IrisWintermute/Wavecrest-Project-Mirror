@@ -30,7 +30,7 @@ bucket_name="wavecrest-terraform-${envname}-${reg}"
 
 # Check if the bucket already exists
 bucket_exists=false
-if aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
+if aws s3api head-bucket --bucket "$bucket_name" | cat 2>/dev/null; then
     bucket_exists=true
     echo "Bucket '$bucket_name' already exists."
 else
