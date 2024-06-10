@@ -12,7 +12,7 @@ with open("./data/" + cdr_filename, "r") as f:
     data_csv = f.read()
 
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
-data_array = [[attribute for attribute in record.split(",")].append(0) for record in data_csv.split("\n")]
+data_array = [record.split(",") + [0] for record in data_csv]
 
 data_array_preprocessed = [preprocess(record) for record in data_array]
 
