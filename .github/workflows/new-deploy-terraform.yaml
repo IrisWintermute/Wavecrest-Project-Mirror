@@ -44,11 +44,7 @@ jobs:
       - name: Setup state, output buckets and dynamodb lock table
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
-            cd terraform-wavecrest/ops-ew1-common-setup
-            ./create_dynamodb_table.sh
-            ./create_s3_bucket.sh
-            ./create_ssh_key.sh
-            cd ..
+            cd terraform-wavecrest
             ./deploy.sh
         env:
           TERM: xterm-256color
