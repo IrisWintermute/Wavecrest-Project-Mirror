@@ -46,26 +46,27 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
                 (dist_to_nearest_centroid, _) = get_closest_centroid(record, centroids)
                 square_distances[i] = dist_to_nearest_centroid ** 2
 
-        sum_of_squares = sum(square_distances.values())
+        sum_of_squares = sum([v for v in square_distances.values()])
 
-        for index, dist in square_distances.items():
-            if random.random() < (dist / sum_of_squares):
+        for index, sq_dist in square_distances.items():
+            if random.random() < (sq_dist / sum_of_squares):
                 centroids.append(data[index])
+                chosen_indexes.append(index)
                 break
 
     return centroids
 
-# calculate distance between record and centroid
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
+    # calculate distance between record and centroid
     return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)]) ** 0.5
 
-# returns tuple of distance between record and nearest centroid, and index of nearest centroid
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
+    # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     return distances.sort(key = lambda d, _: d)[0]
 
-# reduce list of input vectors into a single vector representing the average of input vectors
 def average(records: list[list[float]]) -> list[float]:
+    # reduce list of input vectors into a single vector representing the average of input vectors
     sum = [0 for _ in records[0]]
     for record in records:
         for i, attribute in enumerate(record):
@@ -115,7 +116,22 @@ def get_day_from_date(date):
     j = year // 100
     return (day + ((13 * (month + 1)) // 5) + k + (k // 4) + (j // 4) - (2 * j) - 2) % 7
     
+def can_cast_to_int(v: str) -> bool:
+    try:
+        _ = int(v)
+    except ValueError:
+        return False
+    else:
+        return True
     
+def diagonal_mirror(nested_list: list[list]) -> list[list]:
+    nested_out = [[0 for _ in nested_list] for _ in nested_list[0]]
+    for i, list in enumerate(nested_list):
+        for j, attr in enumerate(list):
+            nested_out[j][i] = attr
+    return nested_out
+    
+
 def preprocess(record: list[str]) -> list[str]:
     # truncate and expand record attributes
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
@@ -180,33 +196,44 @@ def preprocess(record: list[str]) -> list[str]:
 def vectorise(data_array: list[list[str]]) -> list[list[int]]:
     with open("values_dump.txt", "w") as f:
         f.write("")
-    # [naive general solution] Convert each record entry to a numeric representation
-    len_vec = len(data_array[0])
-    vector_array = [[0] * len_vec] * len(data_array)
-    for i in range(len_vec):
-        values = []
-        count = 0
-
-        for j, record in enumerate(data_array):
-            if type(record[i]) == int:
-                vector_array[j][i] = record[i]
-            elif record[i] in values:
-                vector_array[j][i] = count
+    attributes_array = []
+    for i, attributes in enumerate(data_array):
+        values_hash = {}
+        attributes_out = []
+        for attr in attributes:
+            if can_cast_to_int(attr):
+                attributes_out.append(int(attr))
+            elif values_hash.get(attr, 0):
+                attributes_out.append(values_hash[attr])
             else:
-                values.append(record[i])
-                count += 1
-                vector_array[j][i] = count
-        if values:
+                values_hash[attr] = len(values_hash)
+                attributes_out.append(values_hash[attr])
+        attributes_array.append(attributes_out)
+        
+        if values_hash:
             with open("values_dump.txt", "a") as f:
-                values.insert(0, f"Values for attribute at index {i}: ")
-                values_to_write = "\n".join(values)
-                f.write(values_to_write + "\n")
-    return vector_array
+                values_to_write = "\n".join([f"{v}: {j}" for (v, j) in values_hash.items()])
+                f.write(f"values for attribute at index {i}" + "\n" + values_to_write + "\n")
+        
+    return attributes_array
 
-def normalise(vector: list[int]) -> list[float]:
-    # normalise vector to have a length of 1
-    length = sum([val ** 2 for val in vector]) ** 0.5
-    return [attr / length for attr in vector]
+def normalise(attributes_array: list[list[int]]) -> list[list[float]]:
+    # normalise each dimension to have a range of 1
+    array_out = []
+    for attributes in attributes_array:
+        attributes_out = []
+        mx, mn = max(attributes), min(attributes)
+        if not mx: mx += 1
+        for attr in attributes:
+            rnge = mx - mn if mx - mn else mx
+            attributes_out.append((attr - mn) / rnge)
+        array_out.append(attributes_out)
+    return array_out
+
+
+
+        
+    
     
 """ 
 def extract_ip_data(ip_address: str) -> dict[str]:

@@ -1,0 +1,74 @@
+values for attribute at index 0
+ABC Tel: 0
+GLH Tel: 1
+FBG Tel: 2
+LOP Tel: 3
+JRH Tel: 4
+VRB Tel: 5
+WRE Tel: 6
+CSD Tel: 7
+WEQ Tel: 8
+IUY Tel: 9
+values for attribute at index 1
+ABC_GLD_CH: 0
+GLH_GLD_CH: 1
+FBG_GLD_CH: 2
+LOP_GLD_CH: 3
+JRH_GLD_CH: 4
+VRB_GLD_CH: 5
+WRE_GLD_CH: 6
+CSD_GLD_CH: 7
+WEQ_GLD_CH: 8
+IUY_GLD_CH: 9
+values for attribute at index 2
+Platinum: 1
+values for attribute at index 3
+ABC Tel: 0
+GLH Tel: 1
+FBG Tel: 2
+LOP Tel: 3
+JRH Tel: 4
+VRB Tel: 5
+WRE Tel: 6
+CSD Tel: 7
+WEQ Tel: 8
+IUY Tel: 9
+values for attribute at index 4
+G: 1
+values for attribute at index 5
+ABC_GLD_CH: 0
+GLH_GLD_CH: 1
+FBG_GLD_CH: 2
+LOP_GLD_CH: 3
+JRH_GLD_CH: 4
+VRB_GLD_CH: 5
+WRE_GLD_CH: 6
+CSD_GLD_CH: 7
+WEQ_GLD_CH: 8
+IUY_GLD_CH: 9
+values for attribute at index 6
+MDL Premium: 1
+values for attribute at index 7
+India - Mobile - BNLS: 0
+Angola - Mobile - Unitel: 1
+Switzerland - Mobile - Swisscom: 2
+Bangladesh - Mobile - Robi: 3
+Ethiopia - Mobile - Addis Ababa: 4
+Brazil - Mobile: 5
+values for attribute at index 16
+destination: 1
+values for attribute at index 17
+hunt: 2
+endl: 1
+values for attribute at index 18
+N/A: 1
+values for attribute at index 19
+N/A: 1
+values for attribute at index 20
++44 7533 504004: 1
+values for attribute at index 21
++44 7533 504004: 1
+values for attribute at index 22
+UK: 1
+values for attribute at index 27
+N/A: 1
