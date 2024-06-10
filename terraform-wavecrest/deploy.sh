@@ -149,9 +149,6 @@ if [[ "${config_dir}" != "" ]]; then
     exit 0
 fi
 
-boldlog "${auto} setup ${envname} ssh shim"
-run_terraform ${envname}-${short_region}-common-setup ssh
-
 boldlog "${auto} deploy ${envname} common components"
 run_terraform ${envname}-${short_region}-common-setup
 
