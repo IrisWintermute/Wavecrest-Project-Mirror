@@ -17,6 +17,7 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     centroids_new = centroids
 
     while True:
+
         no_reassignments = True
         # assign each data point to closest centroid
         for record in data_array:
@@ -24,6 +25,8 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
             if record[-1] != closest_centroid_index: 
                 record[-1] = closest_centroid_index
                 no_reassignments = False
+            print(record)
+            print(closest_centroid_index)
 
         print([record[-1] for record in data_array])
         print(centroids)
@@ -32,8 +35,11 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
 
         # calculate new centroid coordinates
         for i, _ in enumerate(centroids):
-            owned_records = [record[0:len(record) - 2] for record in data_array if record[-1] == i]
+            owned_records = [record[0:len(record) - 1] for record in data_array if record[-1] == i]
+            print(i)
+            print(owned_records)
             centroids_new[i] = average(owned_records)
+            print(average(owned_records))
 
         centroids = centroids_new
 
@@ -44,12 +50,12 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
 # K++ algorithm
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
-    data.pop()
+    data = [vec[0:len(vec) - 1] for vec in data]
     chosen_indexes = [random.randint(0, len(data) - 1)]
     centroids = [data[chosen_indexes[0]]]
-    square_distances = {}
 
     while len(centroids) < k:
+        square_distances = {}
         for i, record in enumerate(data):
             if i not in chosen_indexes:
                 (dist_to_nearest_centroid, _) = get_closest_centroid(record, centroids)
@@ -62,7 +68,7 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
                 centroids.append(data[index])
                 chosen_indexes.append(index)
                 break
-
+    print(chosen_indexes)
     return centroids
 
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
@@ -81,12 +87,12 @@ def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> t
 
 def average(records: list[list[float]]) -> list[float]:
     # reduce list of input vectors into a single vector representing the average of input vectors
-    sum = [0 for _ in records[0]]
-    for record in records:
-        for i, attribute in enumerate(record):
-            sum[i] += attribute
+    attributes = diagonal_mirror(records)
+    avg = []
+    for vals in attributes:
+        avg.append(sum(vals) / len(vals))
+    return avg
 
-    return [attr / len(sum) for attr in sum]
     
 
 
