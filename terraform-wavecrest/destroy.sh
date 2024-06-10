@@ -151,6 +151,3 @@ destroy_terraform ${envname}-${core_reg}-core-jump
 
 boldlog "Destroy ${envname} VPC and networking"
 destroy_terraform ${envname}-${core_reg}-core-vpc
-
-boldlog "Destroy ${envname} common"
-destroy_terraform ${envname}-${core_reg}-common-setup
