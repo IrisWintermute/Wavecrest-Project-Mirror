@@ -30,7 +30,7 @@ lock_table_name="${1:-terraform-base-infra}"
 
 # Check if the DynamoDB table already exists
 table_exists=false
-if aws dynamodb describe-table --table-name "$lock_table_name" 2>/dev/null; then
+if aws dynamodb describe-table --table-name "$lock_table_name" | cat 2>/dev/null; then
     table_exists=true
     echo "DynamoDB table '$lock_table_name' already exists."
 else

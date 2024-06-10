@@ -360,6 +360,7 @@ resource "aws_route53_record" "acm_validation" {
 # }
 
 # create a kms key for s3 encryption
+# MAY NEED TO UNCOMMENT
 resource "aws_kms_key" "s3_key" {
   count = local.enable_central ? 1 : 0
   description = "KMS key for S3 encryption"
@@ -552,7 +553,7 @@ resource "aws_kms_alias" "s3_replica" {
 # }
 
 ### instance profiles ###
-
+# MAY NEED TO UNCOMMENT
 resource "aws_iam_role" "generic_role" {
   count = local.enable_central ? 1 : 0
   name = "${local.envname}-GenericRole"
@@ -593,7 +594,8 @@ resource "aws_iam_role" "generic_role" {
 #   }), local.common_tags)
 # }
 
-#create generic instance profile
+# #create generic instance profile
+#MAY NEED TO UNCOMMENT
 resource "aws_iam_instance_profile" "generic_instance_profile" {
   count = local.enable_central ? 1 : 0
   name = "${local.envname}-InstanceGeneric"
