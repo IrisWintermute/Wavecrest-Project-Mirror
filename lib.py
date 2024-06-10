@@ -46,26 +46,27 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
                 (dist_to_nearest_centroid, _) = get_closest_centroid(record, centroids)
                 square_distances[i] = dist_to_nearest_centroid ** 2
 
-        sum_of_squares = sum(square_distances.values())
+        sum_of_squares = sum([v for v in square_distances.values()])
 
-        for index, dist in square_distances.items():
-            if random.random() < (dist / sum_of_squares):
+        for index, sq_dist in square_distances.items():
+            if random.random() < (sq_dist / sum_of_squares):
                 centroids.append(data[index])
+                chosen_indexes.append(index)
                 break
 
     return centroids
 
-# calculate distance between record and centroid
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
+    # calculate distance between record and centroid
     return sum([abs(centroid[i] - attribute) ** 2 for i, attribute in enumerate(record)]) ** 0.5
 
-# returns tuple of distance between record and nearest centroid, and index of nearest centroid
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
+    # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     return distances.sort(key = lambda d, _: d)[0]
 
-# reduce list of input vectors into a single vector representing the average of input vectors
 def average(records: list[list[float]]) -> list[float]:
+    # reduce list of input vectors into a single vector representing the average of input vectors
     sum = [0 for _ in records[0]]
     for record in records:
         for i, attribute in enumerate(record):
