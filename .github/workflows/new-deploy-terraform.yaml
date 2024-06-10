@@ -45,7 +45,9 @@ jobs:
         shell: 'script -q -e -f -c "bash {0}"'
         run: |
             cd terraform-wavecrest/ops-ew1-common-setup
-            run-terraform setup
+            ./create_dynamodb_table.sh
+            ./create_s3_bucket.sh
+            ./create_ssh_key.sh
             cd ..
             ./deploy.sh
         env:
