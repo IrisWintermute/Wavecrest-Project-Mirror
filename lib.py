@@ -159,10 +159,11 @@ def preprocess(record: list[str]) -> list[str]:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                     preprocessed_record.append(p_int)
+                    # get destination from number
+                    preprocessed_record.append(get_destination(str(p_int)[1:]))
                 else:
                     preprocessed_record.append(0)
-                # get destination from number
-                preprocessed_record.append(get_destination(num))
+                    preprocessed_record.append("N/a")
         
             case "IG Packet Received":
                 difference = int(record[i + 3]) - int(record[i])
@@ -177,6 +178,8 @@ def preprocess(record: list[str]) -> list[str]:
     return preprocessed_record
 
 def vectorise(data_array: list[list[str]]) -> list[list[int]]:
+    with open("values_dump.txt", "w") as f:
+        f.write("")
     # [naive general solution] Convert each record entry to a numeric representation
     len_vec = len(data_array[0])
     vector_array = [[0] * len_vec] * len(data_array)
@@ -193,19 +196,17 @@ def vectorise(data_array: list[list[str]]) -> list[list[int]]:
                 values.append(record[i])
                 count += 1
                 vector_array[j][i] = count
-
-        with open("values_dump.txt", "a") as f:
-            values.insert(0, f"Values for attribute at index {i}: \n")
-            values_to_write = "\n".join(values)
-            f.write(values_to_write)
+        if values:
+            with open("values_dump.txt", "a") as f:
+                values.insert(0, f"Values for attribute at index {i}: ")
+                values_to_write = "\n".join(values)
+                f.write(values_to_write + "\n")
     return vector_array
 
 def normalise(vector: list[int]) -> list[float]:
     # normalise vector to have a length of 1
-    length = sum([val * 2 for val in vector]) ** 0.5
-    for attribute in vector:
-        attribute /= length
-    return vector
+    length = sum([val ** 2 for val in vector]) ** 0.5
+    return [attr / length for attr in vector]
     
 """ 
 def extract_ip_data(ip_address: str) -> dict[str]:
