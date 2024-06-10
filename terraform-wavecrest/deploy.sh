@@ -149,8 +149,8 @@ if [[ "${config_dir}" != "" ]]; then
     exit 0
 fi
 
-# boldlog "${auto} deploy ${envname} common components"
-# run_terraform ${envname}-${short_region}-common-setup
+boldlog "${auto} deploy ${envname} common components"
+run_terraform ${envname}-${short_region}-common-setup
 
 boldlog "${auto} deploy ${envname} VPC and networking"
 run_terraform ${envname}-${short_region}-${colour}-vpc
