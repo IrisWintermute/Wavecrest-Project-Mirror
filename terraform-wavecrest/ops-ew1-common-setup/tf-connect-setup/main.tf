@@ -360,36 +360,37 @@ resource "aws_route53_record" "acm_validation" {
 # }
 
 # create a kms key for s3 encryption
-resource "aws_kms_key" "s3_key" {
-  count = local.enable_central ? 1 : 0
-  description = "KMS key for S3 encryption"
-  deletion_window_in_days = 7
-  multi_region            = true
+# MAY NEED TO UNCOMMENT
+# resource "aws_kms_key" "s3_key" {
+#   count = local.enable_central ? 1 : 0
+#   description = "KMS key for S3 encryption"
+#   deletion_window_in_days = 7
+#   multi_region            = true
 
-  tags = merge(tomap({
-    Name = "${local.environment} S3 Key"
-  }), local.common_tags)
-}
+#   tags = merge(tomap({
+#     Name = "${local.environment} S3 Key"
+#   }), local.common_tags)
+# }
 
-resource "aws_kms_alias" "s3_key" {
-  count = local.enable_central ? 1 : 0
-  name          = "alias/${local.envname}-${local.s3_key_alias_suffix}"
-  target_key_id = aws_kms_key.s3_key[0].key_id
-}
+# resource "aws_kms_alias" "s3_key" {
+#   count = local.enable_central ? 1 : 0
+#   name          = "alias/${local.envname}-${local.s3_key_alias_suffix}"
+#   target_key_id = aws_kms_key.s3_key[0].key_id
+# }
 
-# replicas
-resource "aws_kms_replica_key" "s3_replica" {
-  count = local.enable_central ? 0 : 1
-  description             = "Replica key for s3 encryption"
-  deletion_window_in_days = 7
-  primary_key_arn         = data.aws_kms_key.s3_key[0].arn
-}
+# # replicas
+# resource "aws_kms_replica_key" "s3_replica" {
+#   count = local.enable_central ? 0 : 1
+#   description             = "Replica key for s3 encryption"
+#   deletion_window_in_days = 7
+#   primary_key_arn         = data.aws_kms_key.s3_key[0].arn
+# }
 
-resource "aws_kms_alias" "s3_replica" {
-  count = local.enable_central ? 0 : 1
-  name          = "alias/${local.envname}-${local.s3_key_alias_suffix}"
-  target_key_id = aws_kms_replica_key.s3_replica[0].key_id
-}
+# resource "aws_kms_alias" "s3_replica" {
+#   count = local.enable_central ? 0 : 1
+#   name          = "alias/${local.envname}-${local.s3_key_alias_suffix}"
+#   target_key_id = aws_kms_replica_key.s3_replica[0].key_id
+# }
 
 
 # ### s3 buckets ###
@@ -552,24 +553,24 @@ resource "aws_kms_alias" "s3_replica" {
 # }
 
 ### instance profiles ###
+# MAY NEED TO UNCOMMENT
+# resource "aws_iam_role" "generic_role" {
+#   count = local.enable_central ? 1 : 0
+#   name = "${local.envname}-GenericRole"
 
-resource "aws_iam_role" "generic_role" {
-  count = local.enable_central ? 1 : 0
-  name = "${local.envname}-GenericRole"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Action = "sts:AssumeRole",
+#         Effect = "Allow",
+#         Principal = {
+#           Service = "ec2.amazonaws.com"
+#         }
+#       }
+#     ]
+#   })
+# }
 
 # resource "aws_iam_role" "lambda_role" {
 #   for_each = local.lambda_names
@@ -593,97 +594,98 @@ resource "aws_iam_role" "generic_role" {
 #   }), local.common_tags)
 # }
 
-#create generic instance profile
-resource "aws_iam_instance_profile" "generic_instance_profile" {
-  count = local.enable_central ? 1 : 0
-  name = "${local.envname}-InstanceGeneric"
-  role = aws_iam_role.generic_role[0].name
-}
+# #create generic instance profile
+# MAY NEED TO UNCOMMENT
+# resource "aws_iam_instance_profile" "generic_instance_profile" {
+#   count = local.enable_central ? 1 : 0
+#   name = "${local.envname}-InstanceGeneric"
+#   role = aws_iam_role.generic_role[0].name
+# }
 
-#create generic instance policy
-resource "aws_iam_policy" "ec2_instance_policy" {
-  count = local.enable_central ? 1 : 0
-  name        = "${local.envname}-GenericEC2InstancePolicy"
-  description = "Policy to allow access to the ec2 api"
+# #create generic instance policy
+# resource "aws_iam_policy" "ec2_instance_policy" {
+#   count = local.enable_central ? 1 : 0
+#   name        = "${local.envname}-GenericEC2InstancePolicy"
+#   description = "Policy to allow access to the ec2 api"
 
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect": "Allow",
-        "Action": "ec2:DescribeInstances",
-        "Resource": "*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect": "Allow",
+#         "Action": "ec2:DescribeInstances",
+#         "Resource": "*"
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_iam_policy" "route53_policy" {
-  count = local.enable_central ? 1 : 0
-  name        = "${local.envname}-GenericRoute53Policy"
-  description = "Policy to allow access to the route53 api"
+# resource "aws_iam_policy" "route53_policy" {
+#   count = local.enable_central ? 1 : 0
+#   name        = "${local.envname}-GenericRoute53Policy"
+#   description = "Policy to allow access to the route53 api"
 
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "route53:ListHostedZones",
-          "route53:ChangeResourceRecordSets",
-          "route53:ListResourceRecordSets",
-          "route53:GetChange"
-        ],
-        "Resource": "*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect": "Allow",
+#         "Action": [
+#           "route53:ListHostedZones",
+#           "route53:ChangeResourceRecordSets",
+#           "route53:ListResourceRecordSets",
+#           "route53:GetChange"
+#         ],
+#         "Resource": "*"
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_iam_policy" "ec2_autoscale_lifecycle_policy" {
-  count = local.enable_central ? 1 : 0
-  name        = "${local.envname}-GenericAutoscaleLifecyclePolicy"
-  description = "Policy to allow access respond to lifecycle events"
+# resource "aws_iam_policy" "ec2_autoscale_lifecycle_policy" {
+#   count = local.enable_central ? 1 : 0
+#   name        = "${local.envname}-GenericAutoscaleLifecyclePolicy"
+#   description = "Policy to allow access respond to lifecycle events"
 
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "autoscaling:CompleteLifecycleAction",
-        ],
-        "Resource" : "arn:aws:autoscaling:*:${var.account}:autoScalingGroup:*:autoScalingGroupName/${local.envname}-*"
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "autoscaling:DescribeLifecycleHooks"
-        ],
-        "Resource" : "*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "autoscaling:CompleteLifecycleAction",
+#         ],
+#         "Resource" : "arn:aws:autoscaling:*:${var.account}:autoScalingGroup:*:autoScalingGroupName/${local.envname}-*"
+#       },
+#       {
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "autoscaling:DescribeLifecycleHooks"
+#         ],
+#         "Resource" : "*"
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_iam_policy" "ec2_autoscale_instance_health_policy" {
-  count = local.enable_central ? 1 : 0
-  name        = "${local.envname}-GenericAutoscaleInstanceHealthPolicy"
-  description = "Policy to allow access set health of instances"
+# resource "aws_iam_policy" "ec2_autoscale_instance_health_policy" {
+#   count = local.enable_central ? 1 : 0
+#   name        = "${local.envname}-GenericAutoscaleInstanceHealthPolicy"
+#   description = "Policy to allow access set health of instances"
 
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "autoscaling:SetInstanceHealth",
-        ],
-        "Resource" : "arn:aws:autoscaling:*:${var.account}:autoScalingGroup:*:autoScalingGroupName/${local.envname}-*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Action" : [
+#           "autoscaling:SetInstanceHealth",
+#         ],
+#         "Resource" : "arn:aws:autoscaling:*:${var.account}:autoScalingGroup:*:autoScalingGroupName/${local.envname}-*"
+#       }
+#     ]
+#   })
+# }
 
 # resource "aws_iam_policy" "s3_access_policy" {
 #   count = local.enable_central ? 1 : 0
