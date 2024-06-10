@@ -152,5 +152,5 @@ destroy_terraform ${envname}-${core_reg}-core-jump
 boldlog "Destroy ${envname} VPC and networking"
 destroy_terraform ${envname}-${core_reg}-core-vpc
 
-destroy_terraform alias/${envname}-s3-key
-destroy_terraform ${envname}-GenericRole
+boldlog "Destroy ${envname} common"
+destroy_terraform ${envname}-common-setup
