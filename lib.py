@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
-    #d_plt = diagonal_mirror(data_array)
-    #c_plt = diagonal_mirror(centroids)
-    #plt.plot(d_plt[0], d_plt[1], "ro")
-    #plt.plot(c_plt[0], c_plt[1], "bo")
-    #plt.show()
+    d_plt = diagonal_mirror(data_array)
+    c_plt = diagonal_mirror(centroids)
+    plt.plot(d_plt[0], d_plt[1], "ro")
+    plt.plot(c_plt[0], c_plt[1], "bo")
+    plt.show()
     centroids_new = centroids
 
     while True:
@@ -26,6 +26,7 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
                 no_reassignments = False
 
         print([record[-1] for record in data_array])
+        print(centroids)
         # stop algorithm when no records are reassigned
         if no_reassignments: return data_array, centroids
 
