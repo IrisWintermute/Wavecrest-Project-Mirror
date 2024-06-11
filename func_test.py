@@ -1,15 +1,27 @@
 from lib import *
 import matplotlib.pyplot as plt
+import random
 
 def get_test_data(name):
     with open(f"test_data_{name}.txt", "r") as f:
         return f.readlines()
     
+def get_pseudorandom_coordinates(n, x0, xm, y0, ym, k, v):
+    out = []
+    for _ in range(k):
+        c = (random.randint(x0, xm), random.randint(y0, ym))
+        for _ in range(n // k):
+            (c_x, c_y) = c
+            c_x += (random.random() * 2 - 1) * v
+            c_y += (random.random() * 2 - 1) * v
+            out.append([c_x, c_y])
+    return out
+    
 
 # || EXTRACT, ENRICH, PREPROCESS AND VECTORISE DATA ||
-def test_preporcessing():
+def test_preprocessing():
     d_raw = get_test_data("cdr")
-    d = [record.split(",") + [0] for record in d_raw]
+    d = [record.split(",") for record in d_raw]
     out = [preprocess(r) for r in d]
     #print(out)
     #print(len(out))
@@ -22,23 +34,27 @@ def test_preporcessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    #d_raw = get_test_data("kmeans")
-    #d = [[int(v) for v in record.split(",")] + [0] for record in d_raw]
-    d = []
-    for i in range(7):
-        for j in range(7):
-            d.append([i, j])
-    out, centroids = kmeans(3, d)
-    print("Clustered data and centroids: ")
-    print(out)
-    print(centroids)
-    out_plt = diagonal_mirror(out)
-    marker = ["ro", "bo", "go"]
-    for i in range(3):
+    data = get_pseudorandom_coordinates(500, 0, 0, 10, 10, 30, 30)
+    k_optimal = []
+    for k in range(8,9):
+        out, centroids = kmeans(k, data)
+        #print("Clustered data and centroids: ")
+        #print(centroids)
+        chi = optimal_k_decision(out, centroids)
+        k_optimal.append([k, chi])
+    #optimal_plot = diagonal_mirror(k_optimal)
+    #plt.plot(optimal_plot[0], optimal_plot[1], "b-")
+    #plt.show()
+    
+    marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
+    for i in range(8):
         p = [val for val in out if val[-1] == i]
         plot = diagonal_mirror(p)
-        plt.plot(plot[0], plot[1], marker[i])
+        plt.plot(plot[0], plot[1], marker[i % len(marker)])
+    cen_plt = diagonal_mirror(centroids)
+    plt.plot(cen_plt[0], cen_plt[1], "ks")
     plt.show()
+    
 
 if __name__ == "__main__":
     test_clustering()

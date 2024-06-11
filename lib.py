@@ -9,11 +9,7 @@ import matplotlib.pyplot as plt
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array)
-    #d_plt = diagonal_mirror(data_array)
-    #c_plt = diagonal_mirror(centroids)
-    #plt.plot(d_plt[0], d_plt[1], "ro")
-    #plt.plot(c_plt[0], c_plt[1], "bo")
-    #plt.show()
+    data_array = [vec + [0] for vec in data_array]
     centroids_new = centroids
 
     while True:
@@ -25,21 +21,21 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
             if record[-1] != closest_centroid_index: 
                 record[-1] = closest_centroid_index
                 no_reassignments = False
-            print(record)
-            print(closest_centroid_index)
+            #print(record)
+            #print(closest_centroid_index)
 
-        print([record[-1] for record in data_array])
-        print(centroids)
+        #print([record[-1] for record in data_array])
+        #print(centroids)
         # stop algorithm when no records are reassigned
         if no_reassignments: return data_array, centroids
 
         # calculate new centroid coordinates
         for i, _ in enumerate(centroids):
             owned_records = [record[0:len(record) - 1] for record in data_array if record[-1] == i]
-            print(i)
-            print(owned_records)
+            #print(i)
+            #print(owned_records)
             centroids_new[i] = average(owned_records)
-            print(average(owned_records))
+            #print(average(owned_records))
 
         centroids = centroids_new
 
@@ -50,7 +46,6 @@ def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
 # K++ algorithm
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
-    data = [vec[0:len(vec) - 1] for vec in data]
     chosen_indexes = [random.randint(0, len(data) - 1)]
     centroids = [data[chosen_indexes[0]]]
 
@@ -68,7 +63,7 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
                 centroids.append(data[index])
                 chosen_indexes.append(index)
                 break
-    print(chosen_indexes)
+    #print(chosen_indexes)
     return centroids
 
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
@@ -110,7 +105,7 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     wcss = 0
     for i, centroid in enumerate(centroids):
         vectors_in_centroid = [vector for vector in clustered_data if vector[-1] == i]
-        wcss += [distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid]
+        wcss += sum([distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid])
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
