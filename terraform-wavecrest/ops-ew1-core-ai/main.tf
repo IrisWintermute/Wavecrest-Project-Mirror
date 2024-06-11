@@ -18,10 +18,8 @@ module "app" {
   name                 = "ai"
   asg_max_size         = 1
   asg_desired_capacity = 1
-  disk_size            = 0
+  disk_size            = 20
   instance_memory      = 1
-  instance_num_cpus    = 1
-  instance_family      = "t2"
   key_name             = "devops"
   location_subnet      = "private"
   nlb_subnet           = ""
