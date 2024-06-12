@@ -43,22 +43,9 @@ module "app" {
   enable_install = false #nothing to copy from s3
   user_data      = <<-EOF
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
-              sudo apt update
-              sudo apt install python3
-              sudo apt install -y python3-pip -y
-              sudo apt install git
-
-              git remote add ai-project https://github.com/Wavecrest/AI-Project
-              git fetch ai-project
-
+              
               mkdir data
               aws s3 sync s3://wavecrest-terraform-ops-ew1 ./data --exclude "*.tfstate"
-
-              pip install requests
-              pip install phonenumbers
-
-              python3 -c ./test_script.py ./data/test.txt
-              aws s3api put-object --bucket s3://wavecrest-terraform-ops-ew1 --key ./output.txt --body ./output.txt
               # Additional setup and commands can be added here
               EOF
 
