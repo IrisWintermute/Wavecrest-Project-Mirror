@@ -250,15 +250,14 @@ def normalise(attributes_array: list[list[int]]) -> list[list[float]]:
         
     
     
-""" 
-def extract_ip_data(ip_address: str) -> dict[str]:
-    response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
-    data = [
-        response.get("city"),
-        response.get("region"),
-        response.get("country_calling_code"),
-        response.get("utc_offset"),
-        response.get("currency")
-    ]
-    return data
- """
+
+# def extract_ip_data(ip_address: str) -> dict[str]:
+#     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
+#     data = [
+#         response.get("city"),
+#         response.get("region"),
+#         response.get("country_calling_code"),
+#         response.get("utc_offset"),
+#         response.get("currency")
+#     ]
+#     return data
