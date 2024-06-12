@@ -43,10 +43,7 @@ module "app" {
   enable_install = false #nothing to copy from s3
   user_data      = <<-EOF
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
-              sudo cd ../../home/ec2-user
-
-              mkdir data
-              cd data
+              
               aws s3 sync s3://wavecrest-terraform-ops-ew1 ./data --exclude "*.tfstate"
               # Additional setup and commands can be added here
               EOF
