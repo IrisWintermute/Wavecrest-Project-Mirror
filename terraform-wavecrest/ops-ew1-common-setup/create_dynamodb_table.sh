@@ -1,1 +1,0 @@
-../_scripts/create_dynamodb_table.sh

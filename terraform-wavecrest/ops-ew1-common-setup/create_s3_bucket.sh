@@ -1,1 +1,0 @@
-../_scripts/create_s3_bucket.sh
