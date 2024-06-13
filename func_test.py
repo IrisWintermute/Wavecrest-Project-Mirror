@@ -9,11 +9,11 @@ def get_test_data(name):
 def get_pseudorandom_coordinates(n, x0, xm, y0, ym, k, v):
     out = []
     for _ in range(k):
-        c = (random.randint(x0, xm), random.randint(y0, ym))
+        c = (random.random() * (xm - x0) + x0, random.random() * (ym - y0) + y0)
         for _ in range(n // k):
             (c_x, c_y) = c
-            c_x += (random.random() * 2 - 1) * v
-            c_y += (random.random() * 2 - 1) * v
+            c_x = random.gauss(c_x, v)
+            c_y = random.gauss(c_y, v)
             out.append([c_x, c_y])
     return out
     
@@ -34,25 +34,32 @@ def test_preprocessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coordinates(500, 0, 0, 10, 10, 30, 30)
+    data = get_pseudorandom_coordinates(200, 0, 20, 0, 20, 40, 0.1)
     k_optimal = []
-    for k in range(8,9):
+    for k in range(9, 100, 1):
+        print(k)
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)
         chi = optimal_k_decision(out, centroids)
         k_optimal.append([k, chi])
-    #optimal_plot = diagonal_mirror(k_optimal)
-    #plt.plot(optimal_plot[0], optimal_plot[1], "b-")
-    #plt.show()
+    optimal_plot = diagonal_mirror(k_optimal)
+    plt.plot(optimal_plot[0], optimal_plot[1], "b-")
+    plt.show()
     
-    marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
-    for i in range(8):
-        p = [val for val in out if val[-1] == i]
-        plot = diagonal_mirror(p)
-        plt.plot(plot[0], plot[1], marker[i % len(marker)])
-    cen_plt = diagonal_mirror(centroids)
-    plt.plot(cen_plt[0], cen_plt[1], "ks")
+    # marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
+    # for i in range(20):
+    #     p = [val for val in out if val[-1] == i]
+    #     plot = diagonal_mirror(p)
+    #     plt.plot(plot[0], plot[1], marker[i % len(marker)])
+    # cen_plt = diagonal_mirror(centroids)
+    # plt.plot(cen_plt[0], cen_plt[1], "ks")
+    # plt.show()
+
+def test_psrndm():
+    c = get_pseudorandom_coordinates(200, 0, 20, 0, 20, 40, 0.1)
+    c_p = diagonal_mirror(c)
+    plt.plot(c_p[0], c_p[1], "bo")
     plt.show()
     
 
