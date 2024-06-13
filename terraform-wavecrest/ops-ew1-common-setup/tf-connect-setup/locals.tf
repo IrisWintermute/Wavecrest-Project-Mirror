@@ -64,7 +64,7 @@ locals {
   graf_s3   = "${local.envname}-voice-graf"
   obs_s3    = "${local.envname}-voice-obs"
   sipp_s3    = "${local.envname}-voice-sipp"
-  lambda_s3 = "wavecrest-lambdas-${local.envname}"
+  # lambda_s3 = "wavecrest-lambdas-${local.envname}"
   clickhouse_s3 = "${local.envname}-voice-clickhouse"
 
   # mysql_key_alias_suffix = "mysql-key"
