@@ -1,0 +1,51 @@
+name: New Terraform Destroy
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+# Only allow one run at a time for this environment
+concurrency: terraform
+
+# Required because we are using OIDC
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  TERRAFORM_VERSION: "1.6.4"
+
+jobs:
+  tf_code_apply:
+    name: New Terraform Destroy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          # ref: 'check-output' #for debug usage
+          set-safe-directory: '/home/runner/work/AI-Project'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::579662209389:role/GithubActionsRoleForConnectOpsAccountWithAdminPermissions
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.0.0
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Setup state, output buckets and dynamodb lock table
+        shell: 'script -q -e -f -c "bash {0}"'
+        run: |
+            cd terraform-wavecrest
+            ./destroy.sh
+        env:
+          TERM: xterm-256color
+

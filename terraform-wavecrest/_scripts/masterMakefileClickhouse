@@ -1,0 +1,12 @@
+# make v2
+
+#WARNING - needs tabs infront of recipe shell commands, not spaces
+
+# define INIT_EXTRA_ARGS if needed. e.g.
+# make init INIT_EXTRA_ARGS="-reconfigure"
+
+### Setup environment variables
+include masterMakefile
+
+provision:
+	./connect-clickhouse.sh ${region}

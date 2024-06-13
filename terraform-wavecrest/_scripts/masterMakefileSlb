@@ -1,0 +1,24 @@
+# make v2
+
+#WARNING - needs tabs infront of recipe shell commands, not spaces
+
+# define INIT_EXTRA_ARGS if needed. e.g.
+# make init INIT_EXTRA_ARGS="-reconfigure"
+
+include masterMakefile
+
+### Setup environment variables
+apply:
+	make -f masterMakefile apply
+	./sync_globalaccelerator.sh
+
+destroy:
+	make -f masterMakefile destroy
+	./sync_globalaccelerator.sh
+
+promote:
+	./create_dns.sh
+	./promote_globalaccelerator.sh
+
+sync:
+	./sync_globalaccelerator.sh
