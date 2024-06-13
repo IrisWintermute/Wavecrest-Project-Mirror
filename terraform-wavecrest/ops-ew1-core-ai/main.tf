@@ -44,7 +44,7 @@ module "app" {
   user_data      = <<-EOF
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
               
-              aws s3 sync s3://wavecrest-terraform-ops-ew1 ./data --exclude "*.tfstate"
+              aws s3 sync s3://wavecrest-terraform-ops-ew1-ai ./data --exclude "*.tfstate"
               # Additional setup and commands can be added here
               EOF
 
