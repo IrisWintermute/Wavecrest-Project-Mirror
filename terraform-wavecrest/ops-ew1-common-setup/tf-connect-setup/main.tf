@@ -687,43 +687,43 @@ resource "aws_iam_policy" "ec2_autoscale_instance_health_policy" {
   })
 }
 
-# resource "aws_iam_policy" "s3_access_policy" {
-#   count = local.enable_central ? 1 : 0
-#   name = "${local.envname}-GenericS3AccessPolicy"
+resource "aws_iam_policy" "s3_access_policy" {
+  count = local.enable_central ? 1 : 0
+  name = "${local.envname}-GenericS3AccessPolicy"
 
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Action = [
-#           "s3:GetObject",
-#           "s3:ListBucket"
-#         ],
-#         Effect = "Allow",
-#         Resource = [
-#           "arn:aws:s3:::${local.slb_s3}",
-#           "arn:aws:s3:::${local.slb_s3}/*",
-#           "arn:aws:s3:::${local.app_s3}",
-#           "arn:aws:s3:::${local.app_s3}/*",
-#           "arn:aws:s3:::${local.rtp_s3}",
-#           "arn:aws:s3:::${local.rtp_s3}/*",
-#           "arn:aws:s3:::${local.graf_s3}",
-#           "arn:aws:s3:::${local.graf_s3}/*",
-#           "arn:aws:s3:::${local.obs_s3}",
-#           "arn:aws:s3:::${local.obs_s3}/*",
-#           "arn:aws:s3:::${local.sipp_s3}",
-#           "arn:aws:s3:::${local.sipp_s3}/*",
-#           "arn:aws:s3:::${local.clickhouse_s3}",
-#           "arn:aws:s3:::${local.clickhouse_s3}/*",
-#         ]
-#       }
-#     ]
-#   })
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        Effect = "Allow",
+        Resource = [
+          "arn:aws:s3:::${local.slb_s3}",
+          "arn:aws:s3:::${local.slb_s3}/*",
+          "arn:aws:s3:::${local.app_s3}",
+          "arn:aws:s3:::${local.app_s3}/*",
+          "arn:aws:s3:::${local.rtp_s3}",
+          "arn:aws:s3:::${local.rtp_s3}/*",
+          "arn:aws:s3:::${local.graf_s3}",
+          "arn:aws:s3:::${local.graf_s3}/*",
+          "arn:aws:s3:::${local.obs_s3}",
+          "arn:aws:s3:::${local.obs_s3}/*",
+          "arn:aws:s3:::${local.sipp_s3}",
+          "arn:aws:s3:::${local.sipp_s3}/*",
+          "arn:aws:s3:::${local.clickhouse_s3}",
+          "arn:aws:s3:::${local.clickhouse_s3}/*",
+        ]
+      }
+    ]
+  })
 
-#   tags = merge(tomap({
-#     Name = "${local.environment} S3 Policy"
-#   }), local.common_tags)
-# }
+  tags = merge(tomap({
+    Name = "${local.environment} S3 Policy"
+  }), local.common_tags)
+}
 
 resource "aws_iam_policy" "secrets_manager_policy" {
   count = local.enable_central ? 1 : 0

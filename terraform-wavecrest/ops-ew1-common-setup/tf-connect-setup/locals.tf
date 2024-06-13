@@ -58,14 +58,14 @@ locals {
   # } : {}
 
   # #s3buckets
-  # slb_s3    = "${local.envname}-voice-slb"
-  # app_s3    = "${local.envname}-voice-app"
-  # rtp_s3    = "${local.envname}-voice-rtp"
-  # graf_s3   = "${local.envname}-voice-graf"
-  # obs_s3    = "${local.envname}-voice-obs"
-  # sipp_s3    = "${local.envname}-voice-sipp"
-  # lambda_s3 = "wavecrest-lambdas-${local.envname}"
-  # clickhouse_s3 = "${local.envname}-voice-clickhouse"
+  slb_s3    = "${local.envname}-voice-slb"
+  app_s3    = "${local.envname}-voice-app"
+  rtp_s3    = "${local.envname}-voice-rtp"
+  graf_s3   = "${local.envname}-voice-graf"
+  obs_s3    = "${local.envname}-voice-obs"
+  sipp_s3    = "${local.envname}-voice-sipp"
+  lambda_s3 = "wavecrest-lambdas-${local.envname}"
+  clickhouse_s3 = "${local.envname}-voice-clickhouse"
 
   # mysql_key_alias_suffix = "mysql-key"
   # clickhouse_key_alias_suffix = "clickhouse-key"
