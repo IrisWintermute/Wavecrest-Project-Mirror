@@ -31,7 +31,7 @@ ai_bucket_name="wavecrest-terraform-${envname}-${reg}-ai"
 
 # Check if the bucket already exists
 bucket_exists=false
-if aws s3api head-bucket --bucket "$bucket_name" | cat 2>/dev/null; then
+if aws s3api head-bucket --bucket "$bucket_name" | cat == "" 2>/dev/null; then
     bucket_exists=true
     echo "Bucket '$bucket_name' already exists."
 else
@@ -45,7 +45,7 @@ if [ "$bucket_exists" = false ]; then
 fi
 
 ai_bucket_exists=false
-if aws s3api head-bucket --bucket "$ai_bucket_name" | cat 2>/dev/null; then
+if aws s3api head-bucket --bucket "$ai_bucket_name" | cat == "" 2>/dev/null; then
     ai_bucket_exists=true
     echo "Bucket '$ai_bucket_name' already exists."
 else
