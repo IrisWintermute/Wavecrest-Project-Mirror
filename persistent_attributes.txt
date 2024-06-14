@@ -1,1 +1,1 @@
-Customer,Cust. Epgroup,Customer Service,Provider,Prov. Epgroup,Provider Service,Dest. Group,Destination,Prefix,Duration (Min),PDD (ms),EG Disconnect Cause-SIP,IG Disconnect Cause-Sip,Release Source,CDR Type,IG Codec,EG Codec,EG Disconnect Cause-ISDN,IG Disconnect Cause - ISDN,RTP Media
+Customer,Customer EPGroup,IG Product ID,Provider,Provider EPGroup,EG Product ID,Dest.Group,Destination,Prefix,Duration (min),PDD (ms),EG Disconnect Cause-SIP,IG Disconnect Cause-Sip,Release Source,Row Type,IG Codec,EG Codec,EG Disconnect Cause-ISDN,IG Disconnect Cause - ISDN,RTP Media
