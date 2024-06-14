@@ -50,7 +50,8 @@ module "app" {
               sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repot -y
               sudo yum install gh -y
 
-              sudo git clone https://github.com/Wavecrest/AI-Project.git
+              sudo git clone https://AI-Project:{AccessToken}@github.com/Wavecrest/AI-Project.git
+
 
               aws s3 sync s3://wavecrest-terraform-ops-ew1-ai ./data --exclude "*.tfstate"
               # Additional setup and commands can be added here
