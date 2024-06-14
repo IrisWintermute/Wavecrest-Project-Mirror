@@ -714,6 +714,10 @@ resource "aws_iam_policy" "s3_access_policy" {
           "arn:aws:s3:::${local.sipp_s3}/*",
           "arn:aws:s3:::${local.clickhouse_s3}",
           "arn:aws:s3:::${local.clickhouse_s3}/*",
+          "arn:aws:s3:::wavecrest-terraform-ops-ew1-ai",
+          "arn:aws:s3:::wavecrest-terraform-ops-ew1-ai/*",
+          "arn:aws:s3:::wavecrest-terraform-ops-ew1",
+          "arn:aws:s3:::wavecrest-terraform-ops-ew1/*"
         ]
       }
     ]
