@@ -688,6 +688,7 @@ resource "aws_iam_policy" "ec2_autoscale_instance_health_policy" {
 }
 
 resource "aws_iam_policy" "s3_access_policy" {
+  count = local.enable_central ? 1 : 0
   name = "${local.envname}-GenericS3AccessPolicy"
 
   policy = jsonencode({
