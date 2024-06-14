@@ -9,7 +9,7 @@ from lib import *
 
 # bring data -2D CSV array- into scope
 # "./data/" + cdr_filename
-with open("test_data_cdr.txt", "r") as f:
+with open("exp_odine_u_332_p_1_e_270_20240603084457.csv", "r") as f:
     data_csv = f.readlines()
 
 # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
