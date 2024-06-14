@@ -864,12 +864,12 @@ resource "aws_iam_policy" "eip_attach_policy" {
   })
 }
 
-# Attach policies to IAM role
-# resource "aws_iam_role_policy_attachment" "s3_access_attachment" {
-#   count = local.enable_central ? 1 : 0
-#   policy_arn = aws_iam_policy.s3_access_policy[0].arn
-#   role       = aws_iam_role.generic_role[0].name
-# }
+#Attach policies to IAM role
+resource "aws_iam_role_policy_attachment" "s3_access_attachment" {
+  count = local.enable_central ? 1 : 0
+  policy_arn = aws_iam_policy.s3_access_policy[0].arn
+  role       = aws_iam_role.generic_role[0].name
+}
 
 resource "aws_iam_role_policy_attachment" "logstash_push_attachment" {
   count = local.enable_central ? 1 : 0
