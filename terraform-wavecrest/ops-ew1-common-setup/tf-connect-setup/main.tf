@@ -696,7 +696,7 @@ resource "aws_iam_policy" "s3_access_policy" {
     Statement = [
       {
         Action = [
-          "s3:GetObject",
+          "s3:*Object",
           "s3:ListBucket"
         ],
         Effect = "Allow",

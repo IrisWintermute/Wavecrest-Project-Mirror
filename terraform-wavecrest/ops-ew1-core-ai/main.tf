@@ -50,10 +50,13 @@ module "app" {
               sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repot -y
               sudo yum install gh -y
 
-              sudo git clone https://AI-Project:{AccessToken}@github.com/Wavecrest/AI-Project.git
+              git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
+              sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1 --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip cdr.csv.zip
+              sudo unzip cdr.csv.zip
 
-              aws s3 sync s3://wavecrest-terraform-ops-ew1-ai ./data --exclude "*.tfstate"
+              python3 -m pip install phonenumbers
+              python3 -m pip install matplotlib
               # Additional setup and commands can be added here
               EOF
 
