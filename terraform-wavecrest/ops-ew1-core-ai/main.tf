@@ -45,10 +45,7 @@ module "app" {
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
               sudo yum update -y
               sudo yum upgrade -y
-              sudo yum install git -y
-              type -p yum-config-manager >/dev/null || sudo yum install yum-utils -y
-              sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repot -y
-              sudo yum install gh -y
+              sudo yum install -y git 
 
               git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
