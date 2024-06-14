@@ -52,7 +52,7 @@ module "app" {
 
               git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
-              sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1 --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip cdr.csv.zip
+              sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip AI-Project/datacdr.csv.zip
               sudo unzip cdr.csv.zip
 
               python3 -m pip install phonenumbers
