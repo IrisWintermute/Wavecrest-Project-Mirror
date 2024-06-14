@@ -26,13 +26,12 @@ vector_array_n = diagonal_mirror(vector_array_n)
     
 max_k = 200
 clustered_data_optimal = ([], 0)
-for k in range(2, max_k):
+for k in range(100, max_k + 1, 5):
     # run k-means clustering algorithm with vectorised data
     clustered_data, centroids = kmeans(k, vector_array_n)
     # select optimal k
     ch_index = optimal_k_decision(clustered_data, centroids)
-    print(k)
-    print(ch_index)
+    print(f"Current k: {k}")
     if ch_index > clustered_data_optimal[1]:
         clustered_data_optimal = (clustered_data, ch_index)
 
