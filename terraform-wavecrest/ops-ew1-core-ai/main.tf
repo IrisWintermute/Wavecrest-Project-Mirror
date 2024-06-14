@@ -46,14 +46,27 @@ module "app" {
               sudo yum update -y
               sudo yum upgrade -y
               sudo yum install -y git 
+              sudo yum groupinstall "Development Tools" -y
+              sudo yum erase openssl-devel -y
+              sudo yum install openssl11 openssl11-devel  libffi-devel bzip2-devel wget -y
+              wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
+              tar -xf Python-3.10.4.tgz
+              cd Python-3.10.4/
+              ./configure --enable-optimizations
+              make -j $(nproc)
+              sudo make altinstall
+
+              cd /tmp/ssm
 
               git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
               sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip AI-Project/data/cdr.csv.zip
-              sudo unzip cdr.csv.zip
+              sudo unzip AI-Project/data/cdr.csv.zip
+              sudo mv AI-Project/data/exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
+              sudo rm AI-Project/data/cdr.csv.zip
 
-              python3 -m pip install phonenumbers
-              python3 -m pip install matplotlib
+              python3.10 -m pip install phonenumbers
+              python3.10 -m pip install matplotlib
               # Additional setup and commands can be added here
               EOF
 
