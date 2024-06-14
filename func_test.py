@@ -5,7 +5,7 @@ import random
 def get_test_data(name):
     with open(f"test_data_{name}.txt", "r") as f:
         return f.readlines()
-    
+        
 def get_pseudorandom_coordinates(n, x0, xm, y0, ym, k, v):
     out = []
     for _ in range(k):
@@ -16,7 +16,6 @@ def get_pseudorandom_coordinates(n, x0, xm, y0, ym, k, v):
             c_y = random.gauss(c_y, v)
             out.append([c_x, c_y])
     return out
-    
 
 # || EXTRACT, ENRICH, PREPROCESS AND VECTORISE DATA ||
 def test_preprocessing():
@@ -36,8 +35,7 @@ def test_preprocessing():
 def test_clustering():
     data = get_pseudorandom_coordinates(200, 0, 20, 0, 20, 40, 0.1)
     k_optimal = []
-    for k in range(9, 100, 1):
-        print(k)
+    for k in range(9, 100):
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)
