@@ -58,12 +58,13 @@ module "app" {
 
               cd /tmp/ssm
 
-              git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
+              sudo git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
-              sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip AI-Project/data/cdr.csv.zip
-              sudo unzip AI-Project/data/cdr.csv.zip
-              sudo mv AI-Project/data/exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
-              sudo rm AI-Project/data/cdr.csv.zip
+              sudo aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+              sudo unzip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+              sudo rm exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+              sudo sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
+              sudo mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
 
               python3.10 -m pip install phonenumbers
               python3.10 -m pip install matplotlib
