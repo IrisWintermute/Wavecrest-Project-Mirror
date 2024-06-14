@@ -24,7 +24,7 @@ vector_array_n = normalise(vector_array)
 
 vector_array_n = diagonal_mirror(vector_array_n)
     
-max_k = 6
+max_k = 200
 clustered_data_optimal = ([], 0)
 for k in range(2, max_k):
     # run k-means clustering algorithm with vectorised data
