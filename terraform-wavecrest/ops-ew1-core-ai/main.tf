@@ -43,7 +43,15 @@ module "app" {
   enable_install = false #nothing to copy from s3
   user_data      = <<-EOF
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
-              
+              sudo yum update -y
+              sudo yum upgrade -y
+              sudo yum install git -y
+              type -p yum-config-manager >/dev/null || sudo yum install yum-utils -y
+              sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repot -y
+              sudo yum install gh -y
+
+              sudo git clone https://github.com/Wavecrest/AI-Project.git
+
               aws s3 sync s3://wavecrest-terraform-ops-ew1-ai ./data --exclude "*.tfstate"
               # Additional setup and commands can be added here
               EOF
