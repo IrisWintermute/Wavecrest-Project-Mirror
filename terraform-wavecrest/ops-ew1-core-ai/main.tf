@@ -41,7 +41,7 @@ module "app" {
   }
 
   enable_install = false #nothing to copy from s3
-  user_data      = <<EOF
+  user_data = <<EOF
               #!/bin/bash
               sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
               yum update -y
@@ -81,8 +81,8 @@ module "app" {
               python3.10 -m pip install phonenumbers
               python3.10 -m pip install matplotlib
 
-              # Additional setup and commands can be added here
               EOF
+              # Additional setup and commands can be added before EOF
 
   ############################
   # change the below defaults if needed
