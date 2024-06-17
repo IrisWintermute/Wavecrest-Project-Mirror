@@ -48,13 +48,16 @@ module "app" {
               sudo yum install -y git 
               sudo yum groupinstall "Development Tools" -y
               sudo yum erase openssl-devel -y
-              sudo yum install openssl11 openssl11-devel  libffi-devel bzip2-devel wget -y
+              sudo yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wget -y
+              
+              sudo chmod o+w ./
               wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
               tar -xf Python-3.10.4.tgz
               cd Python-3.10.4/
-              ./configure --enable-optimizations
+              ./configure --enable-optimizations --with-zlib
               make -j $(nproc)
               sudo make altinstall
+              cd ..
 
               cd /tmp/ssm
 
@@ -66,8 +69,14 @@ module "app" {
               sudo sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
               sudo mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
 
+              cd AI-Project
+              sudo chmod o+w ./
+              wget https://bootstrap.pypa.io/get-pip.py
+              python3.10 ./get-pip.py
+              
               python3.10 -m pip install phonenumbers
               python3.10 -m pip install matplotlib
+
               # Additional setup and commands can be added here
               EOF
 
