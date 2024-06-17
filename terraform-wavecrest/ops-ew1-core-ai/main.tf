@@ -53,13 +53,16 @@ module "app" {
               chmod a+w ./
               wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
               tar -xf Python-3.10.4.tgz
-              cd Python-3.10.4/
+              cd Python-3.10.4
               ./configure --enable-optimizations --with-zlib
               make -j $(nproc)
               make altinstall
               cd ..
 
-              cd /tmp/ssm
+              mkdir tmp
+              cd tmp
+              mkdir ssm
+              cd ssm
 
               git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
