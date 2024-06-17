@@ -161,7 +161,7 @@ def preprocess(record: list[str]) -> list[str]:
                 #preprocessed_record.extend(ip_data)
 
             case "EG Duration (min)":
-                difference = int(record[i]) - int(record[i + 1])
+                difference = int(record[i]) - int(record[i - 31])
                 preprocessed_record.append(difference)
 
             case "IG Setup Time":
@@ -191,17 +191,19 @@ def preprocess(record: list[str]) -> list[str]:
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                     preprocessed_record.append(p_int)
                     # get destination from number
-                    preprocessed_record.append(get_destination(str(p_int)[1:]))
+                    # preprocessed_record.append(get_destination(str(p_int)[1:]))
+                    # called number destination contained in new CDR
+                    preprocessed_record.append(record[i + 1])
                 else:
                     preprocessed_record.append(0)
                     preprocessed_record.append("N/a")
         
             case "IG Packet Received":
-                difference = int(record[i + 3]) - int(record[i])
+                difference = int(record[i - 40]) - int(record[i])
                 preprocessed_record.append(difference)
 
             case "EG Packet Received":
-                difference = int(record[i + 1]) - int(record[i])
+                difference = int(record[i + 42]) - int(record[i])
                 preprocessed_record.append(difference)
 
             case attribute if attribute in persist:
