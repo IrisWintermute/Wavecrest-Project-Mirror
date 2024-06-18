@@ -55,9 +55,9 @@ chmod a+w ./
 wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
 tar -xf Python-3.10.4.tgz
 cd Python-3.10.4
-./configure --enable-optimizations --with-zlib -y
-make -j $(nproc) -y
-make install -y
+./configure --enable-optimizations --with-zlib
+make -j $(nproc)
+make install
 
 cd ./tmp/ssm
 
