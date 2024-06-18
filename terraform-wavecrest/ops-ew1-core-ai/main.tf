@@ -64,7 +64,7 @@ cd ./tmp/ssm
 git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
 aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
-unzip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+unzip -o exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
 rm exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
 sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
 mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
