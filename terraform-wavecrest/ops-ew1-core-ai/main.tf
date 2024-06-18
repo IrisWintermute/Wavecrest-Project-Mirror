@@ -57,13 +57,9 @@ tar -xf Python-3.10.4.tgz -y
 cd Python-3.10.4
 ./configure --enable-optimizations --with-zlib -y
 make -j $(nproc) -y
-make altinstall -y
-cd ..
+make install -y
 
-mkdir tmp
-cd tmp
-mkdir ssm
-cd ssm
+cd ./tmp/ssm
 
 git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
