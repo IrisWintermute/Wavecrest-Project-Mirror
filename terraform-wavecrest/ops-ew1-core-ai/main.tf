@@ -46,7 +46,7 @@ module "app" {
 sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
 yum update -y
 yum upgrade -y
-yum install -y git 
+yum install -y git
 yum groupinstall "Development Tools" -y
 yum erase openssl-devel -y
 yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wget -y
@@ -55,7 +55,7 @@ chmod a+w ./
 wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
 tar -xf Python-3.10.4.tgz
 cd Python-3.10.4
-./configure --enable-optimizations --with-zlib
+./configure --enable-optimizations
 make -j $(nproc)
 make install
 
