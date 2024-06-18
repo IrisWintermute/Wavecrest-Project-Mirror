@@ -53,7 +53,7 @@ yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wg
 
 chmod a+w ./
 wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
-tar -xf Python-3.10.4.tgz -y
+tar -xf Python-3.10.4.tgz
 cd Python-3.10.4
 ./configure --enable-optimizations --with-zlib -y
 make -j $(nproc) -y
