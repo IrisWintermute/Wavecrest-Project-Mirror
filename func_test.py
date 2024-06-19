@@ -86,14 +86,15 @@ def test_preprocessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coords(2000, 0, 20, 0, 20, 50, 0.1)
+    data = get_pseudorandom_coords(100, 0, 20, 0, 20, 10, 0.1)
     k_optimal = []
-    for k in range(25, 75):
+    for k in range(5, 15):
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)
         chi = optimal_k_decision(out, centroids)
         k_optimal.append([k, chi])
+    print(k_optimal)
     optimal_plot = diagonal_mirror(k_optimal)
     plt.plot(optimal_plot[0], optimal_plot[1], "b-")
     plt.show()
@@ -116,20 +117,34 @@ def test_psrndm():
 def plot_profile():
     with open("plot.txt", "w") as f:
         f.write("")
-    x = range(50, 510, 50)
-    data_set = [get_pseudorandom_coords(i, 0, 20, 0, 20, i // 25, 0.1) for i in x]
+    x = range(50, 1025, 25)
+    data_set = [get_pseudorandom_coords(i, 0, 20, 0, 20, 10, 0.1) for i in x]
     print("Coords generated")
     for i, d in enumerate(data_set):
-        _, _ = kmeans(360, d)
+        _, _ = kmeans(10, d)
+        print(x[i])
+
+    x = [v for v in x]
+    with open("plot.txt", "r") as f:
+        y = f.read().split(",")[1:]
+    y = [float(v) for v in y]
+    
+    with open("plot.txt", "w") as f:
+        f.write("")
+
+    for i, d in enumerate(data_set):
+        _, _ = kmeans(20, d)
         print(x[i])
 
     with open("plot.txt", "r") as f:
-        y = f.read()[1:].split(",")
-    y = [float(v) for v in y]
-    plt.scatter(x, y)
-    #plt.yscale("linear")
-    plt.ylim(min(y), max(y))
+        y2 = f.read().split(",")[1:]
+    y2 = [float(v) for v in y]
+
+    plt.scatter(x, y, color="b")
+    plt.scatter(x, y2, color="r")
+    #plt.ylim(min(y), max(y))
+    #plt.xlim(x[0], x[-1])
     plt.show()
 
 if __name__ == "__main__":
-    test_clustering()
+    plot_profile()

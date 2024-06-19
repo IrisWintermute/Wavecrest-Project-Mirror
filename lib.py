@@ -9,11 +9,11 @@ from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
 
 # cluster data using k-means algorithm
+@profile_t_plot
 def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
-    data_array = np.array(data_array_r)
+    data_array = np.array([vec + [0] for vec in data_array_r])
     centroids = k_means_pp(k, data_array)
-    data_array = [vec + [0] for vec in data_array]
     centroids_new = centroids
 
     while True:
@@ -35,10 +35,10 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
 
         # calculate new centroid coordinates
         for i, _ in enumerate(centroids):
-            owned_records = [record[0:len(record) - 1] for record in data_array if record[-1] == i]
+            owned_records = np.array([record[0:record.shape[0] - 1] for record in data_array if record[-1] == i])
             #print(i)
             #print(owned_records)
-            centroids_new[i] = average(owned_records)
+            centroids_new[i] = average(owned_records) if owned_records.any() else centroids[i]
             #print(average(owned_records))
 
         centroids = centroids_new
@@ -50,7 +50,7 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
 # K++ algorithm
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
-    chosen_indexes = [random.randint(0, len(data) - 1)]
+    chosen_indexes = [random.randint(0, data.shape[0] - 1)]
     centroids = [data[chosen_indexes[0]]]
 
     while len(centroids) < k:
@@ -87,9 +87,7 @@ def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> t
 def average(records: list[list[float]]) -> list[float]:
     # reduce list of input vectors into a single vector representing the average of input vectors
     attributes = diagonal_mirror(records)
-    avg = []
-    for vals in attributes:
-        avg.append(sum(vals) / len(vals))
+    avg = np.array([sum(vals) / len(vals) for vals in attributes])
     return avg
 
     
