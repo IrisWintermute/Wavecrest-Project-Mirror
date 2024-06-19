@@ -30,6 +30,28 @@ def profile_t(func):
         return result
     return wrapper
 
+def profile_t_plot(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        t = end - start
+        with open("plot.txt", "a") as f:
+            f.write("," + str(t)[0:8])
+        return result
+    return wrapper 
+
+def profile_m_plot(func):
+    def wrapper(*args, **kwargs):
+        start = process_memory()
+        result = func(*args, **kwargs)
+        end = process_memory()
+        m = end - start
+        with open("plot.txt", "a") as f:
+            f.write("," + str(m))
+        return result
+    return wrapper 
+
 # inner psutil function
 def process_memory():
     process = psutil.Process(os.getpid())
@@ -91,8 +113,26 @@ def test_psrndm():
     c_p = diagonal_mirror(c)
     plt.plot(c_p[0], c_p[1], "bo")
     plt.show()
-    
 
+def plot_profile():
+    with open("plot.txt", "w") as f:
+        f.write("")
+    data_set = []
+    x = range(1000, 11000, 1000)
+
+    for i in x:
+        data_set.append(get_pseudorandom_coordinates(i, 0, 20, 0, 20, i // 25, 0.1))
+    for i, d in enumerate(data_set):
+        _, _ = kmeans(360, d)
+        print(x[i])
+
+    with open("plot.txt", "r") as f:
+        y = f.read()[1:].split(",")
+    y = [float(v) for v in y]
+    plt.scatter(x, y)
+    #plt.yscale("linear")
+    plt.ylim(min(y), max(y))
+    plt.show()
 
 if __name__ == "__main__":
-    test_clustering()
+    plot_profile()

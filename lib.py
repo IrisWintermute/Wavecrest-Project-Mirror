@@ -4,7 +4,7 @@ import random
 import re
 import phonenumbers
 import matplotlib.pyplot as plt
-from func_test import profile_m, profile_t
+from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 
 # cluster data using k-means algorithm
 def kmeans(k: int, data_array: list[list[float]]) -> list[list[float]]:
