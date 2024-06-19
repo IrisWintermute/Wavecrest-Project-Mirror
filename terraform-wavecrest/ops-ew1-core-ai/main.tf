@@ -51,16 +51,6 @@ yum groupinstall "Development Tools" -y
 yum erase openssl-devel -y
 yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wget -y
 
-chmod a+w ./
-wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
-tar -xf Python-3.10.4.tgz
-cd Python-3.10.4
-./configure --enable-optimizations
-make -j $(nproc)
-make install
-
-cd ./tmp/ssm
-
 git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
 aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
