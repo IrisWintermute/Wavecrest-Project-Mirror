@@ -155,60 +155,59 @@ def preprocess(record: list[str]) -> list[str]:
     preprocessed_record = []
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
-        match attribute:
             
-            #case "Cust. EP IP" | "Prov. EP IP":
-                #ip_data = extract_ip_data(record[i])
-                #preprocessed_record.extend(ip_data)
+        #elif "Cust. EP IP" | "Prov. EP IP":
+            #ip_data = extract_ip_data(record[i])
+            #preprocessed_record.extend(ip_data)
 
-            case "EG Duration (min)":
-                difference = int(record[i]) - int(record[i - 31])
-                preprocessed_record.append(difference)
+        if attribute == "EG Duration (min)":
+            difference = int(record[i]) - int(record[i - 31])
+            preprocessed_record.append(difference)
 
-            case "IG Setup Time":
-                datetime = record[i].split(" ")
-                time = [int(v) for v in datetime[2].split(":")]
-                half_day = 3600 * 12 * (datetime[3] == "PM")
-                time_seconds = time[0] * 3600 + time[1] * 60 + time[2] + half_day
-                preprocessed_record.append(time_seconds)
-                day_seq = get_day_from_date(datetime[0])
-                preprocessed_record.append(day_seq)
+        elif attribute == "IG Setup Time":
+            datetime = record[i].split(" ")
+            time = [int(v) for v in datetime[2].split(":")]
+            half_day = 3600 * 12 * (datetime[3] == "PM")
+            time_seconds = time[0] * 3600 + time[1] * 60 + time[2] + half_day
+            preprocessed_record.append(time_seconds)
+            day_seq = get_day_from_date(datetime[0])
+            preprocessed_record.append(day_seq)
 
-            case "Calling Number":
-                num = record[i] 
-                if num != "anonymous":
-                    # convert number to international format
-                    p = phonenumbers.parse("+" + num, None)
-                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    preprocessed_record.append(p_int)
-                else:
-                    preprocessed_record.append(0)
+        elif attribute == "Calling Number":
+            num = record[i] 
+            if num != "anonymous":
+                # convert number to international format
+                p = phonenumbers.parse("+" + num, None)
+                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                preprocessed_record.append(p_int)
+            else:
+                preprocessed_record.append(0)
 
-            case "Called Number":
-                num = record[i]
-                if num != "anonymous":
-                    # convert number to international format
-                    p = phonenumbers.parse("+" + num, None)
-                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    preprocessed_record.append(p_int)
-                    # get destination from number
-                    # preprocessed_record.append(get_destination(str(p_int)[1:]))
-                    # called number destination contained in new CDR
-                    preprocessed_record.append(record[i + 1])
-                else:
-                    preprocessed_record.append(0)
-                    preprocessed_record.append("N/a")
-        
-            case "IG Packet Received":
-                difference = int(record[i - 40]) - int(record[i])
-                preprocessed_record.append(difference)
+        elif attribute == "Called Number":
+            num = record[i]
+            if num != "anonymous":
+                # convert number to international format
+                p = phonenumbers.parse("+" + num, None)
+                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                preprocessed_record.append(p_int)
+                # get destination from number
+                # preprocessed_record.append(get_destination(str(p_int)[1:]))
+                # called number destination contained in new CDR
+                preprocessed_record.append(record[i + 1])
+            else:
+                preprocessed_record.append(0)
+                preprocessed_record.append("N/a")
+    
+        elif attribute == "IG Packet Received":
+            difference = int(record[i - 40]) - int(record[i])
+            preprocessed_record.append(difference)
 
-            case "EG Packet Received":
-                difference = int(record[i + 42]) - int(record[i])
-                preprocessed_record.append(difference)
+        elif attribute == "EG Packet Received":
+            difference = int(record[i + 42]) - int(record[i])
+            preprocessed_record.append(difference)
 
-            case attribute if attribute in persist:
-                preprocessed_record.append(record[i])
+        elif attribute in persist:
+            preprocessed_record.append(record[i])
     return preprocessed_record
 
 def vectorise(data_array: list[list[str]]) -> list[list[int]]:
