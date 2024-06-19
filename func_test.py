@@ -9,7 +9,7 @@ def get_test_data(name):
     with open(f"test_data_{name}.txt", "r") as f:
         return f.readlines()
         
-def get_pseudorandom_coordinates(n, x0, xm, y0, ym, k, v):
+def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
     out = []
     for _ in range(k):
         c = (random.random() * (xm - x0) + x0, random.random() * (ym - y0) + y0)
@@ -85,11 +85,10 @@ def test_preprocessing():
     #print(out_3)
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
-@profile_m
 def test_clustering():
-    data = get_pseudorandom_coordinates(20000, 0, 20, 0, 20, 10, 0.1)
+    data = get_pseudorandom_coords(2000, 0, 20, 0, 20, 50, 0.1)
     k_optimal = []
-    for k in range(5, 15):
+    for k in range(25, 75):
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)
@@ -97,7 +96,7 @@ def test_clustering():
         k_optimal.append([k, chi])
     optimal_plot = diagonal_mirror(k_optimal)
     plt.plot(optimal_plot[0], optimal_plot[1], "b-")
-    #plt.show()
+    plt.show()
     
     # marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
     # for i in range(20):
@@ -109,7 +108,7 @@ def test_clustering():
     # plt.show()
 
 def test_psrndm():
-    c = get_pseudorandom_coordinates(200, 0, 20, 0, 20, 40, 0.1)
+    c = get_pseudorandom_coords(200, 0, 20, 0, 20, 40, 0.1)
     c_p = diagonal_mirror(c)
     plt.plot(c_p[0], c_p[1], "bo")
     plt.show()
@@ -117,11 +116,9 @@ def test_psrndm():
 def plot_profile():
     with open("plot.txt", "w") as f:
         f.write("")
-    data_set = []
-    x = range(1000, 11000, 1000)
-
-    for i in x:
-        data_set.append(get_pseudorandom_coordinates(i, 0, 20, 0, 20, i // 25, 0.1))
+    x = range(50, 510, 50)
+    data_set = [get_pseudorandom_coords(i, 0, 20, 0, 20, i // 25, 0.1) for i in x]
+    print("Coords generated")
     for i, d in enumerate(data_set):
         _, _ = kmeans(360, d)
         print(x[i])
@@ -135,4 +132,4 @@ def plot_profile():
     plt.show()
 
 if __name__ == "__main__":
-    plot_profile()
+    test_clustering()
