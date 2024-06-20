@@ -164,8 +164,11 @@ def preprocess(record: list) -> list:
             #preprocessed_record.extend(ip_data)
 
         if attribute == "IG Duration (min)":
-            difference = float(record[i]) - float(record[i + 31])
-            preprocessed_record.append(difference)
+            try:
+                difference = float(record[i]) - float(record[i + 31])
+                preprocessed_record.append(difference)
+            except ValueError:
+                print(record)
 
         elif attribute == "IG Setup Time":
             datetime = record[i].split(" ")
