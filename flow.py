@@ -6,9 +6,10 @@ from lib import *
 # instance recieves command to process data
 
 def main():
+    mx = input("Enter memory limit (bytes): ")
     # bring data -2D CSV array- into scope
     with open("data/cdr.csv", "r") as f:
-        data_csv = f.readlines()
+        data_csv = f.readlines(mx)
     print(f"CDR data ({len(data_csv)} lines) loaded.")
 
     data_array = [record.split(",") for record in data_csv]
