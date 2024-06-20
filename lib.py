@@ -156,6 +156,11 @@ def preprocess(record: list) -> list:
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
+
+    for i, attr in enumerate(record):
+        if attr.count("\"") == 1:
+            record = record[:i] + "".join(record[i:i + 2]) + record[i + 2:]
+
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
             
