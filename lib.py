@@ -115,7 +115,7 @@ def get_destination(number):
 
 def get_day_from_date(date):
     # takes date and returns int in range 0-7, corresponding to monday-sunday
-    (month, day, year) = tuple([int(val) for val in date.split("/")])
+    (year, month, day) = tuple([int(val) for val in date.split("-")])
     year += 2000
     if month in [1, 2]:
         month += 12
@@ -160,9 +160,8 @@ def preprocess(record: list) -> list:
 
         elif attribute == "IG Setup Time":
             datetime = record[i].split(" ")
-            time = [int(v) for v in datetime[2].split(":")]
-            half_day = 3600 * 12 * (datetime[3] == "PM")
-            time_seconds = time[0] * 3600 + time[1] * 60 + time[2] + half_day
+            time = [int(v) for v in datetime[1].split(":")]
+            time_seconds = time[0] * 3600 + time[1] * 60 + time[2]
             preprocessed_record.append(time_seconds)
             day_seq = get_day_from_date(datetime[0])
             preprocessed_record.append(day_seq)
