@@ -165,7 +165,9 @@ def preprocess(record: list) -> list:
 
         if attribute == "IG Duration (min)":
             try:
-                difference = float(record[i]) - float(record[i + 31])
+                # parse exception, attribute may have commas, horrible
+                offset = 32 if len(record) == 130 else 31
+                difference = float(record[i]) - float(record[i + offset])
                 preprocessed_record.append(difference)
             except ValueError:
                 print(record)
