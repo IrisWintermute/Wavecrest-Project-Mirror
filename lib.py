@@ -27,25 +27,15 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
                 ownership_count.remove(record[-1])
                 record[-1] = closest_centroid_index
                 no_reassignments = False
-            #print(record)
-            #print(closest_centroid_index)
 
-        #print([record[-1] for record in data_array])
-        #print(centroids)
         # stop algorithm when no records are reassigned
         if no_reassignments: return data_array, centroids
 
         # calculate new centroid coordinates
         for i, _ in enumerate(centroids):
             owned_records = np.array([record[0:record.shape[0] - 1] for record in data_array if record[-1] == i])
-            #print(i)
             if owned_records.any(): 
                 centroids_new[i] = average(owned_records)
-            else:
-                print(i)
-                print(owned_records)
-            #print(owned_records)
-            #print(average(owned_records))
 
         centroids = centroids_new
 
@@ -74,22 +64,17 @@ def k_means_pp(k: int, data_r: list[list[float]]) -> list[list[float]]:
                 centroids.append(data[index])
                 chosen_indexes.append(index)
                 break
-    #print(chosen_indexes)
     return np.array(centroids)
 
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
     # calculate distance between record and centroid
     # return sum([abs(record[i] - attribute) ** 2 for i, attribute in enumerate(centroid)]) ** 0.5
-    return np.sqrt(np.sum((record[:record.shape[0] - 1] - centroid) ** 2))
+    return np.sqrt(np.sum(np.power((record[:record.shape[0] - 1] - centroid), 2)))
 
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
-    # def func(t):
-    #     (d, _) = t
-    #     return d
     distances.sort()
-    #print(distances)
     return distances[0]
 
 def average(records: list[list[float]]) -> list[float]:
