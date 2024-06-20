@@ -140,6 +140,15 @@ def diagonal_mirror(nested_list: list) -> list:
         for j, attr in enumerate(list):
             nested_out[j][i] = attr
     return nested_out
+
+def diagonal_mirror_mv(nested_list: list) -> list:
+    outer = len(nested_list)
+    inner = len(nested_list[0])
+    nested_out = [[0] * outer for _ in range(inner)]
+    for i, list in enumerate(nested_list):
+        for j, attr in enumerate(list):
+            nested_out[j][i] = attr
+    return nested_out
     
 
 def preprocess(record: list) -> list:

@@ -18,7 +18,7 @@ def main():
     data_array_preprocessed = [preprocess(record) for record in data_array]
     print("Data preprocessed.")
 
-    data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
+    data_array_preprocessed = diagonal_mirror_mv(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     vector_array = vectorise(data_array_preprocessed)
@@ -27,7 +27,7 @@ def main():
     vector_array_n = normalise(vector_array)
     print("Data normalised.")
 
-    vector_array_n = diagonal_mirror(vector_array_n)
+    vector_array_n = diagonal_mirror_mv(vector_array_n)
         
     k_range = (90, 110, 2)
     start, end, step = k_range
