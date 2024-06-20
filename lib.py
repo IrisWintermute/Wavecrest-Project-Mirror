@@ -3,14 +3,13 @@
 import random
 import re
 import phonenumbers
-import matplotlib.pyplot as plt
 import numpy as np
-from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
+#from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
 
 # cluster data using k-means algorithm
 #@profile_t_plot
-def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
+def kmeans(k: int, data_array_r: list) -> list:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array_r)
     data_array = np.array([np.array(vec + [0]) for vec in data_array_r])
@@ -45,7 +44,7 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
 
 # K++ algorithm
 # randomly select initial centroids from unclustered data
-def k_means_pp(k: int, data_r: list[list[float]]) -> list[list[float]]:
+def k_means_pp(k: int, data_r: list) -> list:
     data = np.array([np.array(vec) for vec in data_r])
     chosen_indexes = [random.randint(0, data.shape[0] - 1)]
     centroids = [data[chosen_indexes[0]]]
@@ -66,18 +65,17 @@ def k_means_pp(k: int, data_r: list[list[float]]) -> list[list[float]]:
                 break
     return np.array(centroids)
 
-def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
+def distance_to_centroid(record: list, centroid: list) -> float:
     # calculate distance between record and centroid
-    # return sum([abs(record[i] - attribute) ** 2 for i, attribute in enumerate(centroid)]) ** 0.5
     return np.sqrt(np.sum(np.power((record[:record.shape[0] - 1] - centroid), 2)))
 
-def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
+def get_closest_centroid(record: list, centroids: list) -> tuple:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     distances.sort()
     return distances[0]
 
-def average(records: list[list[float]]) -> list[float]:
+def average(records: list) -> list:
     # reduce list of input vectors into a single vector representing the average of input vectors
     attributes = diagonal_mirror(records)
     avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
@@ -87,7 +85,7 @@ def average(records: list[list[float]]) -> list[float]:
 
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[float]]) -> float:
+def optimal_k_decision(clustered_data: list, centroids: list) -> float:
     vectors = len(clustered_data) * len(clustered_data[0])
     clusters = len(centroids)
     overall_centroid = average(centroids)
@@ -134,7 +132,7 @@ def can_cast_to_int(v: str) -> bool:
     else:
         return True
     
-def diagonal_mirror(nested_list: list[list]) -> list[list]:
+def diagonal_mirror(nested_list: list) -> list:
     outer = nested_list.shape[0]
     inner = nested_list[0].shape[0]
     nested_out = np.array([np.zeros(outer) for _ in range(inner)])
@@ -144,7 +142,7 @@ def diagonal_mirror(nested_list: list[list]) -> list[list]:
     return nested_out
     
 
-def preprocess(record: list[str]) -> list[str]:
+def preprocess(record: list) -> list:
     # truncate and expand record attributes
     with open('attributes.txt') as a, open('persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
@@ -206,7 +204,7 @@ def preprocess(record: list[str]) -> list[str]:
             preprocessed_record.append(record[i])
     return preprocessed_record
 
-def vectorise(data_array: list[list[str]]) -> list[list[int]]:
+def vectorise(data_array: list) -> list:
     with open("values_dump.txt", "w") as f:
         f.write("")
     attributes_array = []
@@ -230,7 +228,7 @@ def vectorise(data_array: list[list[str]]) -> list[list[int]]:
         
     return attributes_array
 
-def normalise(attributes_array: list[list[int]]) -> list[list[float]]:
+def normalise(attributes_array: list) -> list:
     # normalise each dimension to have a range of 1
     array_out = []
     for attributes in attributes_array:
