@@ -159,7 +159,7 @@ def preprocess(record: list) -> list:
 
     for i, attr in enumerate(record):
         if attr.count("\"") == 1:
-            record = record[:i] + "".join(record[i:i + 2]) + record[i + 2:]
+            record = record[:i] + ["".join(record[i:i + 2])] + record[i + 2:]
             break
 
     for i, attribute in enumerate(attributes):
