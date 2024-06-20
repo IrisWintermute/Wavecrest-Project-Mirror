@@ -9,20 +9,22 @@ from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
 
 # cluster data using k-means algorithm
-@profile_t_plot
+#@profile_t_plot
 def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
     # use kmeans++ to get initial centroid coordinates
-    data_array = np.array([vec + [0] for vec in data_array_r])
-    centroids = k_means_pp(k, data_array)
+    centroids = k_means_pp(k, data_array_r)
+    data_array = np.array([np.array(vec + [0]) for vec in data_array_r])
     centroids_new = centroids
 
     while True:
 
         no_reassignments = True
+        ownership_count = [record[-1] for record in data_array]
         # assign each data point to closest centroid
         for record in data_array:
             (_, closest_centroid_index) = get_closest_centroid(record, centroids)
-            if record[-1] != closest_centroid_index: 
+            if record[-1] != closest_centroid_index and ownership_count.count(record[-1]) > 1: 
+                ownership_count.remove(record[-1])
                 record[-1] = closest_centroid_index
                 no_reassignments = False
             #print(record)
@@ -37,8 +39,12 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
         for i, _ in enumerate(centroids):
             owned_records = np.array([record[0:record.shape[0] - 1] for record in data_array if record[-1] == i])
             #print(i)
+            if owned_records.any(): 
+                centroids_new[i] = average(owned_records)
+            else:
+                print(i)
+                print(owned_records)
             #print(owned_records)
-            centroids_new[i] = average(owned_records) if owned_records.any() else centroids[i]
             #print(average(owned_records))
 
         centroids = centroids_new
@@ -49,7 +55,8 @@ def kmeans(k: int, data_array_r: list[list[float]]) -> list[list[float]]:
 
 # K++ algorithm
 # randomly select initial centroids from unclustered data
-def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
+def k_means_pp(k: int, data_r: list[list[float]]) -> list[list[float]]:
+    data = np.array([np.array(vec) for vec in data_r])
     chosen_indexes = [random.randint(0, data.shape[0] - 1)]
     centroids = [data[chosen_indexes[0]]]
 
@@ -68,11 +75,12 @@ def k_means_pp(k: int, data: list[list[float]]) -> list[list[float]]:
                 chosen_indexes.append(index)
                 break
     #print(chosen_indexes)
-    return centroids
+    return np.array(centroids)
 
 def distance_to_centroid(record: list[float], centroid: list[float]) -> float:
     # calculate distance between record and centroid
-    return sum([abs(record[i] - attribute) ** 2 for i, attribute in enumerate(centroid)]) ** 0.5
+    # return sum([abs(record[i] - attribute) ** 2 for i, attribute in enumerate(centroid)]) ** 0.5
+    return np.sqrt(np.sum((record[:record.shape[0] - 1] - centroid) ** 2))
 
 def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> tuple[float, int]:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
@@ -87,7 +95,7 @@ def get_closest_centroid(record: list[float], centroids: list[list[float]]) -> t
 def average(records: list[list[float]]) -> list[float]:
     # reduce list of input vectors into a single vector representing the average of input vectors
     attributes = diagonal_mirror(records)
-    avg = np.array([sum(vals) / len(vals) for vals in attributes])
+    avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
     return avg
 
     
@@ -107,7 +115,7 @@ def optimal_k_decision(clustered_data: list[list[float]], centroids: list[list[f
     wcss = 0
     for i, centroid in enumerate(centroids):
         vectors_in_centroid = [vector for vector in clustered_data if vector[-1] == i]
-        wcss += sum([distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid])
+        wcss += np.sum([distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid])
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
@@ -142,7 +150,9 @@ def can_cast_to_int(v: str) -> bool:
         return True
     
 def diagonal_mirror(nested_list: list[list]) -> list[list]:
-    nested_out = [[0 for _ in nested_list] for _ in nested_list[0]]
+    outer = nested_list.shape[0]
+    inner = nested_list[0].shape[0]
+    nested_out = np.array([np.zeros(outer) for _ in range(inner)])
     for i, list in enumerate(nested_list):
         for j, attr in enumerate(list):
             nested_out[j][i] = attr

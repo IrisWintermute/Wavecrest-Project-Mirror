@@ -5,6 +5,8 @@ import time
 import os
 import psutil
 
+marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
+
 def get_test_data(name):
     with open(f"test_data_{name}.txt", "r") as f:
         return f.readlines()
@@ -37,7 +39,7 @@ def profile_t_plot(func):
         end = time.perf_counter()
         t = end - start
         with open("plot.txt", "a") as f:
-            f.write("," + str(t)[0:8])
+            f.write("," + str(t)[0:6])
         return result
     return wrapper 
 
@@ -86,20 +88,22 @@ def test_preprocessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coords(100, 0, 20, 0, 20, 10, 0.1)
-    k_optimal = []
-    for k in range(5, 15):
+    data = get_pseudorandom_coords(500, 0, 20, 0, 20, 50, 0.1)
+    k_range = [k for k in range(40, 61)]
+    k_optimal = np.array([np.zeros(2) for _ in k_range])
+    for i, k in enumerate(k_range):
+        print(k)
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)
         chi = optimal_k_decision(out, centroids)
-        k_optimal.append([k, chi])
-    print(k_optimal)
+        k_optimal[i][0] = k
+        k_optimal[i][1] = chi
+    #print(k_optimal)
     optimal_plot = diagonal_mirror(k_optimal)
     plt.plot(optimal_plot[0], optimal_plot[1], "b-")
     plt.show()
     
-    # marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
     # for i in range(20):
     #     p = [val for val in out if val[-1] == i]
     #     plot = diagonal_mirror(p)
@@ -115,36 +119,44 @@ def test_psrndm():
     plt.show()
 
 def plot_profile():
-    with open("plot.txt", "w") as f:
-        f.write("")
-    x = range(50, 1025, 25)
+
+    '''
+    x = range(50, 5050, 50)
     data_set = [get_pseudorandom_coords(i, 0, 20, 0, 20, 10, 0.1) for i in x]
     print("Coords generated")
-    for i, d in enumerate(data_set):
-        _, _ = kmeans(10, d)
+    x = [v for v in x]
+
+    k_range = [5, 10, 20]
+    for j, k in enumerate(k_range):
+        with open("plot.txt", "w") as f:
+            f.write("")
+
+        for i, d in enumerate(data_set):
+            _, _ = kmeans(k, d)
+            print(x[i])
+
+        with open("plot.txt", "r") as f:
+            y = f.read().split(",")[1:]
+        y = [float(v) for v in y]
+        plt.scatter(x, y, color=marker[j][0])
+
+    plt.legend([f"k={k}" for k in k_range], loc="upper right")
+    plt.show()
+    '''
+    with open("plot.txt", "w") as f:
+        f.write("")
+    data = get_pseudorandom_coords(10000, 0, 20, 0, 20, 50, 0.2)
+    x = [k for k in range(45, 56, 1)]
+    for i, k in enumerate(x):
+        _, _ = kmeans(k, data)
         print(x[i])
 
-    x = [v for v in x]
     with open("plot.txt", "r") as f:
         y = f.read().split(",")[1:]
     y = [float(v) for v in y]
-    
-    with open("plot.txt", "w") as f:
-        f.write("")
 
-    for i, d in enumerate(data_set):
-        _, _ = kmeans(20, d)
-        print(x[i])
-
-    with open("plot.txt", "r") as f:
-        y2 = f.read().split(",")[1:]
-    y2 = [float(v) for v in y]
-
-    plt.scatter(x, y, color="b")
-    plt.scatter(x, y2, color="r")
-    #plt.ylim(min(y), max(y))
-    #plt.xlim(x[0], x[-1])
+    plt.scatter(x, y, color=marker[i % len(marker)][0])
     plt.show()
 
 if __name__ == "__main__":
-    plot_profile()
+    test_clustering()
