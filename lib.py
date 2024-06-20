@@ -157,10 +157,11 @@ def preprocess(record: list) -> list:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
 
-    for i, attr in enumerate(record):
-        if attr.count("\"") == 1:
-            record = record[:i] + ["".join(record[i:i + 2])] + record[i + 2:]
-            break
+    if len(record) == 130:
+        for i, attr in enumerate(record):
+            if attr.count("\"") == 1:
+                record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
+                break
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
@@ -172,8 +173,8 @@ def preprocess(record: list) -> list:
         if attribute == "IG Duration (min)":
             try:
                 # parse exception, attribute may have commas, horrible
-                offset = 32 if len(record) == 130 else 31
-                difference = float(record[i]) - float(record[i + offset])
+                # offset = 32 if len(record) == 130 else 31
+                difference = float(record[i]) - float(record[i + 31])
                 preprocessed_record.append(difference)
             except ValueError:
                 print(record)
