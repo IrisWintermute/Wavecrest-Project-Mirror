@@ -10,7 +10,7 @@ def main():
     # bring data -2D CSV array- into scope
     with open("data/cdr.csv", "r") as f:
         data_csv = f.readlines(mx)
-    print(f"CDR data ({len(data_csv)} lines) loaded.")
+    print(f"CDR data ({len(data_csv)} records) loaded.")
 
     data_array = [record.split(",") for record in data_csv]
 
@@ -28,9 +28,15 @@ def main():
     print("Data normalised.")
 
     vector_array_n = diagonal_mirror_mv(vector_array_n)
-        
-    k_range = (90, 110, 2)
-    start, end, step = k_range
+    
+    start = int(input("Enter start of k search range: "))
+    while True:
+        end = int(input("Enter end of k search range: "))
+        if end > start: break
+    while True:
+        step = int(input("Enter step of k search range: "))
+        if (end - start) // step > 1: break
+
     clustered_data_optimal = ([], 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     for k in range(start, end + 1, step):
