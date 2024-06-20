@@ -21,7 +21,7 @@ def kmeans(k: int, data_array_r: list) -> list:
         ownership_count = [record[-1] for record in data_array]
         # assign each data point to closest centroid
         for record in data_array:
-            (_, closest_centroid_index) = get_closest_centroid(record, centroids)
+            (_, closest_centroid_index) = get_closest_centroid(record[:record.shape[0] - 1], centroids)
             if record[-1] != closest_centroid_index and ownership_count.count(record[-1]) > 1: 
                 ownership_count.remove(record[-1])
                 record[-1] = closest_centroid_index
@@ -67,7 +67,7 @@ def k_means_pp(k: int, data_r: list) -> list:
 
 def distance_to_centroid(record: list, centroid: list) -> float:
     # calculate distance between record and centroid
-    return np.sqrt(np.sum(np.power((record[:record.shape[0] - 1] - centroid), 2)))
+    return np.sqrt(np.sum(np.power((record - centroid), 2)))
 
 def get_closest_centroid(record: list, centroids: list) -> tuple:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
