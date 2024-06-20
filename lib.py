@@ -179,8 +179,11 @@ def preprocess(record: list) -> list:
             num = record[i] 
             if num != "anonymous":
                 # convert number to international format
-                p = phonenumbers.parse("+" + num, None)
-                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                try:
+                    p = phonenumbers.parse("+" + num, None)
+                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                except phonenumbers.phonenumberutil.NumberParseException:
+                    p_int = num
                 preprocessed_record.append(p_int)
             else:
                 preprocessed_record.append(0)
@@ -189,8 +192,11 @@ def preprocess(record: list) -> list:
             num = record[i]
             if num != "anonymous":
                 # convert number to international format
-                p = phonenumbers.parse("+" + num, None)
-                p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                try:
+                    p = phonenumbers.parse("+" + num, None)
+                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                except phonenumbers.phonenumberutil.NumberParseException:
+                    p_int = num
                 preprocessed_record.append(p_int)
                 # get destination from number
                 # preprocessed_record.append(get_destination(str(p_int)[1:]))
