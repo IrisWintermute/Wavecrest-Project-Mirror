@@ -98,7 +98,7 @@ def optimal_k_decision(clustered_data: list, centroids: list) -> float:
     wcss = 0
     for i, centroid in enumerate(centroids):
         vectors_in_centroid = [vector for vector in clustered_data if vector[-1] == i]
-        wcss += np.sum([distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid])
+        wcss += np.sum([distance_to_centroid(vec[:vec.shape[0] - 1], centroid) ** 2 for vec in vectors_in_centroid])
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
