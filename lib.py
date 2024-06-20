@@ -155,7 +155,7 @@ def preprocess(record: list) -> list:
             #preprocessed_record.extend(ip_data)
 
         if attribute == "EG Duration (min)":
-            difference = int(record[i]) - int(record[i - 31])
+            difference = float(record[i]) - float(record[i - 31])
             preprocessed_record.append(difference)
 
         elif attribute == "IG Setup Time":
@@ -192,11 +192,11 @@ def preprocess(record: list) -> list:
                 preprocessed_record.append("N/a")
     
         elif attribute == "IG Packet Received":
-            difference = int(record[i - 40]) - int(record[i])
+            difference = float(record[i - 40]) - float(record[i])
             preprocessed_record.append(difference)
 
         elif attribute == "EG Packet Received":
-            difference = int(record[i + 42]) - int(record[i])
+            difference = float(record[i + 42]) - float(record[i])
             preprocessed_record.append(difference)
 
         elif attribute in persist:
