@@ -6,7 +6,7 @@ from lib import *
 # instance recieves command to process data
 
 def main():
-    mx = int(input("Enter memory limit (bytes): "))
+    mx = int(input("Enter memory limit (KB): ")) * 1024
     # bring data -2D CSV array- into scope
     with open("data/cdr.csv", "r") as f:
         data_csv = f.readlines(mx)
@@ -28,11 +28,13 @@ def main():
     print("Data normalised.")
 
     vector_array_n = diagonal_mirror_mv(vector_array_n)
-    
-    start = int(input("Enter start of k search range: "))
+
+    while True:
+        start = int(input("Enter start of k search range: "))
+        if start < len(vector_array_n): break
     while True:
         end = int(input("Enter end of k search range: "))
-        if end > start: break
+        if end > start and end < len(vector_array_n): break
     while True:
         step = int(input("Enter step of k search range: "))
         if (end - start) // step > 1: break
