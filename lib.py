@@ -4,11 +4,11 @@ import random
 import re
 import phonenumbers
 import numpy as np
-#from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
+from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
 
 # cluster data using k-means algorithm
-#@profile_t_plot
+# @profile_t_plot
 def kmeans(k: int, data_array_r: list) -> list:
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
