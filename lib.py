@@ -41,6 +41,7 @@ def kmeans(k: int, data_array_r: list) -> list:
         for i, _ in enumerate(centroids):
             fltr = np.array([i])
             owned_records = stripped_records[np.in1d(stripped_records[:, -1], fltr)]
+            owned_records = np.array([record[0:record.shape[0] - 1] for record in owned_records])
             if owned_records.any(): 
                 centroids_new[i] = average(owned_records)
 
