@@ -6,7 +6,7 @@ from lib import *
 # instance recieves command to process data
 
 def main():
-    mx = int(input("Enter memory limit (KB): ")) * 1024**2
+    mx = int(input("Enter memory limit (MB): ")) * 1024**2
     # bring data -2D CSV array- into scope
     with open("data/cdr.csv", "r") as f:
         data_csv = f.readlines(mx)
