@@ -31,8 +31,8 @@ def kmeans(k: int, data_array_r: list) -> list:
                 record[-1] = closest_centroid_index
                 reassignments += 1
 
-        # stop algorithm when no records are reassigned
-        if not reassignments: return data_array, centroids
+        # stop algorithm when <1% of records are reassigned
+        if reassignments < data_array.shape[0] // 100: return data_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments)")
         iter += 1
 
