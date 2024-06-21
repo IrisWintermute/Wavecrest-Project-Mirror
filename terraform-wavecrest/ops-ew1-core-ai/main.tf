@@ -42,31 +42,32 @@ module "app" {
 
   enable_install = false #nothing to copy from s3
   user_data = <<EOF
-#!/bin/bash
-sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
-yum update -y
-yum upgrade -y
-yum install -y git
-yum groupinstall "Development Tools" -y
-yum erase openssl-devel -y
-yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wget -y
+    #!/bin/bash
+    sed -i 's/^\(hosts:.*\) resolve \[!UNAVAIL=return\] \(.*\)$/\1 \2/' /etc/nsswitch.conf
+    yum update -y
+    yum upgrade -y
+    yum install -y git
+    yum groupinstall "Development Tools" -y
+    yum erase openssl-devel -y
+    yum install gcc openssl11 openssl11-devel libffi-devel bzip2-devel zlib-devel wget -y
 
-git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
+    git clone https://AI-Project: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@github.com/Wavecrest/AI-Project.git
 
-aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
-unzip -o exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
-sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
-mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
+    aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key exp_odine_u_332_p_1_e_270_20240603084457.csv.zip exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+    unzip -o exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+    sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
+    mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
 
-cd AI-Project
-chmod a+w ./
-wget https://bootstrap.pypa.io/get-pip.py
-python3.10 ./get-pip.py
+    cd AI-Project
+    chmod 666 *.txt
+    chmod 655 run.sh
+    wget https://bootstrap.pypa.io/get-pip.py
+    python3.10 ./get-pip.py
 
-python3.10 -m pip install phonenumbers
-python3.10 -m pip install matplotlib
+    python3.10 -m pip install phonenumbers
+    python3.10 -m pip install matplotlib
 
-EOF
+    EOF
               # Additional setup and commands can be added before EOF
 
   ############################
