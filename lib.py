@@ -19,10 +19,8 @@ def kmeans(k: int, data_array_r: list) -> list:
 
     iter = 0
     while True:
-        print(f"    Iter {iter}")
-        iter += 1
 
-        no_reassignments = True
+        reassignments = 0
         ownership_count = [record[-1] for record in data_array]
         ownership_count.sort()
         # assign each data point to closest centroid
@@ -31,16 +29,19 @@ def kmeans(k: int, data_array_r: list) -> list:
             if record[-1] != closest_centroid_index and ownership_count.count(record[-1]) > 1: 
                 ownership_count.remove(record[-1])
                 record[-1] = closest_centroid_index
-                no_reassignments = False
+                reassignments += 1
 
         # stop algorithm when no records are reassigned
-        if no_reassignments: return data_array, centroids
+        if not reassignments: return data_array, centroids
+        print(f"    Iter {iter} ({reassignments} reassignments)")
+        iter += 1
 
         # calculate new centroid coordinates
         stripped_records = np.array([record[0:record.shape[0] - 1] for record in data_array])
         for i, _ in enumerate(centroids):
             fltr = np.array([i])
             owned_records = stripped_records[np.in1d(stripped_records[:, -1], fltr)]
+            owned_records = np.array([record[0:record.shape[0] - 1] for record in owned_records])
             if owned_records.any(): 
                 centroids_new[i] = average(owned_records)
 
