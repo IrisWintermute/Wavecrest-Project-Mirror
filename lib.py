@@ -12,6 +12,7 @@ from typing import *
 def kmeans(k: int, data_array_r: list) -> list:
     # use kmeans++ to get initial centroid coordinates
     centroids = k_means_pp(k, data_array_r)
+    print("Initial centroids assigned.")
     data_array = np.array([np.array(vec + [0]) for vec in data_array_r])
     centroids_new = centroids
 
