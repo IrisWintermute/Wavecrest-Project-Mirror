@@ -20,6 +20,7 @@ module "app" {
   asg_desired_capacity = 1
   disk_size            = 20
   instance_memory      = 16
+  instance_num_cpus    = 8
   key_name             = "devops"
   location_subnet      = "private"
   nlb_subnet           = ""
@@ -75,7 +76,7 @@ module "app" {
   # public_zone_name = "${local.envname}.network.wavecrest.com" # Only needed if not this default
 
   #Note ami needs to include wildcards here, if needed - otherwise it will look for a specific AMI
-  ami                   = "amzn2-ami-hvm-c6g*-arm64-gp2"
+  ami                   = "amzn2-ami-hvm-*-x86_64-gp2"
   instance_architecture = "arm64" # or arm64
 
   enable_weekdays_scale_down = false # Scale down at 6pm on weeknights
