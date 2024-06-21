@@ -145,8 +145,8 @@ def plot_profile():
     '''
     with open("plot.txt", "w") as f:
         f.write("")
-    data = get_pseudorandom_coords(10000, 0, 20, 0, 20, 50, 0.2)
-    x = [k for k in range(45, 56, 1)]
+    data = get_pseudorandom_coords(1000, 0, 20, 0, 20, 50, 0.2)
+    x = [k for k in range(30, 60, 1)]
     for i, k in enumerate(x):
         _, _ = kmeans(k, data)
         print(x[i])
@@ -159,4 +159,4 @@ def plot_profile():
     plt.show()
 
 if __name__ == "__main__":
-    test_clustering()
+    plot_profile()
