@@ -19,6 +19,7 @@ def kmeans(k: int, data_array_r: list) -> list:
 
         no_reassignments = True
         ownership_count = [record[-1] for record in data_array]
+        ownership_count.sort()
         # assign each data point to closest centroid
         for record in data_array:
             (_, closest_centroid_index) = get_closest_centroid(record[:record.shape[0] - 1], centroids)
@@ -31,8 +32,10 @@ def kmeans(k: int, data_array_r: list) -> list:
         if no_reassignments: return data_array, centroids
 
         # calculate new centroid coordinates
+        stripped_records = np.array([record[0:record.shape[0] - 1] for record in data_array])
         for i, _ in enumerate(centroids):
-            owned_records = np.array([record[0:record.shape[0] - 1] for record in data_array if record[-1] == i])
+            fltr = np.array([i])
+            owned_records = stripped_records[np.in1d(stripped_records[:, -1], fltr)]
             if owned_records.any(): 
                 centroids_new[i] = average(owned_records)
 
@@ -46,7 +49,7 @@ def kmeans(k: int, data_array_r: list) -> list:
 # randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data_r: list) -> list:
     data = np.array([np.array(vec) for vec in data_r])
-    chosen_indexes = [random.randint(0, data.shape[0] - 1)]
+    chosen_indexes = [np.random.randint(0, data.shape[0])]
     centroids = [data[chosen_indexes[0]]]
 
     while len(centroids) < k:
@@ -59,7 +62,7 @@ def k_means_pp(k: int, data_r: list) -> list:
         sum_of_squares = sum([v for v in square_distances.values()])
 
         for index, sq_dist in square_distances.items():
-            if random.random() < (sq_dist / sum_of_squares):
+            if np.random.rand() < (sq_dist / sum_of_squares):
                 centroids.append(data[index])
                 chosen_indexes.append(index)
                 break
@@ -195,6 +198,7 @@ def preprocess(record: list) -> list:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 except phonenumbers.phonenumberutil.NumberParseException:
+                    print(num)
                     p_int = num
                 preprocessed_record.append(p_int)
             else:
