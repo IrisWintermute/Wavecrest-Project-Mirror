@@ -64,6 +64,12 @@ def main():
     for i, vec in enumerate(clustered_data_optimal[0]):
         data_array[i].append(vec[-1])
 
+    with open("output_data_vectorised.txt", "w") as f:
+        records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
+        data = "\n".join(records)
+        f.write(data)
+    print("Clustered and vectorised data written to output_data_vectorised.txt.")
+
     with open("output_data.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) for vector in data_array]
         data = "\n".join(records)
