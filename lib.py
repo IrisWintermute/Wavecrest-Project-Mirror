@@ -15,7 +15,10 @@ def kmeans(k: int, data_array_r: list) -> list:
     data_array = np.array([np.array(vec + [0]) for vec in data_array_r])
     centroids_new = centroids
 
+    iter = 0
     while True:
+        print(f"    Iter {iter}")
+        iter += 1
 
         no_reassignments = True
         ownership_count = [record[-1] for record in data_array]
@@ -198,7 +201,6 @@ def preprocess(record: list) -> list:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 except phonenumbers.phonenumberutil.NumberParseException:
-                    print(num)
                     p_int = num
                 preprocessed_record.append(p_int)
             else:
