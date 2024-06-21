@@ -31,10 +31,10 @@ def kmeans(k: int, data_array_r: list) -> list:
                 record[-1] = closest_centroid_index
                 reassignments += 1
 
-        print(f"    Iter {iter} ({reassignments} reassignments)")
-        iter += 1
         # stop algorithm when no records are reassigned
         if not reassignments: return data_array, centroids
+        print(f"    Iter {iter} ({reassignments} reassignments)")
+        iter += 1
 
         # calculate new centroid coordinates
         stripped_records = np.array([record[0:record.shape[0] - 1] for record in data_array])
