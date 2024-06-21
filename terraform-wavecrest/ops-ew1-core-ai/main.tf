@@ -59,7 +59,6 @@ module "app" {
     mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/data/cdr.csv
 
     cd AI-Project
-    chmod 666 *.txt
     chmod 655 run.sh
     wget https://bootstrap.pypa.io/get-pip.py
     python3.10 ./get-pip.py
