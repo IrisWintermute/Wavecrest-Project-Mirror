@@ -237,9 +237,6 @@ def preprocess(record: list) -> list:
             print(record[i+42])
             print("\n")
             difference = float(record[i + 42]) - float(record[i])
-            # eg_received = float(record[i]) if record[i] != "\"\"" else 0
-            # ig_sent = float(record[i + 42]) if record[i] != "\"\"" else 0
-            # difference = ig_sent - eg_received
             preprocessed_record.append(difference)
 
         elif attribute in persist:
