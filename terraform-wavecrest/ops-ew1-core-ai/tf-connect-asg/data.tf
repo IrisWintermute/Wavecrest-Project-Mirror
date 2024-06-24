@@ -41,10 +41,6 @@ data "aws_ec2_instance_types" "instance_type" {
   }
 
   filter {
-    name   = "current-generation"
-    values = ["false"]
-  }
-  filter {
     name = "processor-info.supported-architecture"
     values = [var.instance_architecture]
   }
