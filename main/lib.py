@@ -231,7 +231,7 @@ def preprocess(record: list) -> list:
             preprocessed_record.append(difference)
 
         elif attribute == "EG Packet Received":
-            if record[i] == "":
+            if record[i] == "" or record[i + 42] == "":
                 record[i], record[i + 42] = 0, 0    
                 print(record[i])
                 print(record[i+42])
