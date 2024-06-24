@@ -42,7 +42,7 @@ data "aws_ec2_instance_types" "instance_type" {
 
   filter {
     name   = "current-generation"
-    values = ["true"]
+    values = ["false"]
   }
   filter {
     name = "processor-info.supported-architecture"
@@ -58,7 +58,7 @@ data "aws_ec2_instance_types" "instance_type" {
   }
   filter {
     name = "memory-info.size-in-mib"
-    values = [var.instance_memory]
+    values = ["${var.instance_memory*1024}"]
   }
 }
 
