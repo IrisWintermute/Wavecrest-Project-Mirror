@@ -5,7 +5,7 @@ from lib import *
 import matplotlib.pyplot as plt
 
 # instance recieves command to process data
-
+@profile_m
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
