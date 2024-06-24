@@ -174,8 +174,6 @@ def preprocess(record: list) -> list:
         except ValueError:
             print(record)
 
-    print(len(record))
-
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
             
