@@ -21,7 +21,6 @@ module "app" {
   # disk_size            = 16
   instance_memory      = 4
   instance_num_cpus    = 2
-  instance_family      = "c6g"
   key_name             = "devops"
   location_subnet      = "private"
   nlb_subnet           = ""
