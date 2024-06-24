@@ -165,11 +165,13 @@ def preprocess(record: list) -> list:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
 
-    if len(record) == 130:
+    if len(record) >= 130:
         for i, attr in enumerate(record):
             if attr.count("\"") == 1:
                 record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
                 break
+
+    print(len(record))
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
@@ -231,11 +233,6 @@ def preprocess(record: list) -> list:
             preprocessed_record.append(difference)
 
         elif attribute == "EG Packet Received":
-            if record[i] == '""' or record[i + 42] == '""':
-                record[i], record[i + 42] = 0, 0    
-            print(record[i])
-            print(record[i+42])
-            print("\n")
             difference = float(record[i + 42]) - float(record[i])
             preprocessed_record.append(difference)
 
