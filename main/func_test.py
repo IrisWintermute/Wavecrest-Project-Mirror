@@ -38,7 +38,7 @@ def profile_t_plot(func):
         result = func(*args, **kwargs)
         end = time.perf_counter()
         t = end - start
-        with open("plot.txt", "a") as f:
+        with open("data/plot.txt", "a") as f:
             f.write("," + str(t)[0:6])
         return result
     return wrapper 
@@ -49,7 +49,7 @@ def profile_m_plot(func):
         result = func(*args, **kwargs)
         end = process_memory()
         m = end - start
-        with open("plot.txt", "a") as f:
+        with open("data/plot.txt", "a") as f:
             f.write("," + str(m))
         return result
     return wrapper 
@@ -128,14 +128,14 @@ def plot_profile():
 
     k_range = [5, 10, 20]
     for j, k in enumerate(k_range):
-        with open("plot.txt", "w") as f:
+        with open("data/plot.txt", "w") as f:
             f.write("")
 
         for i, d in enumerate(data_set):
             _, _ = kmeans(k, d)
             print(x[i])
 
-        with open("plot.txt", "r") as f:
+        with open("data/plot.txt", "r") as f:
             y = f.read().split(",")[1:]
         y = [float(v) for v in y]
         plt.scatter(x, y, color=marker[j][0])
@@ -143,7 +143,7 @@ def plot_profile():
     plt.legend([f"k={k}" for k in k_range], loc="upper right")
     plt.show()
     '''
-    with open("plot.txt", "w") as f:
+    with open("data/plot.txt", "w") as f:
         f.write("")
     data = get_pseudorandom_coords(1000, 0, 20, 0, 20, 50, 0.2)
     x = [k for k in range(30, 60, 1)]
@@ -151,7 +151,7 @@ def plot_profile():
         _, _ = kmeans(k, data)
         print(x[i])
 
-    with open("plot.txt", "r") as f:
+    with open("data/plot.txt", "r") as f:
         y = f.read().split(",")[1:]
     y = [float(v) for v in y]
 
