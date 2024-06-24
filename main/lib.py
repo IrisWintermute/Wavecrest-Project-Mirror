@@ -166,10 +166,13 @@ def preprocess(record: list) -> list:
     preprocessed_record = []
 
     if len(record) >= 130:
-        for i, attr in enumerate(record):
-            if attr.count("\"") == 1:
-                record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
-                break
+        try:
+            for i, attr in enumerate(record):
+                if attr.count("\"") == 1:
+                    record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
+                    break
+        except ValueError:
+            print(record)
 
     print(len(record))
 
