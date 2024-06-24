@@ -63,11 +63,9 @@ module "app" {
     rm exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
 
     cd AI-Project
-    wget https://bootstrap.pypa.io/get-pip.py
-    python3.10 ./get-pip.py
 
-    python3.10 -m pip install phonenumbers
-    python3.10 -m pip install matplotlib
+    python3 -m pip install phonenumbers
+    python3 -m pip install psutil
 
     EOF
               # Additional setup and commands can be added before EOF

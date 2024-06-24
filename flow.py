@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # instance recieves command to process data
 
 def main():
-    mx = int(float(input("Enter memory limit (MB): ")) * 1024**2)
+    mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("data/cdr.csv", "r") as f:
         data_csv = f.readlines(mx)
