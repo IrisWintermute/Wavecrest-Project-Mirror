@@ -76,8 +76,6 @@ module "app" {
   # public_zone_name = "${local.envname}.network.wavecrest.com" # Only needed if not this default
 
   #Note ami needs to include wildcards here, if needed - otherwise it will look for a specific AMI
-  ami                   = "amzn2-ami-*-*-*-*"
-  # or arm64
 
   enable_weekdays_scale_down = false # Scale down at 6pm on weeknights
   enable_weekdays_scale_up   = false # Scale up at 6am on weekdays
