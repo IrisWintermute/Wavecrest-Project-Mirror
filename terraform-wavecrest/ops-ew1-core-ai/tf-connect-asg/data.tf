@@ -50,7 +50,7 @@ data "aws_ec2_instance_types" "instance_type" {
   }
   filter {
     name = "vcpu-info.default-vcpus"
-    values = ["${var.instance_num_cpus}"]
+    values = [var.instance_num_cpus]
   }
   filter {
     name = "burstable-performance-supported"
@@ -58,7 +58,7 @@ data "aws_ec2_instance_types" "instance_type" {
   }
   filter {
     name = "memory-info.size-in-mib"
-    values = ["${var.instance_memory*1024}"]
+    values = [var.instance_memory]
   }
 }
 
