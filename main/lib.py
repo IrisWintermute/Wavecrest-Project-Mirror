@@ -227,15 +227,14 @@ def preprocess(record: list) -> list:
                 preprocessed_record.append("N/a")
     
         elif attribute == "IG Packet Received":
+            if record[i] == '""' or record[i + 40] == '""':
+                record[i], record[i + 40] = 0, 0    
             difference = float(record[i - 40]) - float(record[i])
             preprocessed_record.append(difference)
 
         elif attribute == "EG Packet Received":
             if record[i] == '""' or record[i + 42] == '""':
                 record[i], record[i + 42] = 0, 0    
-            print(record[i])
-            print(record[i+42])
-            print("\n")
             difference = float(record[i + 42]) - float(record[i])
             # eg_received = float(record[i]) if record[i] != "\"\"" else 0
             # ig_sent = float(record[i + 42]) if record[i] != "\"\"" else 0
