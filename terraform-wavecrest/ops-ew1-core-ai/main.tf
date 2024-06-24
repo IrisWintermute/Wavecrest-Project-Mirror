@@ -22,7 +22,7 @@ module "app" {
   instance_memory      = 16
   instance_num_cpus    = 8
   key_name             = "devops"
-  location_subnet      = "privateß"
+  location_subnet      = "private"
   nlb_subnet           = ""
   enable_kafka_envs    = false
   enable_db_envs       = false
