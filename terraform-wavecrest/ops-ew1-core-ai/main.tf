@@ -19,10 +19,10 @@ module "app" {
   asg_max_size         = 1
   asg_desired_capacity = 1
   disk_size            = 20
-  instance_memory      = 4
-  instance_num_cpus    = 2
+  instance_memory      = 16
+  instance_num_cpus    = 8
   key_name             = "devops"
-  location_subnet      = "private"
+  location_subnet      = "privateß"
   nlb_subnet           = ""
   enable_kafka_envs    = false
   enable_db_envs       = false
