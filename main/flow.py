@@ -2,6 +2,7 @@
 # ||control flow of k-means program||
 # ||running inside an AWS EC2 instance||
 from lib import *
+from func_test import *
 import matplotlib.pyplot as plt
 
 # instance recieves command to process data
