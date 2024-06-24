@@ -25,6 +25,7 @@ module "app" {
   key_name             = "devops"
   location_subnet      = "private"
   nlb_subnet           = ""
+  instance_burstable   = false
   enable_kafka_envs    = false
   enable_db_envs       = false
   enable_qryn_envs     = false
