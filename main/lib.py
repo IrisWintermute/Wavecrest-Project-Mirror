@@ -111,7 +111,7 @@ def optimal_k_decision(clustered_data: list, centroids: list) -> float:
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
 def get_destination(number):
-    with open("./data/MDL_160524.csv", "r") as f:
+    with open("./main/data/MDL_160524.csv", "r") as f:
         lines = [(line.split(",")[4], line.split(",")[1]) for line in f.readlines()]
         match = ("", "")
         for (prefix, destination) in lines:
@@ -161,7 +161,7 @@ def diagonal_mirror_mv(nested_list: list) -> list:
 
 def preprocess(record: list) -> list:
     # truncate and expand record attributes
-    with open('data/attributes.txt') as a, open('data/persistent_attributes.txt') as b:
+    with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
 
@@ -239,7 +239,7 @@ def preprocess(record: list) -> list:
     return preprocessed_record
 
 def vectorise(data_array: list) -> list:
-    with open("data/values_dump.txt", "w") as f:
+    with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     attributes_array = []
     for i, attributes in enumerate(data_array):
@@ -256,7 +256,7 @@ def vectorise(data_array: list) -> list:
         attributes_array.append(attributes_out)
         
         if values_hash:
-            with open("data/values_dump.txt", "a") as f:
+            with open("main/data/values_dump.txt", "a") as f:
                 values_to_write = "\n".join([f"{v}: {j}" for (v, j) in values_hash.items()])
                 f.write(f"values for attribute at index {i}" + "\n" + values_to_write + "\n")
         

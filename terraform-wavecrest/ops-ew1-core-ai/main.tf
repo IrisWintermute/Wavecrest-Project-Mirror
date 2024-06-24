@@ -65,7 +65,9 @@ module "app" {
     cd AI-Project
 
     python3 -m pip install phonenumbers
+    python3 -m pip install matplotlib
     python3 -m pip install psutil
+    python3 -m pip install numpy
 
     EOF
               # Additional setup and commands can be added before EOF
