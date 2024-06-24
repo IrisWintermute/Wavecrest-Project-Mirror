@@ -19,8 +19,8 @@ module "app" {
   asg_max_size         = 1
   asg_desired_capacity = 1
   disk_size            = 16
-  instance_memory      = 16
-  instance_num_cpus    = 8
+  instance_memory      = 4
+  instance_num_cpus    = 2
   instance_family      = "c6g"
   key_name             = "devops"
   location_subnet      = "private"
