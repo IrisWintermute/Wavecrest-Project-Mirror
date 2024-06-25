@@ -60,7 +60,7 @@ module "app" {
     unzip -o exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
     sed -i '1d' exp_odine_u_332_p_1_e_270_20240603084457.csv
     mv exp_odine_u_332_p_1_e_270_20240603084457.csv AI-Project/main/data/cdr.csv
-    rm exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
+    rm -f exp_odine_u_332_p_1_e_270_20240603084457.csv.zip
 
     cd AI-Project
 
