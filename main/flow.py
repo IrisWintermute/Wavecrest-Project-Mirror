@@ -14,8 +14,7 @@ def main():
         data_csv = f.readlines(mx)
     print(f"CDR data ({len(data_csv)} records) loaded.")
 
-    length = len(data_array[0])
-    data_array = [record.split(",")[:length] for record in data_csv]
+    data_array = [record.split(",")[:len(record) - 1] for record in data_csv]
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = [preprocess(record) for record in data_array]
