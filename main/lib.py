@@ -162,7 +162,7 @@ def diagonal_mirror_mv(nested_list: list) -> list:
 def sanitise_string(data_str):
     out = []
     for record in data_str:
-        comma_str = (re.findall('"[/,"]+,[/,"]+"' , record))
+        comma_str = (re.findall('"[^,"]+,[^,"]+"' , record))
         if comma_str:
             hyphen_str = comma_str[0].replace(",", "-")
             out.append(re.sub(f'{comma_str}', f'{hyphen_str}', record))
