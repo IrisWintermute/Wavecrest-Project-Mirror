@@ -158,5 +158,13 @@ def plot_profile():
     plt.scatter(x, y, color=marker[i % len(marker)][0])
     plt.show()
 
+def regex_test():
+    string = '"horse,donkey",mule,0,6,"",petrol,"camel, spine"'
+    comma_str = re.findall('"[^,"]+,[^,"]+"', string)
+    hyphen_str = [re.sub(',', '-', s) for s in comma_str]
+    for i, h in enumerate(hyphen_str):
+        string = re.sub(comma_str[i], h, string)
+    print(string)
+
 if __name__ == "__main__":
-    plot_profile()
+    regex_test()

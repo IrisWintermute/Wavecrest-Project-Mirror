@@ -14,7 +14,7 @@ def main():
         data_csv = f.readlines(mx)
     print(f"CDR data ({len(data_csv)} records) loaded.")
 
-    data_csv = sanitise_string(data_csv)
+    data_csv = [sanitise_string(record) for record in data_csv]
     data_array = [record.split(",") for record in data_csv]
 
     # enrich and truncate records to optimise for clustering and fraud detection
