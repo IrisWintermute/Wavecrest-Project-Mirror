@@ -165,26 +165,22 @@ def preprocess(record: list) -> list:
         attributes, persist = a.read().split(','), b.read().split(',')
     preprocessed_record = []
 
+    # parse exception, attribute may have commas, horrible
     if len(record) >= 130:
-        try:
-            for i, attr in enumerate(record):
-                if attr.count('"') == 1:
-                    record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
-                    break
-        except ValueError:
-            print(record)
+        for i, attr in enumerate(record):
+            if attr.count('"') == 1:
+                record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
+                break
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
             
-        #elif "Cust. EP IP" | "Prov. EP IP":
+        #elif attribute == "Cust. EP IP" or attribute == "Prov. EP IP":
             #ip_data = extract_ip_data(record[i])
             #preprocessed_record.extend(ip_data)
 
         if attribute == "IG Duration (min)":
             try:
-                # parse exception, attribute may have commas, horrible
-                # offset = 32 if len(record) == 130 else 31
                 difference = float(record[i]) - float(record[i + 31])
                 preprocessed_record.append(difference)
             except ValueError:
