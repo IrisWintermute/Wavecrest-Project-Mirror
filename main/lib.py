@@ -166,10 +166,10 @@ def preprocess(record: list) -> list:
     preprocessed_record = []
 
     # parse exception, attribute may have commas, horrible
-    if len(record) >= 130:
-        for i, attr in enumerate(record):
-            if i < len(record) - 2 and attr and record[i + 1] and attr[0] == '"' and record[i + 1][0] == " ":
-                record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
+    # if len(record) >= 130:
+    #     for i, attr in enumerate(record):
+    #         if i < len(record) - 2 and attr and record[i + 1] and attr[0] == '"' and record[i + 1][0] == " ":
+    #             record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
