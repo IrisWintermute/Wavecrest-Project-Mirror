@@ -157,7 +157,17 @@ def diagonal_mirror_mv(nested_list: list) -> list:
         for j, attr in enumerate(list):
             nested_out[j][i] = attr
     return nested_out
-    
+
+# regex hacking to capture double-quoted 
+def sanitise_string(data_str):
+    out = []
+    for record in data_str:
+        comma_str = (re.findall('"[/,"]+,[/,"]+"' , record))
+        if comma_str:
+            hyphen_str = comma_str[0].replace(",", "-")
+            out.append(re.sub(f'{comma_str}', f'{hyphen_str}', record))
+        out.append(record)
+    return out
 
 def preprocess(record: list) -> list:
     # truncate and expand record attributes
