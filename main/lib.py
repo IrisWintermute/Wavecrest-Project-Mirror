@@ -225,8 +225,11 @@ def preprocess(record: list) -> list:
                 preprocessed_record.append("N/a")
     
         elif attribute == "IG Packet Received":
-            difference = float(record[i - 40]) - float(record[i])
-            preprocessed_record.append(difference)
+            try:
+                difference = float(record[i - 40]) - float(record[i])
+                preprocessed_record.append(difference)
+            except ValueError:
+                print(record)
 
         elif attribute == "EG Packet Received":
             difference = float(record[i + 42]) - float(record[i])
