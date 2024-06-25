@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
-    with open("./data/cdr.csv", "r") as f:
+    with open("main/data/cdr.csv", "r") as f:
         data_csv = f.readlines(mx)
     print(f"CDR data ({len(data_csv)} records) loaded.")
 
