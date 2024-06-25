@@ -232,8 +232,11 @@ def preprocess(record: list) -> list:
                 print(record)
 
         elif attribute == "EG Packet Received":
-            difference = float(record[i + 42]) - float(record[i])
-            preprocessed_record.append(difference)
+            try:
+                difference = float(record[i + 42]) - float(record[i])
+                preprocessed_record.append(difference)
+            except ValueError:
+                print(record)
 
         elif attribute in persist:
             preprocessed_record.append(record[i])
