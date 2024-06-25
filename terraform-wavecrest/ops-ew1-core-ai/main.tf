@@ -83,7 +83,7 @@ module "app" {
   instance_architecture = "arm64" # or arm64
 
   enable_weekdays_scale_down = false # Scale down at 6pm on weeknights
-  enable_weekdays_scale_up   = false # Scale up at 6am on weekdays
+  enable_weekdays_scale_up   = true # Scale up at 6am on weekdays
 
 }
 
