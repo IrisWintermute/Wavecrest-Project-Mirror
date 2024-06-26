@@ -16,11 +16,11 @@ def main():
 
     csv_array = np.asarray(csv_list, dtype=str)
     
-    csv_array = [sanitise_string(record) for record in csv_array]
+    csv_array = np.array([sanitise_string(record) for record in csv_array])
     data_array = np.array([np.array(record.split(","), dtype=str) for record in csv_array])
 
     # enrich and truncate records to optimise for clustering and fraud detection
-    data_array_preprocessed = [preprocess(record) for record in data_array]
+    data_array_preprocessed = np.array([preprocess(record) for record in data_array])
     print("Data preprocessed.")
 
     data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
