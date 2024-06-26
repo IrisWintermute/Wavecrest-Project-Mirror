@@ -16,7 +16,7 @@ def main():
             csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
+    data_array = np.asarray([np.asarray(record.split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
     del csv_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
