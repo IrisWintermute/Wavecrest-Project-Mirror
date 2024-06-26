@@ -13,10 +13,10 @@ def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
-            csv_list = f.readlines(mx)
+            csv_list = [sanitise_string(record) for record in f.readlines(mx)]
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=np.dtypes.StrDType()) for record in csv_list], dtype=np.ndarray)
+    data_array = np.asarray([np.fromstring(record) for record in csv_list], dtype=np.ndarray)
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.array([preprocess(record) for record in data_array], dtype=object)
