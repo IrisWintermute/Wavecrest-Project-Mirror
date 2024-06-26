@@ -111,7 +111,7 @@ def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> flo
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
 def get_destination(number):
-    with open("./data/MDL_160524.csv", "r") as f:
+    with open("main/data/MDL_160524.csv", "r") as f:
         lines = [(line.split(",")[4], line.split(",")[1]) for line in f.readlines()]
         match = ("", "")
         for (prefix, destination) in lines:
