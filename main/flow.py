@@ -44,7 +44,7 @@ def main():
         if end > start and end < len(vector_array_n): break
     while True:
         step = int(input("Enter step of k search range: "))
-        if (end - start) // step > 1: break
+        if (end - start) >= step: break
 
     clustered_data_optimal = ([], 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
