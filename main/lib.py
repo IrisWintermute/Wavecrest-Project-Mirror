@@ -47,7 +47,7 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
         centroids = centroids_new
 
 # get data from S3 bucket
-# when user_data script is run upon EC2 deployment, all data in s3 bucket is synced to ./data repository
+# when user_data script is run upon EC2 deployment, all data in s3 bucket is synced to data repository
 # data copied will include CDR and MDL data
 
 # K++ algorithm
@@ -75,7 +75,6 @@ def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
 
 def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
     # calculate distance between record and centroid
-    print(np.dtype(record[0]))
     print(np.dtype(centroid[0]))
     return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
