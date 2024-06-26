@@ -25,7 +25,6 @@ def main():
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.array([preprocess(record) for record in data_array], dtype=object)
-    del data_array
     print("Data preprocessed.")
 
     data_array_preprocessed = diagonal_mirror(data_array_preprocessed, str)
