@@ -85,7 +85,7 @@ def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
 
 def average(records: np.ndarray) -> np.ndarray:
     # reduce list of input vectors into a single vector representing the average of input vectors
-    attributes = diagonal_mirror(records)
+    attributes = diagonal_mirror(records, float)
     avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
     return avg
 
