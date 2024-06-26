@@ -143,7 +143,7 @@ def can_cast_to_int(v: str) -> bool:
 def diagonal_mirror(nested_list: np.ndarray) -> np.ndarray:
     outer = nested_list.shape[0]
     inner = nested_list[0].shape[0]
-    nested_out = np.array([np.zeros(outer) for _ in range(inner)])
+    nested_out = np.array([np.empty(outer, dtype=str) for _ in range(inner)])
     for i, list in enumerate(nested_list):
         for j, attr in enumerate(list):
             nested_out[j][i] = attr
