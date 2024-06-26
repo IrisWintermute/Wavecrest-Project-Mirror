@@ -75,7 +75,7 @@ def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
 
 def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
     # calculate distance between record and centroid
-    return np.sqrt(np.sum(np.power((record - centroid), 2)))
+    return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
 def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
