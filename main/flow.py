@@ -5,8 +5,10 @@ from lib import *
 from func_test import *
 import matplotlib.pyplot as plt
 import numpy as np
+from memory_profiler import profile
 
 # instance recieves command to process data
+@profile
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
