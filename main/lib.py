@@ -93,9 +93,9 @@ def average(records: np.ndarray) -> np.ndarray:
 
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data: list, centroids: list) -> float:
-    vectors = len(clustered_data) * len(clustered_data[0])
-    clusters = len(centroids)
+def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
+    vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
+    clusters = centroids.shape[0]
     overall_centroid = average(centroids)
     # calculate between-cluster sum of squares
     bcss = 0
