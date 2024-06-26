@@ -14,7 +14,7 @@ def main():
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
             csv_list = f.readlines(mx)
-    print(f"CDR data ({csv_array.shape[0]} records) loaded.")
+    print(f"CDR data ({len(csv_list)} records) loaded.")
 
     csv_array = np.fromiter(csv_list, dtype=str)
     csv_array = np.array([sanitise_string(record) for record in csv_array])
