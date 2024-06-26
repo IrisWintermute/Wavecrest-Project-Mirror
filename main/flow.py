@@ -17,7 +17,6 @@ def main():
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     data_array = np.array([np.array(sanitise_string(record).split(","), dtype=str) for record in csv_list], dtype=object)
-    del csv_array
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.array([preprocess(record) for record in data_array], dtype=object)
