@@ -167,4 +167,4 @@ def regex_test():
     print(string)
 
 if __name__ == "__main__":
-    regex_test()
+    test_clustering()
