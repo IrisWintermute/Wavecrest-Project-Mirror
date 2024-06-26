@@ -5,8 +5,10 @@ from lib import *
 from func_test import *
 import matplotlib.pyplot as plt
 import numpy as np
+from memory_profiler import profile
 
 # instance recieves command to process data
+@profile
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
@@ -70,7 +72,7 @@ def main():
     plt.savefig("main/data/savefig.png")
 
     for i, vec in enumerate(clustered_data_optimal[0]):
-        data_array[i].append(vec[-1])
+        np.append(data_array[i], vec[-1])
 
     with open("main/data/output_data_vectorised.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
