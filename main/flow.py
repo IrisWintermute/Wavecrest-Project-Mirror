@@ -16,11 +16,11 @@ def main():
             csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    csv_array = np.asarray(csv_list, dtype=np.str)
+    csv_array = np.asarray(csv_list, dtype=str)
     del csv_list
 
     csv_array = np.array([sanitise_string(record) for record in csv_array])
-    data_array = np.array([np.array(record.split(","), dtype=np.str) for record in csv_array], dtype=object)
+    data_array = np.array([np.array(record.split(","), dtype=str) for record in csv_array], dtype=object)
     del csv_array
 
     # enrich and truncate records to optimise for clustering and fraud detection

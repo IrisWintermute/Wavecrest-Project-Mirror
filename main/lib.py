@@ -172,7 +172,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes
     with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
-    preprocessed_record = np.empty(28, dtype=np.str)
+    preprocessed_record = np.empty(28, dtype=str)
 
     # parse exception, attribute may have commas, horrible
     # if len(record) >= 130:
