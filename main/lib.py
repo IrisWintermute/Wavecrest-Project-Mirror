@@ -14,7 +14,7 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
     # centroids = k_means_pp(k, data_array_r)
     centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
     print("Initial centroids assigned.")
-    data_array = np.array([np.append(vec, 0) for vec in data_array_r])
+    data_array = np.array([np.append(vec, [0.0]) for vec in data_array_r])
     centroids_new = centroids
 
     iter = 0
@@ -75,8 +75,8 @@ def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
 
 def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
     # calculate distance between record and centroid
-    print(np.dtype(record))
-    print(np.dtype(centroid))
+    print(np.dtype(record[0]))
+    print(np.dtype(centroid[0]))
     return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
 def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
