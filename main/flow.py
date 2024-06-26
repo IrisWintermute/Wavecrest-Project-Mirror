@@ -16,7 +16,7 @@ def main():
             csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    csv_array = np.fromiter(csv_list, dtype=str)
+    csv_array = np.fromiter(csv_list, dtype=str, count=len(csv_list))
     csv_array = np.array([sanitise_string(record) for record in csv_array])
     data_array = np.array([np.array(record.split(","), dtype=str) for record in csv_array], dtype=object)
     del csv_array
