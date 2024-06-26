@@ -4,24 +4,26 @@
 from lib import *
 from func_test import *
 import matplotlib.pyplot as plt
+import numpy as np
 
 # instance recieves command to process data
-@profile_m
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
-        data_csv = f.readlines(mx)
-    print(f"CDR data ({len(data_csv)} records) loaded.")
+            csv_list = f.readlines(mx)
+    print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    data_csv = [sanitise_string(record) for record in data_csv]
-    data_array = [record.split(",") for record in data_csv]
+    csv_array = np.asarray(csv_list, dtype=str)
+    
+    csv_array = [sanitise_string(record) for record in csv_array]
+    data_array = np.array([np.array(record.split(","), dtype=str) for record in csv_array])
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = [preprocess(record) for record in data_array]
     print("Data preprocessed.")
 
-    data_array_preprocessed = diagonal_mirror_mv(data_array_preprocessed)
+    data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     vector_array = vectorise(data_array_preprocessed)
@@ -30,7 +32,7 @@ def main():
     vector_array_n = normalise(vector_array)
     print("Data normalised.")
 
-    vector_array_n = diagonal_mirror_mv(vector_array_n)
+    vector_array_n = diagonal_mirror(vector_array_n)
 
     while True:
         start = int(input("Enter start of k search range: "))
