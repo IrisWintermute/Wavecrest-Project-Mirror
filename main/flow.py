@@ -8,7 +8,7 @@ import numpy as np
 from memory_profiler import profile
 
 # instance recieves command to process data
-@profile
+#@profile
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
@@ -16,7 +16,7 @@ def main():
             csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    data_array = np.array([np.array(sanitise_string(record).split(","), dtype="|S1") for record in csv_list], dtype=object)
+    data_array = np.array([np.array(sanitise_string(record).split(","), dtype="S") for record in csv_list], dtype=object)
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.array([preprocess(record) for record in data_array], dtype=object)
