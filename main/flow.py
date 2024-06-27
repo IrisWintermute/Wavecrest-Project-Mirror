@@ -19,7 +19,9 @@ def main():
     # data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
     to_record = lambda s: sanitise_string(str(s)).split(",")
     # data_array = np.asarray(list(map(to_record, csv_list)))
-    data_array = np.asarray(np.apply_along_axis(to_record, 0, csv_list))
+    csv_nested_list = map(to_record, csv_list)
+    data_array = np.array(csv_nested_list)
+    del csv_nested_list
     print(data_array.ndim)
 
     # enrich and truncate records to optimise for clustering and fraud detection
