@@ -85,7 +85,7 @@ def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
 
 def average(records: np.ndarray) -> np.ndarray:
     # reduce list of input vectors into a single vector representing the average of input vectors
-    attributes = diagonal_mirror(records, float)
+    attributes = diagonal_mirror(records)
     avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
     return avg
 
@@ -140,23 +140,15 @@ def can_cast_to_int(v: str) -> bool:
     else:
         return True
     
-def diagonal_mirror(nested_list: np.ndarray, datatype) -> np.ndarray:
-    outer = nested_list.shape[0]
+def diagonal_mirror(nested_list: np.ndarray) -> np.ndarray:
+    """ outer = nested_list.shape[0]
     inner = nested_list[0].shape[0]
     nested_out = np.array([np.empty(outer, dtype=datatype) for _ in range(inner)])
     for i, list in enumerate(nested_list):
         for j, attr in enumerate(list):
             nested_out[j][i] = attr
-    return nested_out
-
-def diagonal_mirror_mv(nested_list: np.ndarray) -> np.ndarray:
-    outer = len(nested_list)
-    inner = len(nested_list[0])
-    nested_out = [[0] * outer for _ in range(inner)]
-    for i, list in enumerate(nested_list):
-        for j, attr in enumerate(list):
-            nested_out[j][i] = attr
-    return nested_out
+    return nested_out """
+    return np.rot90(np.fliplr(nested_list))
 
 # regex hacking to capture double-quoted 
 def sanitise_string(string):

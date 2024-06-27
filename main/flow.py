@@ -23,7 +23,7 @@ def main():
     data_array_preprocessed = np.array([preprocess(record) for record in data_array], dtype=object)
     print("Data preprocessed.")
 
-    data_array_preprocessed = diagonal_mirror(data_array_preprocessed, str)
+    data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     vector_array = vectorise(data_array_preprocessed)
@@ -34,7 +34,7 @@ def main():
     del vector_array
     print("Data normalised.")
 
-    vector_array_n = diagonal_mirror(vector_array_n, float)
+    vector_array_n = diagonal_mirror(vector_array_n)
 
     while True:
         start = int(input("Enter start of k search range: "))
