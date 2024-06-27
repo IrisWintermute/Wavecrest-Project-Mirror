@@ -17,8 +17,9 @@ def main():
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     # data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
-    to_record = lambda s: np.array(sanitise_string(s).split(","))
-    data_array = np.asarray(list(map(to_record, csv_list)))
+    to_record = np.array(lambda s: sanitise_string(s).split(","), dtype=object)
+    # data_array = np.asarray(list(map(to_record, csv_list)))
+    data_array = np.apply_along_axis(to_record, 0, np.array(csv_list))
     print(data_array)
 
     # enrich and truncate records to optimise for clustering and fraud detection
