@@ -2,10 +2,11 @@
 # ||control flow of k-means program||
 # ||running inside an AWS EC2 instance||
 from lib import *
-from func_test import *
 import matplotlib.pyplot as plt
 import numpy as np
 from memory_profiler import profile
+import os
+from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
 #@profile
@@ -54,11 +55,23 @@ def main():
         step = int(input("Enter step of k search range: "))
         if (end - start) >= step: break
 
-    clustered_data_optimal = ([], 0, start)
+    clustered_data_optimal = (None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
-    k_range = [k for k in range(start, end + 1, step)]
-    ch_indexes = []
-    for k in k_range:
+    k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
+    graph_data = []
+    cores = os.cpu_count()
+    lock = Lock()
+    with Pool(processes=cores) as p:
+        for k, clustered_data, centroids in p.imap_unordered(kmeans, k_range_wrap):
+            with lock:
+                ch_index = optimal_k_decision(clustered_data, centroids)
+                graph_data.append(np.array([k, ch_index]))
+                print(f"Evaluated data set with {k} clusters.")
+                if ch_index > clustered_data_optimal[1]:
+                    clustered_data_optimal = (clustered_data, ch_index, k)
+    print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
+
+    """ for k in k_range:
         # run k-means clustering algorithm with vectorised data
         clustered_data, centroids = kmeans(k, vector_array_n)
         # select optimal k
@@ -66,10 +79,12 @@ def main():
         ch_indexes.append(ch_index)
         print(f"Evaluated data set with {k} clusters.")
         if ch_index > clustered_data_optimal[1]:
-            clustered_data_optimal = (clustered_data, ch_index, k)
-    print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
+            clustered_data_optimal = (clustered_data, ch_index, k)"""
 
-    plt.plot(k_range, ch_indexes)
+    graph_array = np.stack(graph_data, axis=0).T
+    (x, y) = tuple(np.split(graph_array, 2, axis=0))
+
+    plt.plot(x[0], y[0])
     plt.xlabel("Number of clusters")
     plt.ylabel("CH Index")
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")

@@ -1,15 +1,17 @@
 
 # ||function library for k-means program||
-import random
 import re
 import phonenumbers
 import numpy as np
-# from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
+import time
+import os
+import psutil
 
 # cluster data using k-means algorithm
 # @profile_t_plot
-def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
+def kmeans(wrap: tuple) -> np.ndarray:
+    (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
     # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
@@ -42,7 +44,7 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
         #print(np.apply_along_axis(get_last, 1, data_array).T)
 
         # stop algorithm when <1% of records are reassigned
-        if reassignments <= (data_array.shape[0] // 100): return data_array, centroids
+        if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments)")
         iter += 1
 
@@ -281,8 +283,54 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     return norm(attributes)
 
 
+def profile_t(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        t = end - start
+        print(f"{func.__name__}: execution time: {t}")
+        return result
+    return wrapper
 
-        
+def profile_t_plot(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        t = end - start
+        with open("./data/plot.txt", "a") as f:
+            f.write("," + str(t)[0:6])
+        return result
+    return wrapper 
+
+def profile_m_plot(func):
+    def wrapper(*args, **kwargs):
+        start = process_memory()
+        result = func(*args, **kwargs)
+        end = process_memory()
+        m = end - start
+        with open("./data/plot.txt", "a") as f:
+            f.write("," + str(m))
+        return result
+    return wrapper 
+
+# inner psutil function
+def process_memory():
+    process = psutil.Process(os.getpid())
+    mem_info = process.memory_info()
+    return mem_info.rss
+
+def profile_m(func):
+    def wrapper(*args, **kwargs):
+
+        start = process_memory()
+        result = func(*args, **kwargs)
+        end = process_memory()
+        m = end - start
+        print(f"{func.__name__}:consumed memory: {m}")
+        return result
+    return wrapper
     
     
 """ 

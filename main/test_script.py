@@ -1,11 +1,16 @@
 
 # importing library
 import numpy as np
- 
-lst = ["a,f,h,ueq,r,w","d,t,joy,u,igd,d","q,t,io,p,f,y"]
-to_r = lambda s: s.split(",")
-nlst = list(map(to_r, lst))
-print(nlst)
-data_array = np.array(nlst)
-print(data_array)
-print(data_array.ndim)
+import matplotlib.pyplot as plt
+
+graph_data = []
+
+for i in range(10):
+    j = i ** 0.8
+    graph_data.append(np.array([i, j]))
+graph_array = np.stack(graph_data, axis=0).T
+(x, y) = tuple(np.split(graph_array, 2, axis=0))
+print(x)
+print(y)
+plt.plot(x[0], y[0])
+plt.show()
