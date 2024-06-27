@@ -21,7 +21,7 @@ def main():
     # data_array = np.asarray(list(map(to_record, csv_list)))
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list
-    data_array = np.array(csv_nested_list)
+    data_array = np.array(csv_nested_list, dtype=object)
     del csv_nested_list
     print(data_array.ndim)
 
