@@ -8,7 +8,6 @@ import numpy as np
 from memory_profiler import profile
 
 # instance recieves command to process data
-#horse
 @profile
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
