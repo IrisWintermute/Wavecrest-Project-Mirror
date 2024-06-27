@@ -12,22 +12,30 @@ from typing import *
 def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
-    centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
+    # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
+    get_records = lambda i: data_array_r[i]
+    centroids = get_records(np.random.randint(0, data_array_r.shape[0]))
+
     print("Initial centroids assigned.")
-    data_array = np.array([np.append(vec, [0.0]) for vec in data_array_r])
-    centroids_new = centroids
+    z = np.zeros(data_array_r.shape[0])
+    data_array = np.concatenate((data_array_r, z.T), axis=1)
+    centroids_new = centroids.copy()
 
     iter = 0
     while True:
 
         reassignments = 0
-        ownership_count = [record[-1] for record in data_array]
-        ownership_count.sort()
+        get_last = lambda v: v[-1]
+        o_count = np.apply_over_axes(get_last, data_array, 1).T
+        o_hash = {}
+        for c in o_count:
+            if o_hash[c]: o_hash[c] += 1
+            else: o_hash[c] = 1
         # assign each data point to closest centroid
         for record in data_array:
             (_, closest_centroid_index) = get_closest_centroid(record[:record.shape[0] - 1], centroids)
-            if record[-1] != closest_centroid_index and ownership_count.count(record[-1]) > 1: 
-                ownership_count.remove(record[-1])
+            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1: 
+                o_hash[record[-1]] -= 1
                 record[-1] = closest_centroid_index
                 reassignments += 1
 
@@ -42,7 +50,7 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
             owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
             owned_records = np.array([record[0:record.shape[0] - 1] for record in owned_records])
             if owned_records.any(): 
-                centroids_new[i] = average(owned_records)
+                centroids_new[i] = np.apply_over_axes(np.average, owned_records, 0)[0]
 
         centroids = centroids_new
 
@@ -83,11 +91,11 @@ def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
     distances.sort()
     return distances[0]
 
-def average(records: np.ndarray) -> np.ndarray:
+""" def average(records: np.ndarray) -> np.ndarray:
     # reduce list of input vectors into a single vector representing the average of input vectors
     attributes = diagonal_mirror(records)
     avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
-    return avg
+    return avg """
 
     
 
@@ -96,7 +104,7 @@ def average(records: np.ndarray) -> np.ndarray:
 def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
     vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
     clusters = centroids.shape[0]
-    overall_centroid = average(centroids)
+    overall_centroid = np.apply_over_axes(np.average, centroids, 0)[0]
     # calculate between-cluster sum of squares
     bcss = 0
     for i, centroid in enumerate(centroids):
