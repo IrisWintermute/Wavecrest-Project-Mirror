@@ -19,8 +19,8 @@ def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
             (c_x, c_y) = c
             c_x = random.gauss(c_x, v)
             c_y = random.gauss(c_y, v)
-            out.append([c_x, c_y])
-    return out
+            out.append(np.array([c_x, c_y]))
+    return np.array(out)
 
 def profile_t(func):
     def wrapper(*args, **kwargs):
@@ -88,11 +88,11 @@ def test_preprocessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coords(1000, 0, 20, 0, 20, 50, 0.1)
-    k_range = [k for k in range(40, 61)]
+    data = get_pseudorandom_coords(1000, 0, 50, 0, 50, 20, 0.1)
+    k_range = [k for k in range(3, 50)]
     k_optimal = np.array([np.zeros(2) for _ in k_range])
     for i, k in enumerate(k_range):
-        print(k)
+        print(f"k: {k}")
         out, centroids = kmeans(k, data)
         #print("Clustered data and centroids: ")
         #print(centroids)

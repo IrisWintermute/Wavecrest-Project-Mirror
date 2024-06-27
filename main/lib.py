@@ -4,7 +4,7 @@ import random
 import re
 import phonenumbers
 import numpy as np
-from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
+# from func_test import profile_m, profile_t, profile_t_plot, profile_m_plot
 from typing import *
 
 # cluster data using k-means algorithm
@@ -13,11 +13,10 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
     # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
-    get_records = lambda i: data_array_r[i]
-    centroids = get_records(np.random.randint(0, data_array_r.shape[0]))
+    centroids = np.array([data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)])
 
     print("Initial centroids assigned.")
-    z = np.zeros(data_array_r.shape[0])
+    z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
 
@@ -26,21 +25,24 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
 
         reassignments = 0
         get_last = lambda v: v[-1]
-        o_count = np.apply_over_axes(get_last, data_array, 1).T
+        o_count = np.apply_along_axis(get_last, 1, data_array).T
+        #print(o_count)
         o_hash = {}
-        for c in o_count:
-            if o_hash[c]: o_hash[c] += 1
+        for c_r in np.nditer(o_count):
+            c = int(c_r)
+            if o_hash.get(c): o_hash[c] += 1
             else: o_hash[c] = 1
         # assign each data point to closest centroid
-        for record in data_array:
+        for i, record in enumerate(data_array):
             (_, closest_centroid_index) = get_closest_centroid(record[:record.shape[0] - 1], centroids)
             if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1: 
                 o_hash[record[-1]] -= 1
-                record[-1] = closest_centroid_index
+                data_array[i,-1] = closest_centroid_index
                 reassignments += 1
+        #print(np.apply_along_axis(get_last, 1, data_array).T)
 
         # stop algorithm when <1% of records are reassigned
-        if reassignments < data_array.shape[0] // 100: return data_array, centroids
+        if reassignments <= (data_array.shape[0] // 100): return data_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments)")
         iter += 1
 
@@ -50,7 +52,7 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
             owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
             owned_records = np.array([record[0:record.shape[0] - 1] for record in owned_records])
             if owned_records.any(): 
-                centroids_new[i] = np.apply_over_axes(np.average, owned_records, 0)[0]
+                centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
 
         centroids = centroids_new
 
@@ -104,7 +106,7 @@ def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
 def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
     vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
     clusters = centroids.shape[0]
-    overall_centroid = np.apply_over_axes(np.average, centroids, 0)[0]
+    overall_centroid = np.apply_along_axis(np.average, 0, centroids)[0]
     # calculate between-cluster sum of squares
     bcss = 0
     for i, centroid in enumerate(centroids):
@@ -252,38 +254,32 @@ def preprocess(record: np.ndarray) -> np.ndarray:
             preprocessed_record[j + 8] = record[i]
     return preprocessed_record
 
-def vectorise(data_array: np.ndarray) -> np.ndarray:
-    with open("main/data/values_dump.txt", "w") as f:
-        f.write("")
-    attributes_array = np.array([np.empty(arr.shape[0], dtype=int) for arr in data_array])
-    for i, attributes in enumerate(data_array):
-        values_hash = {}
-        for j ,attr in enumerate(attributes):
-            if can_cast_to_int(attr):
-                attributes_array[i][j] = int(attr)
-            elif values_hash.get(attr, 0):
-                attributes_array[i][j] = values_hash[attr]
-            else:
-                values_hash[attr] = len(values_hash)
-                attributes_array[i][j] = values_hash[attr]
+def vectorise(attributes: np.ndarray) -> np.ndarray:
+    values_hash = {}
+    attributes_out = np.empty(attributes.shape[0])
+    for i, attr in enumerate(attributes):
+        if can_cast_to_int(attr):
+            attributes_out[i] = int(attr)
+        elif values_hash.get(attr, 0):
+            attributes_out[i] = values_hash[attr]
+        else:
+            values_hash[attr] = len(values_hash)
+            attributes_out[i] = values_hash[attr]
+    
+    if values_hash:
+        with open("main/data/values_dump.txt", "a") as f:
+            values_to_write = "\n".join([f"{v}: {k}" for (v, k) in values_hash.items()])
+            f.write("\n" + values_to_write + "\n")
         
-        if values_hash:
-            with open("main/data/values_dump.txt", "a") as f:
-                values_to_write = "\n".join([f"{v}: {k}" for (v, k) in values_hash.items()])
-                f.write(f"values for attribute at index {i}" + "\n" + values_to_write + "\n")
-        
-    return attributes_array
+    return attributes_out
 
-def normalise(attributes_array: np.ndarray) -> np.ndarray:
-    # normalise each dimension to have a range of 1
-    array_out = np.array([np.empty(arr.shape[0], dtype=float) for arr in attributes_array])
-    for i, attributes in enumerate(attributes_array):
-        mx, mn = np.max(attributes), np.min(attributes)
-        if not mx: mx += 1
-        for j, attr in enumerate(attributes):
-            rnge = mx - mn if mx - mn else mx
-            array_out[i][j] = (attr - mn) / rnge
-    return array_out
+def normalise(attributes: np.ndarray) -> np.ndarray:
+    # normalise dimension to have a range of 1
+    mx, mn = np.max(attributes), np.min(attributes)
+    if not mx: mx += 1
+    rnge = mx - mn if mx - mn else mx
+    norm = lambda a: (a - mn) / rnge
+    return norm(attributes)
 
 
 

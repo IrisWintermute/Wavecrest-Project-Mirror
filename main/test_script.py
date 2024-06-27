@@ -1,10 +1,11 @@
 
 # importing library
-import numpy 
+import numpy as np
  
 # initializing list
-lst = [1, 7, 0, 6, 2, 5, 6]
+lst = np.arange(20).reshape(4,5)
+print(lst)
 
-arr = numpy.array(lst, dtype=int)
+arr = np.apply_along_axis(np.average, 0, lst)
 
 print(arr)

@@ -21,21 +21,23 @@ def main():
     data_array = np.asarray(list(map(to_record, csv_list)))
 
     # enrich and truncate records to optimise for clustering and fraud detection
-    data_array_preprocessed = np.apply_over_axes(preprocess, data_array, 1)
+    data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
 
-    data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
+    #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
-    vector_array = vectorise(data_array_preprocessed)
+    with open("main/data/values_dump.txt", "w") as f:
+        f.write("")
+    vector_array = np.apply_along_axis(vectorise, 0, data_array)
     del data_array_preprocessed
     print("Data vectorised.")
 
-    vector_array_n = normalise(vector_array)
+    vector_array_n = np.apply_along_axis(normalise, 0, data_array)
     del vector_array
     print("Data normalised.")
 
-    vector_array_n = diagonal_mirror(vector_array_n)
+    #vector_array_n = diagonal_mirror(vector_array_n)
 
     while True:
         start = int(input("Enter start of k search range: "))
