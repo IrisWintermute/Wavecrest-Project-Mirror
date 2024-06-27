@@ -34,11 +34,11 @@ def main():
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
-    vector_array = np.apply_along_axis(vectorise, 0, data_array)
+    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")
 
-    vector_array_n = np.apply_along_axis(normalise, 0, data_array)
+    vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
 
