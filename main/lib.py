@@ -108,15 +108,14 @@ def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> flo
     clusters = centroids.shape[0]
     overall_centroid = np.apply_along_axis(np.average, 0, centroids)[0]
     # calculate between-cluster sum of squares
-    bcss = 0
+    bcss, wcss = 0, 0
     for i, centroid in enumerate(centroids):
-        vectors_in_centroid = len([vector for vector in clustered_data if vector[-1] == i]) 
-        bcss += vectors_in_centroid * (distance_to_centroid(centroid, overall_centroid) ** 2)
-    # calculate within-cluster sum of squares
-    wcss = 0
-    for i, centroid in enumerate(centroids):
-        vectors_in_centroid = [vector for vector in clustered_data if vector[-1] == i]
+        fltr = np.array([i])
+        vectors_in_centroid = clustered_data[np.in1d(clustered_data[:, -1], fltr)]
+        # calculate within-cluster sum of squares
         wcss += np.sum([distance_to_centroid(vec[:vec.shape[0] - 1], centroid) ** 2 for vec in vectors_in_centroid])
+        # calculate between-cluster sum of squares
+        bcss += vectors_in_centroid.shape[0] * (distance_to_centroid(centroid, overall_centroid) ** 2)
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
     
