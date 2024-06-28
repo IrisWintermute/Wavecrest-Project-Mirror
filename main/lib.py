@@ -259,6 +259,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     return preprocessed_record
 
 def vectorise(attributes: np.ndarray) -> np.ndarray:
+    """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
     values_hash = {}
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
@@ -338,6 +339,7 @@ def profile_m(func):
     
 """ 
 def extract_ip_data(ip_address: str) -> dict[str]:
+    someone got angy at league
     response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
     data = [
         response.get("city"),
