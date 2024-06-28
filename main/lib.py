@@ -15,7 +15,8 @@ def kmeans(wrap: tuple) -> np.ndarray:
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
     # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
-    centroids = np.array([data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)])
+    centroid_list = [data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)]
+    centroids = np.stack(centroid_list)
 
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
@@ -38,7 +39,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         for i, record in enumerate(data_array):
             (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
             closest_centroid_index = index_1
-            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-6: 
+            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
                 o_hash[record[-1]] -= 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
@@ -53,7 +54,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         for i, _ in enumerate(centroids):
             fltr = np.array([i])
             owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
-            owned_records = np.array([record[0:record.shape[0] - 1] for record in owned_records])
+            owned_records = np.delete(owned_records, -1, 1)
             if owned_records.any(): 
                 centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
 

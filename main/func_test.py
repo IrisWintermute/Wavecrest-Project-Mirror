@@ -36,8 +36,8 @@ def test_preprocessing():
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coords(1000, 0, 50, 0, 50, 45, 0.1)
-    k_range = [k for k in range(3, 50)]
+    data = get_pseudorandom_coords(10000, 0, 1, 0, 1, 25, 0.05)
+    k_range = [k for k in range(3, 30)]
     k_optimal = np.array([np.zeros(2) for _ in k_range])
     for i, k in enumerate(k_range):
         print(f"k: {k}")
