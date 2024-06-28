@@ -107,8 +107,7 @@ def main():
 
     with open("main/data/output_data_vectorised.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
-        last = records.pop()
-        records.append(last.replace("\n", ""))
+        records[-1] = ""
         f.writelines(records)
     print("Clustered and vectorised data written to output_data_vectorised.txt.")
 
@@ -118,8 +117,7 @@ def main():
         o_array = o_array.astype(str)
         [print(str(v)) for v in o_array]
         records_r = [",".join([str(attr) for attr in vector]) for vector in data_array]
-        last = records.pop()
-        records.append(last.replace("\n", ""))
+        records_r[-1] = ""
         records = [",".join([records_r[i], str(v)]) for i, v in enumerate(o_array)]
         f.writelines(records)
     print("Clustered data written to output_data.txt.")
