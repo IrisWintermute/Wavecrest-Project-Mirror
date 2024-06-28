@@ -116,9 +116,9 @@ def main():
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
         o_array = o_array.astype(str)
         [print(str(v)) for v in o_array]
-        records_r = [",".join([str(attr) for attr in vector]) for vector in data_array]
-        records_r[-1] = ""
-        records = [",".join([records_r[i], str(v)]) for i, v in enumerate(o_array)]
+        records = [",".join([str(attr) for attr in vector]) for vector in data_array]
+        for i, v in enumerate(o_array):
+            records[i][-1] = v
         f.writelines(records)
     print("Clustered data written to output_data.txt.")
     print(records[0])
