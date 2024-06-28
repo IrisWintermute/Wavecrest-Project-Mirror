@@ -9,7 +9,7 @@ import os
 from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
-#@profile
+@profile
 def main():
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
@@ -81,9 +81,7 @@ def main():
         if ch_index > clustered_data_optimal[1]:
             clustered_data_optimal = (clustered_data, ch_index, k)"""
 
-    print(graph_data)
     graph_data = sorted(graph_data, key=lambda x: x[0])
-    print(graph_data)
     graph_array = np.stack(graph_data, axis=0).T
     (x, y) = tuple(np.split(graph_array, 2, axis=0))
 
