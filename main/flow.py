@@ -102,19 +102,17 @@ def main():
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
-    for i, vec in enumerate(clustered_data_optimal[0]):
-        np.append(data_array[i], vec[-1])
+    # for i, vec in enumerate(clustered_data_optimal[0]):
+        # np.append(data_array[i], vec[-1])
 
     with open("main/data/output_data_vectorised.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
-        data = "\n".join(records)
-        f.write(data)
+        f.writelines(records)
     print("Clustered and vectorised data written to output_data_vectorised.txt.")
 
     with open("main/data/output_data.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) + str(clustered_data_optimal[0][i][-1]) for i, vector in enumerate(data_array)]
-        data = "\n".join(records)
-        f.write(data)
+        f.writelines(records)
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
