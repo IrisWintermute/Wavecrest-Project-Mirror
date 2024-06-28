@@ -119,6 +119,7 @@ def main():
         records = [records_r[i] + str(v) for i, v in enumerate(o_array)]
         f.writelines(records)
     print("Clustered data written to output_data.txt.")
+    print(records[0])
 
 if __name__ == "__main__":
     main()
