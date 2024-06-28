@@ -58,7 +58,7 @@ def profile_m(func):
     return wrapper
 
 # cluster data using k-means algorithm
-@profile_t_plot
+#@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
     (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
