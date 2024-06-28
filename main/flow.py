@@ -81,7 +81,7 @@ def main():
         if ch_index > clustered_data_optimal[1]:
             clustered_data_optimal = (clustered_data, ch_index, k)"""
 
-    #graph_data = sorted(graph_data, key=lambda x: x[0])
+    graph_data = sorted(graph_data, key=lambda x: x[0])
     graph_array = np.stack(graph_data, axis=0).T
     (x, y) = tuple(np.split(graph_array, 2, axis=0))
 
