@@ -112,7 +112,7 @@ def main():
     print("Clustered and vectorised data written to output_data_vectorised.txt.")
 
     with open("main/data/output_data.txt", "w") as f:
-        records = [",".join([str(attr) for attr in vector]) for vector in data_array]
+        records = [",".join([str(attr) for attr in vector]) + str(clustered_data_optimal[0][i][-1]) for i, vector in enumerate(data_array)]
         data = "\n".join(records)
         f.write(data)
     print("Clustered data written to output_data.txt.")
