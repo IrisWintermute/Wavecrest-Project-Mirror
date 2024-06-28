@@ -45,7 +45,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
 
         # stop algorithm when <1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
-        print(f"    Iter {iter} ({reassignments} reassignments)")
+        print(f"    Iter {iter} ({reassignments} reassignments) with {k} clusters")
         iter += 1
 
         # calculate new centroid coordinates
