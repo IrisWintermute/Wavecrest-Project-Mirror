@@ -118,7 +118,7 @@ def main():
         [print(str(v)) for v in o_array]
         records = [",".join([str(attr) for attr in vector]) for vector in data_array]
         for i, v in enumerate(o_array):
-            records[i][-1] = str(v)
+            records[i].append(str(v))
         f.writelines(records)
     print("Clustered data written to output_data.txt.")
     print(records[0])
