@@ -112,7 +112,7 @@ def main():
 
     with open("main/data/output_data.txt", "w") as f:
         get_last = lambda v: v[-1]
-        o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0]).T
+        o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
         print(o_array)
         records = [",".join([str(attr) for attr in vector]) + str(o_array[i]) for i, vector in enumerate(data_array)]
         f.writelines(records)
