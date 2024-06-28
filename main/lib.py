@@ -110,7 +110,8 @@ def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
 def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
     vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
     clusters = centroids.shape[0]
-    overall_centroid = np.apply_along_axis(np.average, 0, centroids)[0]
+    overall_centroid = np.apply_along_axis(np.average, 0, centroids)
+    print(overall_centroid)
     # calculate between-cluster sum of squares
     bcss, wcss = 0, 0
     for i, centroid in enumerate(centroids):
