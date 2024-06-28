@@ -36,8 +36,9 @@ def kmeans(wrap: tuple) -> np.ndarray:
             else: o_hash[c] = 1
         # assign each data point to closest centroid
         for i, record in enumerate(data_array):
-            (_, closest_centroid_index) = get_closest_centroid(record[:record.shape[0] - 1], centroids)
-            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1: 
+            (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
+            closest_centroid_index = index_1
+            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-6: 
                 o_hash[record[-1]] -= 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
@@ -73,7 +74,7 @@ def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
         square_distances = {}
         for i, record in enumerate(data):
             if i not in chosen_indexes:
-                (dist_to_nearest_centroid, _) = get_closest_centroid(record, centroids)
+                (dist_to_nearest_centroid, _), _ = get_2_closest_centroids(record, centroids)
                 square_distances[i] = dist_to_nearest_centroid ** 2
 
         sum_of_squares = sum([v for v in square_distances.values()])
@@ -89,11 +90,11 @@ def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
     # calculate distance between record and centroid
     return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
-def get_closest_centroid(record: np.ndarray, centroids: np.ndarray) -> tuple:
+def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
     # returns tuple of distance between record and nearest centroid, and index of nearest centroid
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     distances.sort()
-    return distances[0]
+    return distances[0], distances[1]
 
 """ def average(records: np.ndarray) -> np.ndarray:
     # reduce list of input vectors into a single vector representing the average of input vectors
