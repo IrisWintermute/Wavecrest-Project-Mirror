@@ -55,17 +55,20 @@ def main():
         step = int(input("Enter step of k search range: "))
         if (end - start) >= step: break
 
+    with open("main/data/plot.txt", "w") as f:
+        f.write("")
+
     clustered_data_optimal = (None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
-    graph_data = []
+    # graph_data = []
     cores = os.cpu_count()
     lock = Lock()
     with Pool(processes=cores) as p:
         for k, clustered_data, centroids in p.imap_unordered(kmeans, k_range_wrap):
             with lock:
                 ch_index = optimal_k_decision(clustered_data, centroids)
-                graph_data.append(np.array([k, ch_index]))
+                # graph_data.append(np.array([k, ch_index]))
                 print(f"Evaluated data set with {k} clusters.")
                 if ch_index > clustered_data_optimal[1]:
                     clustered_data_optimal = (clustered_data, ch_index, k)
@@ -81,14 +84,22 @@ def main():
         if ch_index > clustered_data_optimal[1]:
             clustered_data_optimal = (clustered_data, ch_index, k)"""
 
-    graph_data = sorted(graph_data, key=lambda x: x[0])
-    graph_array = np.stack(graph_data, axis=0).T
-    (x, y) = tuple(np.split(graph_array, 2, axis=0))
-
-    plt.plot(x[0], y[0])
+    # graph_data = sorted(graph_data, key=lambda x: x[0])
+    # graph_array = np.stack(graph_data, axis=0).T
+    # (x, y) = tuple(np.split(graph_array, 2, axis=0))
+    with open("main/data/plot.txt", "r") as f:
+        y = f.read().split(",")[1:]
+    y = [float(v) for v in y]
+    x = [v for v in range(start, end + 1, step)]
+    # plt.plot(x[0], y[0])
+    # plt.xlabel("Number of clusters")
+    # plt.ylabel("CH Index")
+    # plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+    # plt.savefig("main/data/savefig.png")
+    plt.plot(x, y, "r-")
     plt.xlabel("Number of clusters")
-    plt.ylabel("CH Index")
-    plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+    plt.ylabel("Execution time (s)")
+    plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     plt.savefig("main/data/savefig.png")
 
     for i, vec in enumerate(clustered_data_optimal[0]):

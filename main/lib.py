@@ -8,8 +8,57 @@ import time
 import os
 import psutil
 
+def profile_t(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        t = end - start
+        print(f"{func.__name__}: execution time: {t}")
+        return result
+    return wrapper
+
+def profile_t_plot(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        t = end - start
+        with open("main/data/plot.txt", "a") as f:
+            f.write("," + str(t)[0:6])
+        return result
+    return wrapper 
+
+def profile_m_plot(func):
+    def wrapper(*args, **kwargs):
+        start = process_memory()
+        result = func(*args, **kwargs)
+        end = process_memory()
+        m = end - start
+        with open("main/data/plot.txt", "a") as f:
+            f.write("," + str(m))
+        return result
+    return wrapper 
+
+# inner psutil function
+def process_memory():
+    process = psutil.Process(os.getpid())
+    mem_info = process.memory_info()
+    return mem_info.rss
+
+def profile_m(func):
+    def wrapper(*args, **kwargs):
+
+        start = process_memory()
+        result = func(*args, **kwargs)
+        end = process_memory()
+        m = end - start
+        print(f"{func.__name__}:consumed memory: {m}")
+        return result
+    return wrapper
+
 # cluster data using k-means algorithm
-# @profile_t_plot
+@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
     (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
@@ -284,56 +333,6 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     rnge = mx - mn if mx - mn else mx
     norm = lambda a: (a - mn) / rnge
     return norm(attributes)
-
-
-def profile_t(func):
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        result = func(*args, **kwargs)
-        end = time.perf_counter()
-        t = end - start
-        print(f"{func.__name__}: execution time: {t}")
-        return result
-    return wrapper
-
-def profile_t_plot(func):
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        result = func(*args, **kwargs)
-        end = time.perf_counter()
-        t = end - start
-        with open("./data/plot.txt", "a") as f:
-            f.write("," + str(t)[0:6])
-        return result
-    return wrapper 
-
-def profile_m_plot(func):
-    def wrapper(*args, **kwargs):
-        start = process_memory()
-        result = func(*args, **kwargs)
-        end = process_memory()
-        m = end - start
-        with open("./data/plot.txt", "a") as f:
-            f.write("," + str(m))
-        return result
-    return wrapper 
-
-# inner psutil function
-def process_memory():
-    process = psutil.Process(os.getpid())
-    mem_info = process.memory_info()
-    return mem_info.rss
-
-def profile_m(func):
-    def wrapper(*args, **kwargs):
-
-        start = process_memory()
-        result = func(*args, **kwargs)
-        end = process_memory()
-        m = end - start
-        print(f"{func.__name__}:consumed memory: {m}")
-        return result
-    return wrapper
     
     
 """ 

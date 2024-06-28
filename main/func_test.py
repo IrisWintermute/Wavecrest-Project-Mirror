@@ -92,21 +92,24 @@ def plot_profile():
     plt.legend([f"k={k}" for k in k_range], loc="upper right")
     plt.show()
     '''
-    with open("./data/plot.txt", "w") as f:
+    with open("main/data/plot.txt", "w") as f:
         f.write("")
-    data = get_pseudorandom_coords(1000, 0, 20, 0, 20, 50, 0.2)
+    data = get_pseudorandom_coords(10000, 0, 20, 0, 20, 50, 0.2)
     x = [k for k in range(30, 60, 1)]
     for i, k in enumerate(x):
         wrap = (k, data)
         _, _, _ = kmeans(wrap)
         print(x[i])
 
-    with open("./data/plot.txt", "r") as f:
+    with open("main/data/plot.txt", "r") as f:
         y = f.read().split(",")[1:]
     y = [float(v) for v in y]
 
-    plt.scatter(x, y, color=marker[i % len(marker)][0])
-    plt.show()
+    plt.plot(x, y, "r-")
+    plt.xlabel("Number of clusters")
+    plt.ylabel("Execution time (s)")
+    plt.title(f"Execution time evalutation for kmeans() for {len(data)} pseudorandom records.")
+    plt.savefig("main/data/savefig.png")
 
 def regex_test():
     string = '"horse,donkey",mule,0,6,"",petrol,"camel, spine"'
@@ -117,4 +120,4 @@ def regex_test():
     print(string)
 
 if __name__ == "__main__":
-    test_clustering()
+    plot_profile()
