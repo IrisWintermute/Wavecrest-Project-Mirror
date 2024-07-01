@@ -48,7 +48,7 @@ def main():
     del vector_array
     print("Data normalised.")
 
-    for array in vector_array:
+    for array in vector_array_n:
         print(array)
 
     #vector_array_n = diagonal_mirror(vector_array_n)
