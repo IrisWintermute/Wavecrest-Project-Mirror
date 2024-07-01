@@ -273,18 +273,23 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 try:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                    p_int = re.sub("[ +]", "", p_int)
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
                 preprocessed_record[3] = (p_int)
 
         elif attribute == "Called Number":
             num = record[i]
-            if num != "anonymous":
-                # convert number to international format
+
+            if num == "anonymous":
+                preprocessed_record[4] = (0)
+                preprocessed_record[5] = ("N/a")
+            else:
+                    # convert number to international format
                 try:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    p_int = re.sub("[ +]", "", p_int) 
+                    p_int = re.sub("[ +]", "", p_int)
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
                 preprocessed_record[4] = (p_int)
@@ -292,10 +297,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 # preprocessed_record[0] = (get_destination(str(p_int)[1:]))
                 # called number destination contained in new CDR
                 preprocessed_record[5] = (record[i + 1])
-            else:
-                preprocessed_record[4] = (0)
-                preprocessed_record[5] = ("N/a")
-    
+
         elif attribute == "IG Packet Received":
             try:
                 difference = float(record[i - 40]) - float(record[i])
