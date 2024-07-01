@@ -32,8 +32,8 @@ def main():
     # for i in range(1, 10):
     #     print(data_array_preprocessed[i])
 
-    for array in data_array_preprocessed:
-        print(array[8])
+    # for array in data_array_preprocessed:
+    #     print(array[8])
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
@@ -112,7 +112,10 @@ def main():
     # plt.ylabel("Execution time (s)")
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
-    plot_data(data_array_preprocessed, vector_array_n, 8)
+
+    # plot_single_data(data_array_preprocessed, vector_array_n, 8)
+
+    plot_data(vector_array)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])

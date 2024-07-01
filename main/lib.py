@@ -9,10 +9,13 @@ import os
 import psutil
 import matplotlib.pyplot as plt
 
-def plot_data(preprocessed_array, vector_array, test_index):
-    """ for i, a in enumerate(diagonal_mirror(vector_array)):
+def plot_data(vector_array):
+    for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
-    plt.savefig("main/data/savefig.png") """
+    plt.savefig("main/data/savefig.png")
+
+def plot_single_data(preprocessed_array, vector_array, test_index):
+    """  """
     x = list(set(list(vector_array[:, test_index])))
     print(x)
     hash = dict([(vx, 0) for vx in x])
