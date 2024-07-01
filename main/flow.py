@@ -98,11 +98,11 @@ def main():
     graph_array = np.stack(graph_data, axis=0).T
     (x, y) = tuple(np.split(graph_array, 2, axis=0))
 
-    plt.plot(x[0], y[0])
-    plt.xlabel("Number of clusters")
-    plt.ylabel("CH Index")
-    plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
-    plt.savefig("main/data/savefig.png")
+    # plt.plot(x[0], y[0])
+    # plt.xlabel("Number of clusters")
+    # plt.ylabel("CH Index")
+    # plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+    # plt.savefig("main/data/savefig.png")
 
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
