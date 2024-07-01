@@ -97,16 +97,17 @@ def main():
     graph_data = sorted(graph_data, key=lambda x: x[0])
     graph_array = np.stack(graph_data, axis=0).T
     (x, y) = tuple(np.split(graph_array, 2, axis=0))
+
+    plt.plot(x[0], y[0])
+    plt.xlabel("Number of clusters")
+    plt.ylabel("CH Index")
+    plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+    plt.savefig("main/data/savefig.png")
+    
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
     # y = [float(v) for v in y]
     # x = [v for v in range(start, end + 1, step)]
-    # plt.plot(x[0], y[0])
-    # plt.xlabel("Number of clusters")
-    # plt.ylabel("CH Index")
-    # plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
-    # plt.savefig("main/data/savefig.png")
-
     # plt.plot(x, y, "r-")
     # plt.xlabel("Number of clusters")
     # plt.ylabel("Execution time (s)")
@@ -115,7 +116,7 @@ def main():
 
     # plot_single_data(data_array_preprocessed, vector_array_n, 8)
 
-    plot_data(vector_array_n)
+    # plot_data(vector_array_n)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])
