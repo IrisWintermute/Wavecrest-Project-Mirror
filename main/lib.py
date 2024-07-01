@@ -9,17 +9,17 @@ import os
 import psutil
 import matplotlib.pyplot as plt
 
-def plot_data(vector_array):
-    for i, a in enumerate(diagonal_mirror(vector_array)):
+def plot_data(vector_array_n):
+    for i, a in enumerate(diagonal_mirror(vector_array_n)):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png")
 
-def plot_single_data(preprocessed_array, vector_array, test_index):
+def plot_single_data(preprocessed_array, vector_array_n, test_index):
     """  """
-    x = list(set(list(vector_array[:, test_index])))
+    x = list(set(list(vector_array_n[:, test_index])))
     print(x)
     hash = dict([(vx, 0) for vx in x])
-    for v in vector_array[:, test_index]:
+    for v in vector_array_n[:, test_index]:
         if hash.get(v):
             hash[v] += 1
         else:
@@ -32,7 +32,7 @@ def plot_single_data(preprocessed_array, vector_array, test_index):
     plt.scatter(x, y)
     plt.xlabel("Range of values")
     plt.ylabel("Number of occurences")
-    plt.title(f"Frequency range of values at index {test_index} across {vector_array.shape[0]} records.")
+    plt.title(f"Frequency range of values at index {test_index} across {vector_array_n.shape[0]} records.")
     plt.savefig("main/data/savefig.png")
     
 
