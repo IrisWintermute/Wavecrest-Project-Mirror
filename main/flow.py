@@ -112,7 +112,7 @@ def main():
     # plt.ylabel("Execution time (s)")
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
-    plot_data(data_array_preprocessed, vector_array_n, 16)
+    plot_data(data_array_preprocessed, vector_array_n, 8)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])
