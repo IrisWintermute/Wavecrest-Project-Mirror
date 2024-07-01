@@ -29,6 +29,8 @@ def main():
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
 
+    print(data_array_preprocessed)
+
     for array in data_array_preprocessed:
         print(array)
 
