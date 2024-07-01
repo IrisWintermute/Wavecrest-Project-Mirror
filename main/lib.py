@@ -13,14 +13,15 @@ def plot_data(vector_array):
     """ for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png") """
-    x = np.array(list(set(list(vector_array[:, 14]))))
+    x = list(set(list(vector_array[:, 14])))
     print(x)
-    y = np.zeros(vector_array.shape[0])
-    for i in range(vector_array.shape[0]):
-        if y[i]:
-            y[i] += 1
+    hash = dict([(vx, 0) for vx in x])
+    for v in vector_array[:, 14]:
+        if hash.get(v):
+            hash[v] += 1
         else:
-            y[i] = 1
+            hash[v] = 1
+    y = [val for val in hash.values()]
     plt.scatter(x, y)
     plt.savefig("main/data/savefig.png")
     
