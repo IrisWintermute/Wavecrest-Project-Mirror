@@ -44,7 +44,8 @@ def main():
     print("Data normalised.")
     plot_data(vector_array_n)
 
-    print(vector_array_n)
+    for array in vector_array_n:
+        print(array)
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
