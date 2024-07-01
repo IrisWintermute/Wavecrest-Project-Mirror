@@ -100,15 +100,15 @@ def kmeans(wrap: tuple) -> np.ndarray:
     centroids_new = centroids.copy()
     reassignments = 0
 
-    def reassign(record):
-        global centroids
-        global reassignments
-        (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
-        closest_centroid_index = index_1
-        if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
-            o_hash[record[-1]] -= 1
-            data_array[i,-1] = closest_centroid_index
-            reassignments += 1
+    def recalc_centroids(centroid):
+        global data_array
+        fltr = np.array([i])
+        owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
+        owned_records = np.delete(owned_records, -1, 1)
+        if owned_records.any(): 
+            return np.apply_along_axis(np.average, 0, owned_records)
+        else:
+            return centroid
 
     iter = 0
     while True:
@@ -123,7 +123,13 @@ def kmeans(wrap: tuple) -> np.ndarray:
             if o_hash.get(c): o_hash[c] += 1
             else: o_hash[c] = 1
         # assign each data point to closest centroid
-        np.apply_along_axis(reassign, 1, data_array)
+        for i, record in enumerate(data_array):
+            (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
+            closest_centroid_index = index_1
+            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
+                o_hash[record[-1]] -= 1
+                data_array[i,-1] = closest_centroid_index
+                reassignments += 1
 
         # stop algorithm when <1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
@@ -131,12 +137,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         iter += 1
 
         # calculate new centroid coordinates
-        for i, _ in enumerate(centroids):
-            fltr = np.array([i])
-            owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
-            owned_records = np.delete(owned_records, -1, 1)
-            if owned_records.any(): 
-                centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
+        centroids_new = np.apply_along_axis(recalc_centroids, 1, centroids)
 
         centroids = centroids_new
 
