@@ -46,6 +46,8 @@ def main():
     # for i in range(1, 10):
     #     print(vector_array[i])
 
+    plot_data(vector_array)
+
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
@@ -114,8 +116,6 @@ def main():
     # plt.savefig("main/data/savefig.png")
 
     # plot_single_data(data_array_preprocessed, vector_array_n, 8)
-
-    plot_data(vector_array)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])
