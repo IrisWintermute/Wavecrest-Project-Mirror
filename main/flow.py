@@ -14,7 +14,7 @@ def main():
     # mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
-            csv_list = f.readlines(int(0.00007))
+            csv_list = f.readlines(int(0.00007 * 1024**3))
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     # data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
