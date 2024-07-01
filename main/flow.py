@@ -32,6 +32,9 @@ def main():
     for i in range(1, 10):
         print(data_array_preprocessed[i])
 
+    for array in data_array_preprocessed:
+        print(array[14])
+
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
