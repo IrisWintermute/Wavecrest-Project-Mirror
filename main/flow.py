@@ -45,7 +45,7 @@ def main():
     print("Data vectorised.")  
 
     for array in vector_array:
-        print(np.dtype(array))
+        print(array.dtype)
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
