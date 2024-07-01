@@ -17,7 +17,6 @@ def plot_data(vector_array_n):
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
     """  """
     x = list(set(list(vector_array_n[:, test_index])))
-    print(x)
     hash = dict([(vx, 0) for vx in x])
     for v in vector_array_n[:, test_index]:
         if hash.get(v):
