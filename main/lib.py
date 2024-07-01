@@ -23,7 +23,9 @@ def plot_data(preprocessed_array, vector_array, test_index):
             hash[v] = 1
     y = [val for val in hash.values()]
     mode = preprocessed_array[y.index(max(y)), test_index]
+    chode = preprocessed_array[x.index(max(x)), test_index]
     print(f"Most common occurence: {mode}")
+    print(f"Highest appearence occurence: {chode}")
     plt.scatter(x, y)
     plt.xlabel("Range of values")
     plt.ylabel("Number of occurences")
