@@ -25,9 +25,6 @@ def main():
     data_array = np.array(csv_nested_list, dtype=object)
     del csv_nested_list
 
-    for array in data_array:
-        print(array)
-
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
@@ -50,6 +47,9 @@ def main():
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
+
+    for array in vector_array:
+        print(array)
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
@@ -104,7 +104,7 @@ def main():
     # plt.ylabel("CH Index")
     # plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
-    
+
     # plt.plot(x, y, "r-")
     # plt.xlabel("Number of clusters")
     # plt.ylabel("Execution time (s)")
@@ -124,13 +124,11 @@ def main():
         get_last = lambda v: v[-1]
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
         o_array = o_array.astype(str)
-        [print(str(v)) for v in o_array]
         records = [",".join([str(attr) for attr in vector[:128]]) for vector in data_array]
         for i, v in enumerate(o_array):
             records[i] += (',"",' + str(v))
         f.writelines(records)
     print("Clustered data written to output_data.txt.")
-    print(records[0])
 
 if __name__ == "__main__":
     main()
