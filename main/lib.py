@@ -297,10 +297,10 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 try:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    p_int = re.sub("[ +]", "", p_int)
+                    p_int = re.sub("[ +-]", "", p_int)
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
-                preprocessed_record[3] = (p_int)
+                preprocessed_record[3] = (p_int + "0" * (13 - len(p_int)))[:13]
 
         elif attribute == "Called Number":
             num = record[i]
@@ -313,10 +313,10 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 try:
                     p = phonenumbers.parse("+" + num, None)
                     p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                    p_int = re.sub("[ +]", "", p_int)
+                    p_int = re.sub("[ +-]", "", p_int)
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
-                preprocessed_record[4] = (p_int)
+                preprocessed_record[4] = (p_int + "0" * (13 - len(p_int)))[:13]
                 # get destination from number
                 # preprocessed_record[0] = (get_destination(str(p_int)[1:]))
                 # called number destination contained in new CDR
