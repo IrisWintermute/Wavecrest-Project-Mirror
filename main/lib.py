@@ -9,8 +9,7 @@ import os
 import psutil
 import matplotlib.pyplot as plt
 
-def plot_data(preprocessed_array, vector_array):
-    test_index = 15
+def plot_data(preprocessed_array, vector_array, test_index):
     """ for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png") """
