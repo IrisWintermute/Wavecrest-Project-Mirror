@@ -29,6 +29,9 @@ def main():
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
 
+    for array in data_array_preprocessed:
+        print(array)
+
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
@@ -37,6 +40,9 @@ def main():
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
+
+    for arcray in vector_array:
+        print(arcray)
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
