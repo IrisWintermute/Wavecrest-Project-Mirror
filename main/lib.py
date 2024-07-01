@@ -10,9 +10,20 @@ import psutil
 import matplotlib.pyplot as plt
 
 def plot_data(vector_array):
-    for i, a in enumerate(diagonal_mirror(vector_array)):
+    """ for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
+    plt.savefig("main/data/savefig.png") """
+    x = vector_array[:, 14]
+    y = np.zeros(28)
+    for i in range(x):
+        if y[i]:
+            y[i] += 1
+        else:
+            y[i] = 1
+    plt.scatter(x, y)
     plt.savefig("main/data/savefig.png")
+    
+
 
 def profile_t(func):
     def wrapper(*args, **kwargs):
