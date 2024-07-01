@@ -33,7 +33,7 @@ def main():
     #     print(data_array_preprocessed[i])
 
     for array in data_array_preprocessed:
-        print(array[15])
+        print(array[16])
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
