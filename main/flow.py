@@ -34,6 +34,7 @@ def main():
 
     for array in data_array_preprocessed:
         print(array[14])
+        print(array.shape[0])
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
