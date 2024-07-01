@@ -58,17 +58,17 @@ def main():
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
-    while True:
-        start = int(input("Enter start of k search range: "))
-        if start < len(vector_array_n): break
-    while True:
-        end = int(input("Enter end of k search range: "))
-        if end > start and end < len(vector_array_n): break
-    while True:
-        step = int(input("Enter step of k search range: "))
-        if (end - start) >= step: break
-
     """"""
+    # while True:
+    #     start = int(input("Enter start of k search range: "))
+    #     if start < len(vector_array_n): break
+    # while True:
+    #     end = int(input("Enter end of k search range: "))
+    #     if end > start and end < len(vector_array_n): break
+    # while True:
+    #     step = int(input("Enter step of k search range: "))
+    #     if (end - start) >= step: break
+
     # clustered_data_optimal = (None, 0, start)
     # print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     # k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
