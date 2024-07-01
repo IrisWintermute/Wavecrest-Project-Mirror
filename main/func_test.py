@@ -121,3 +121,12 @@ def regex_test():
 
 if __name__ == "__main__":
     plot_profile()
+
+
+# to remove
+# EG Codec, IG Codec
+# EG dest group
+# PDD
+# ReleaseSource
+# Row Type
+# RTP Media
