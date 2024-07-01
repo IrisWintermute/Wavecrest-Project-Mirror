@@ -25,6 +25,9 @@ def main():
     data_array = np.array(csv_nested_list, dtype=object)
     del csv_nested_list
 
+    for array in data_array:
+        print(array[1])
+
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
