@@ -333,7 +333,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 print(record)
 
         elif attribute == "Prefix":
-            preprocessed_record[8] = record[i] + "0" * (5 - len(record[i]))
+            preprocessed_record[8] = (record[i] + "0" * (7 - len(record[i])))[:7]
 
         elif attribute in persist:
             j = persist.index(attribute)
