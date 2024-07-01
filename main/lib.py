@@ -88,17 +88,27 @@ def profile_m(func):
 # cluster data using k-means algorithm
 #@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
+
     (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
-    # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
     centroid_list = [data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)]
     centroids = np.stack(centroid_list)
-
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
+    reassignments = 0
+
+    def reassign(record):
+        global centroids
+        global reassignments
+        (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
+        closest_centroid_index = index_1
+        if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
+            o_hash[record[-1]] -= 1
+            data_array[i,-1] = closest_centroid_index
+            reassignments += 1
 
     iter = 0
     while True:
@@ -113,14 +123,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
             if o_hash.get(c): o_hash[c] += 1
             else: o_hash[c] = 1
         # assign each data point to closest centroid
-        for i, record in enumerate(data_array):
-            (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
-            closest_centroid_index = index_1
-            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
-                o_hash[record[-1]] -= 1
-                data_array[i,-1] = closest_centroid_index
-                reassignments += 1
-        #print(np.apply_along_axis(get_last, 1, data_array).T)
+        np.apply_along_axis(reassign, 1, data_array)
 
         # stop algorithm when <1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
