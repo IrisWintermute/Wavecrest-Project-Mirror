@@ -332,9 +332,12 @@ def preprocess(record: np.ndarray) -> np.ndarray:
             except ValueError:
                 print(record)
 
+        elif attribute == "Prefix":
+            preprocessed_record[8] = record[i] + "0" * (len(record[i]) - 5)
+
         elif attribute in persist:
             j = persist.index(attribute)
-            preprocessed_record[j + 8] = record[i]
+            preprocessed_record[j + 9] = record[i]
     return preprocessed_record
 
 def vectorise(attributes: np.ndarray) -> np.ndarray:
