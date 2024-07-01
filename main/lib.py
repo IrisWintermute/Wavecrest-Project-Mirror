@@ -13,10 +13,10 @@ def plot_data(vector_array):
     """ for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png") """
-    x = vector_array[:, 14]
+    x = np.array(list(set(list(vector_array[:, 14]))))
     print(x)
-    y = np.zeros(x.shape[0])
-    for i in range(x.shape[0]):
+    y = np.zeros(vector_array.shape[0])
+    for i in range(vector_array.shape[0]):
         if y[i]:
             y[i] += 1
         else:
