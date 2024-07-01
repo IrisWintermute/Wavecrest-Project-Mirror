@@ -9,7 +9,7 @@ import os
 import psutil
 import matplotlib.pyplot as plt
 
-def plot_data(vector_array):
+def plot_data(preprocessed_array, vector_array):
     test_index = 15
     """ for i, a in enumerate(diagonal_mirror(vector_array)):
         plt.scatter(np.array([i] * a.shape[0]), a)
@@ -23,6 +23,8 @@ def plot_data(vector_array):
         else:
             hash[v] = 1
     y = [val for val in hash.values()]
+    mode = preprocessed_array[y.index(max(y)), test_index]
+    print(f"Most common occurence: {mode}")
     plt.scatter(x, y)
     plt.xlabel("Range of values")
     plt.ylabel("Number of occurences")

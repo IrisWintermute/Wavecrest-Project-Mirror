@@ -41,7 +41,6 @@ def main():
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
-    del data_array_preprocessed
     print("Data vectorised.")  
 
     # for i in range(1, 10):
@@ -113,7 +112,7 @@ def main():
     # plt.ylabel("Execution time (s)")
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
-    plot_data(vector_array_n)
+    plot_data(data_array_preprocessed, vector_array_n)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])
