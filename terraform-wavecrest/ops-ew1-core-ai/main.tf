@@ -68,6 +68,7 @@ module "app" {
     python3 -m pip install matplotlib
     python3 -m pip install psutil
     python3 -m pip install numpy
+    python3 -m pip install memory_profiler
 
     EOF
               # Additional setup and commands can be added before EOF
