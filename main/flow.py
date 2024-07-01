@@ -32,11 +32,11 @@ def main():
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
 
-    for i in range(1, 10):
-        print(data_array_preprocessed[i])
+    # for i in range(1, 10):
+    #     print(data_array_preprocessed[i])
 
-    # for array in data_array_preprocessed:
-    #     print(array[8])
+    for array in data_array_preprocessed:
+        print(array[3])
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
