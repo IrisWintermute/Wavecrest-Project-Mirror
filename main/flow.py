@@ -103,7 +103,7 @@ def main():
     plt.ylabel("CH Index")
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
     plt.savefig("main/data/savefig.png")
-    
+
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
     # y = [float(v) for v in y]
@@ -114,7 +114,7 @@ def main():
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
-    # plot_single_data(data_array_preprocessed, vector_array_n, 8)
+    plot_single_data(data_array_preprocessed, vector_array_n, 0)
 
     # plot_data(vector_array_n)
 
