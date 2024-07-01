@@ -58,6 +58,8 @@ def main():
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
+    graph_data = []
+
     """"""
     # while True:
     #     start = int(input("Enter start of k search range: "))
@@ -72,7 +74,6 @@ def main():
     # clustered_data_optimal = (None, 0, start)
     # print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     # k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
-    # graph_data = []
     # cores = os.cpu_count()
     # lock = Lock()
     # with Pool(processes=cores) as p:
