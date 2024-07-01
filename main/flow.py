@@ -99,11 +99,12 @@ def main():
     #     y = f.read().split(",")[1:]
     # y = [float(v) for v in y]
     # x = [v for v in range(start, end + 1, step)]
-    plt.plot(x[0], y[0])
-    plt.xlabel("Number of clusters")
-    plt.ylabel("CH Index")
-    plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+    # plt.plot(x[0], y[0])
+    # plt.xlabel("Number of clusters")
+    # plt.ylabel("CH Index")
+    # plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
+    
     # plt.plot(x, y, "r-")
     # plt.xlabel("Number of clusters")
     # plt.ylabel("Execution time (s)")
