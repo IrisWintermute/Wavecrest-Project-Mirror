@@ -33,7 +33,7 @@ def main():
     print("Data preprocessed.")
 
     for array in data_array_preprocessed:
-        print(array[1])
+        print(array)
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
@@ -44,8 +44,8 @@ def main():
     del data_array_preprocessed
     print("Data vectorised.")  
 
-    for arcray in vector_array:
-        print(arcray[1])
+    for array in vector_array:
+        print(array)
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
