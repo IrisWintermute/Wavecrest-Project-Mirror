@@ -14,6 +14,7 @@ def plot_data(vector_array):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png") """
     x = vector_array[:, 14]
+    print(x)
     y = np.zeros(x.shape[0])
     for i in range(x.shape[0]):
         if y[i]:

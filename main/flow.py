@@ -29,12 +29,12 @@ def main():
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     print("Data preprocessed.")
 
-    for i in range(1, 10):
-        print(data_array_preprocessed[i])
+    # for i in range(1, 10):
+    #     print(data_array_preprocessed[i])
 
-    for array in data_array_preprocessed:
-        print(array[14])
-        print(array.shape[0])
+    # for array in data_array_preprocessed:
+    #     print(array[14])
+    #     print(array.shape[0])
 
     #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
@@ -45,15 +45,15 @@ def main():
     del data_array_preprocessed
     print("Data vectorised.")  
 
-    for i in range(1, 10):
-        print(vector_array[i])
+    # for i in range(1, 10):
+    #     print(vector_array[i])
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
 
-    for i in range(1, 10):
-        print(vector_array_n[i])
+    # for i in range(1, 10):
+    #     print(vector_array_n[i])
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
