@@ -15,7 +15,7 @@ def plot_data(vector_array):
     plt.savefig("main/data/savefig.png") """
     x = vector_array[:, 14]
     y = np.zeros(28)
-    for i in range(x):
+    for i in range(x.shape[0]):
         if y[i]:
             y[i] += 1
         else:
