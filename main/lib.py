@@ -233,7 +233,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes
     with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
-    preprocessed_record = np.empty(28, dtype=str)
+    preprocessed_record = np.empty(28, dtype=object)
 
     # parse exception, attribute may have commas, horrible
     # if len(record) >= 130:
@@ -265,7 +265,10 @@ def preprocess(record: np.ndarray) -> np.ndarray:
 
         elif attribute == "Calling Number":
             num = record[i] 
-            if num != "anonymous":
+
+            if num == "anonymous":
+                preprocessed_record[3] = (0)
+            else:
                 # convert number to international format
                 try:
                     p = phonenumbers.parse("+" + num, None)
@@ -273,8 +276,6 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
                 preprocessed_record[3] = (p_int)
-            else:
-                preprocessed_record[3] = (0)
 
         elif attribute == "Called Number":
             num = record[i]
