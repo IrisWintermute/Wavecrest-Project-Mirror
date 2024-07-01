@@ -7,6 +7,12 @@ from typing import *
 import time
 import os
 import psutil
+import matplotlib.pyplot as plt
+
+def plot_data(vector_array):
+    for i, a in enumerate(diagonal_mirror(vector_array)):
+        plt.plot(np.array([i] * a.shape[0]), a)
+    plt.savefig("main/data/savefig.png")
 
 def profile_t(func):
     def wrapper(*args, **kwargs):

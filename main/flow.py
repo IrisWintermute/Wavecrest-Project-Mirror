@@ -42,6 +42,7 @@ def main():
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
+    plot_data(vector_array_n)
 
     #vector_array_n = diagonal_mirror(vector_array_n)
 
@@ -95,7 +96,7 @@ def main():
     plt.xlabel("Number of clusters")
     plt.ylabel("CH Index")
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
-    plt.savefig("main/data/savefig.png")
+    # plt.savefig("main/data/savefig.png")
     # plt.plot(x, y, "r-")
     # plt.xlabel("Number of clusters")
     # plt.ylabel("Execution time (s)")
