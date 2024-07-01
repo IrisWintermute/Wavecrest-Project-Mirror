@@ -11,10 +11,10 @@ from multiprocessing import Pool, Lock
 # instance recieves command to process data
 #@profile
 def main():
-    # mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
+    mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
-            csv_list = f.readlines(int(0.00007 * 1024**3))
+            csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     # data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
@@ -103,13 +103,13 @@ def main():
     plt.xlabel("Number of clusters")
     plt.ylabel("CH Index")
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
-    plt.savefig("main/data/savefig.png")
+    # plt.savefig("main/data/savefig.png")
     # plt.plot(x, y, "r-")
     # plt.xlabel("Number of clusters")
     # plt.ylabel("Execution time (s)")
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
-    # plot_data(vector_array_n)
+    plot_data(vector_array_n)
 
     # for i, vec in enumerate(clustered_data_optimal[0]):
         # np.append(data_array[i], vec[-1])
