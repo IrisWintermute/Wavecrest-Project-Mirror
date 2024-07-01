@@ -229,6 +229,8 @@ def can_cast_to_int(v: str) -> bool:
         _ = int(v)
     except ValueError:
         return False
+    except TypeError:
+        return False
     else:
         return True
     
