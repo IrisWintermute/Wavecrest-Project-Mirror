@@ -46,7 +46,10 @@ def plot_data_3d(vector_array_n):
                 hash[v] = 1
         y = [val for val in hash.values()]
         ax.scatter(x, y, zdir="y", zs = i)
-
+    
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, vector_array_n.T.shape[0])
+    ax.set_zlim(0, max(y))
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
