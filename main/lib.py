@@ -128,7 +128,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         iter += 1
 
         # calculate new centroid coordinates
-        for i, centroid in enumerate(centroids):
+        for i, _ in enumerate(centroids):
             fltr = np.array([i])
             owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
             owned_records = np.delete(owned_records, -1, 1)
