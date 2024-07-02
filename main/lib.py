@@ -35,10 +35,10 @@ def plot_single_data(preprocessed_array, vector_array_n, test_index):
     plt.savefig("main/data/savefig.png")
 
 def plot_data_3d(vector_array_n):
-    fig = plt.figure()
+    fig = plt.figure(figsize=plt.figaspect(2.))
     fig.suptitle(f"Frequency visualisation of {vector_array_n.shape[0]} {vector_array_n.shape[1]}-dimensional records.")
-    ax = fig.add_subplot(projection='3d')
-    bx = fig.add_subplot()
+    ax = fig.add_subplot(2, 1, 1, projection='3d')
+    bx = fig.add_subplot(2, 1, 2)
 
     for i, a in enumerate(vector_array_n.T):
         x = list(set(list(a)))
