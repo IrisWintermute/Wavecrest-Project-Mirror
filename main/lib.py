@@ -51,7 +51,7 @@ def plot_data_3d(vector_array_n):
 
         bx.scatter(np.array([i] * a.shape[0]), a)
     
-    ax.set_xlim(0, 1)
+    ax.set_xlim(1, 0)
     ax.set_ylim(0, vector_array_n.T.shape[0])
     ax.set_zlim(0, max(y))
     ax.set_xlabel('Range')
