@@ -50,7 +50,7 @@ def plot_data_3d(vector_array_n):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.view_init(elev=20., azim=-35, roll=0)
+    ax.view_init(elev=20., azim=-35)
     plt.savefig("main/data/savefig.png")
     
 
