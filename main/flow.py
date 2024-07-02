@@ -10,7 +10,7 @@ from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
 #@profile
-def main():
+def main(plot = False):
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
@@ -20,9 +20,7 @@ def main():
     with open("main/data/plot.txt", "w") as f:
         f.write("")
 
-    # data_array = np.asarray([np.asarray(sanitise_string(record).split(","), dtype=object) for record in csv_list], dtype=np.ndarray)
     to_record = lambda s: sanitise_string(str(s)).split(",")[:129]
-    # data_array = np.asarray(list(map(to_record, csv_list)))
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list
     data_array = np.array(csv_nested_list, dtype=object)
@@ -38,7 +36,6 @@ def main():
     # for array in data_array_preprocessed:
     #     print(array[3])
 
-    #data_array_preprocessed = diagonal_mirror(data_array_preprocessed)
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
@@ -56,9 +53,11 @@ def main():
     # for i in range(1, 10):
     #     print(vector_array_n[i])
 
-    #vector_array_n = diagonal_mirror(vector_array_n)
+    if plot:
+        # plot_single_data(data_array_preprocessed, vector_array_n, 27)
+        plot_data(vector_array_n)
+        return 0
 
-    """"""
     while True:
         start = int(input("Enter start of k search range: "))
         if start < len(vector_array_n): break
@@ -104,14 +103,7 @@ def main():
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
-    # plot_single_data(data_array_preprocessed, vector_array_n, 27)
 
-    plot_data(vector_array_n)
-
-    # for i, vec in enumerate(clustered_data_optimal[0]):
-        # np.append(data_array[i], vec[-1])
-
-    """"""
     with open("main/data/output_data_vectorised.txt", "w") as f:
         records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
         f.writelines(records)
@@ -128,4 +120,5 @@ def main():
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    main()
+    plot_preprocessed_data = True
+    main(plot_preprocessed_data)
