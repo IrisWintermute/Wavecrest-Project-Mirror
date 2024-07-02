@@ -46,8 +46,8 @@ def plot_data_3d(vector_array_n):
         for v in a:
             if hash.get(v): hash[v] += 1
             else: hash[v] = 1
-        y = [val for val in hash.values()]
-        y = [val / max(y) for val in y]
+        y = np.array([val for val in hash.values()])
+        y = y / np.max(y)
         ax.scatter(x, y, zdir="y", zs = i)
 
         bx.scatter(np.array([i] * a.shape[0]), a)
