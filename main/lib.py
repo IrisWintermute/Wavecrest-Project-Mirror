@@ -99,16 +99,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
     reassignments = 0
-
-    def recalc_centroids(centroid):
-        global data_array
-        fltr = np.array([i])
-        owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
-        owned_records = np.delete(owned_records, -1, 1)
-        if owned_records.any(): 
-            return np.apply_along_axis(np.average, 0, owned_records)
-        else:
-            return centroid
+        
 
     iter = 0
     while True:
@@ -137,7 +128,12 @@ def kmeans(wrap: tuple) -> np.ndarray:
         iter += 1
 
         # calculate new centroid coordinates
-        centroids_new = np.apply_along_axis(recalc_centroids, 1, centroids)
+        for i, centroid in enumerate(centroids):
+            fltr = np.array([i])
+            owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
+            owned_records = np.delete(owned_records, -1, 1)
+            if owned_records.any(): 
+                centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
 
         centroids = centroids_new
 

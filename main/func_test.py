@@ -120,7 +120,7 @@ def regex_test():
     print(string)
 
 if __name__ == "__main__":
-    plot_profile()
+    test_clustering()
 
 
 # to remove
