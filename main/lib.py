@@ -36,24 +36,30 @@ def plot_single_data(preprocessed_array, vector_array_n, test_index):
 
 def plot_data_3d(vector_array_n):
     ax = plt.figure().add_subplot(projection='3d')
+    bx = plt.figure().add_subplot()
+
     for i, a in enumerate(vector_array_n.T):
         x = list(set(list(a)))
         hash = dict([(vx, 0) for vx in x])
         for v in a:
-            if hash.get(v):
-                hash[v] += 1
-            else:
-                hash[v] = 1
+            if hash.get(v): hash[v] += 1
+            else: hash[v] = 1
         y = [val for val in hash.values()]
         ax.scatter(x, y, zdir="y", zs = i)
+
+        bx.scatter(np.array([i] * a.shape[0]), a)
     
     ax.set_xlim(0, 1)
     ax.set_ylim(0, vector_array_n.T.shape[0])
     ax.set_zlim(0, max(y))
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
+    ax.set_xlabel('Range')
+    ax.set_ylabel('Dimension')
+    ax.set_zlabel('Frequency')
     ax.view_init(elev=20., azim=-35)
+    
+    bx.set_xlabel('Dimension')
+    bx.set_ylabel('Range')
+
     plt.savefig("main/data/savefig.png")
     
 
