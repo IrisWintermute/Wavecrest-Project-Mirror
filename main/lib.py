@@ -88,17 +88,27 @@ def profile_m(func):
 # cluster data using k-means algorithm
 #@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
+
     (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
-    # centroids = np.array([np.array(data_array_r[np.random.randint(0, len(data_array_r))]) for _ in range(k)])
     centroid_list = [data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)]
     centroids = np.stack(centroid_list)
-
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
+    reassignments = 0
+
+    def recalc_centroids(centroid):
+        global data_array
+        fltr = np.array([i])
+        owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
+        owned_records = np.delete(owned_records, -1, 1)
+        if owned_records.any(): 
+            return np.apply_along_axis(np.average, 0, owned_records)
+        else:
+            return centroid
 
     iter = 0
     while True:
@@ -120,7 +130,6 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 o_hash[record[-1]] -= 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
-        #print(np.apply_along_axis(get_last, 1, data_array).T)
 
         # stop algorithm when <1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
@@ -128,12 +137,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         iter += 1
 
         # calculate new centroid coordinates
-        for i, _ in enumerate(centroids):
-            fltr = np.array([i])
-            owned_records = data_array[np.in1d(data_array[:, -1], fltr)]
-            owned_records = np.delete(owned_records, -1, 1)
-            if owned_records.any(): 
-                centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
+        centroids_new = np.apply_along_axis(recalc_centroids, 1, centroids)
 
         centroids = centroids_new
 
