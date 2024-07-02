@@ -36,10 +36,10 @@ def plot_single_data(preprocessed_array, vector_array_n, test_index):
 
 def plot_data_3d(vector_array_n):
     ax = plt.figure().add_subplot(projection='3d')
-    for i, a in vector_array_n.T:
+    for i, a in enumerate(vector_array_n.T):
         x = list(set(list(a)))
         hash = dict([(vx, 0) for vx in x])
-        for v in vector_array_n[:, i]:
+        for v in a:
             if hash.get(v):
                 hash[v] += 1
             else:
