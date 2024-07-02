@@ -23,7 +23,7 @@ def plot_single_data(preprocessed_array, vector_array_n, test_index):
             hash[v] += 1
         else:
             hash[v] = 1
-    y = [val for val in hash.values()]
+    y = [np.log10(val) for val in hash.values()]
     mode = preprocessed_array[y.index(max(y)), test_index]
     chode = preprocessed_array[x.index(max(x)), test_index]
     print(f"Most common occurence: {mode}")
@@ -56,7 +56,7 @@ def plot_data_3d(vector_array_n):
     ax.set_zlim(0, max(y))
     ax.set_xlabel('Range')
     ax.set_ylabel('Dimension')
-    ax.set_zlabel('Frequency')
+    ax.set_zlabel('Frequency (log10)')
     ax.view_init(elev=20., azim=-35)
     
     bx.set_xlabel('Dimension')
