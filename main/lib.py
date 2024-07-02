@@ -45,7 +45,7 @@ def plot_data_3d(vector_array_n):
             else:
                 hash[v] = 1
         y = [val for val in hash.values()]
-        ax.plot(x, y, zdir="y", zs = i)
+        ax.scatter(x, y, zdir="y", zs = i)
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
