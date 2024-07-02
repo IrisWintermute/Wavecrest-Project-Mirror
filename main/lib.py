@@ -46,14 +46,14 @@ def plot_data_3d(vector_array_n):
         for v in a:
             if hash.get(v): hash[v] += 1
             else: hash[v] = 1
-        y = [val for val in hash.values()]
+        y = [np.log10(val) for val in hash.values()]
         ax.scatter(x, y, zdir="y", zs = i)
 
         bx.scatter(np.array([i] * a.shape[0]), a)
     
     ax.set_xlim(1, 0)
     ax.set_ylim(0, vector_array_n.T.shape[0])
-    ax.set_zlim(0, max(y))
+    ax.set_zlim(0, np.log10(max(y)))
     ax.set_xlabel('Range')
     ax.set_ylabel('Dimension')
     ax.set_zlabel('Frequency (log10)')
