@@ -21,7 +21,7 @@ def plot_clustered_data(clustered_data):
     for i, v in enumerate(clustered_data):
         # plt.scatter(np.array([i] * a.shape[0]), a)
         x = [n for n in range(v.shape[0])]
-        plt.scatter(x, v, color=colors[o_array[i] % len(colors)])
+        plt.scatter(x, v, color=colors[int(o_array[i]) % len(colors)])
     plt.savefig("main/data/savefig.png")
 
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
