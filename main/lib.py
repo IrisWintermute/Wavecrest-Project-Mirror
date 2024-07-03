@@ -14,6 +14,16 @@ def plot_data(vector_array_n):
         plt.scatter(np.array([i] * a.shape[0]), a)
     plt.savefig("main/data/savefig.png")
 
+def plot_clustered_data(clustered_data):
+    colors = ["r", "b", "g", "c"]
+    get_last = lambda v: v[-1]
+    o_array = np.apply_along_axis(get_last, 1, clustered_data)
+    for i, v in enumerate(clustered_data):
+        # plt.scatter(np.array([i] * a.shape[0]), a)
+        x = [n for n in range(v.shape[0])]
+        plt.scatter(x, v, color=colors[o_array[i] % len(colors)])
+    plt.savefig("main/data/savefig.png")
+
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
     """  """
     x = list(set(list(vector_array_n[:, test_index])))
