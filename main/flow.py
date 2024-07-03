@@ -85,14 +85,14 @@ def main(plot = False):
                     clustered_data_optimal = (clustered_data, ch_index, k)
     print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
 
-    """ graph_data = sorted(graph_data, key=lambda x: x[0])
+    graph_data = sorted(graph_data, key=lambda x: x[0])
     graph_array = np.stack(graph_data, axis=0).T
     (x, y) = tuple(np.split(graph_array, 2, axis=0))
     plt.plot(x[0], y[0])
     plt.xlabel("Number of clusters")
     plt.ylabel("CH Index")
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
-    plt.savefig("main/data/savefig.png") """
+    plt.savefig("main/data/savefig.png")
 
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
@@ -121,5 +121,5 @@ def main(plot = False):
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = True
+    plot_preprocessed_data = False
     main(plot_preprocessed_data)
