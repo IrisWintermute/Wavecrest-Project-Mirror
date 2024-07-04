@@ -32,8 +32,9 @@ def plot_clustered_data(clustered_data):
         if i == clustered_data.shape[1] - 1: break
         # iterate over clusters
         for j in range(int(n)):
+            offset = (-1 + 2 * (j / n)) * 0.1
             c_attrs = attrs[o_array == j]
-            plt.scatter(np.array([i] * c_attrs.shape[0]), c_attrs, color=colors[int(j) % len(colors)])
+            plt.scatter(np.array([i + offset] * c_attrs.shape[0]), c_attrs, color=colors[int(j) % len(colors)])
 
 
     plt.savefig("main/data/savefig.png")
