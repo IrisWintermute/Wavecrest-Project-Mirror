@@ -61,6 +61,20 @@ def test_clustering():
     # plt.plot(cen_plt[0], cen_plt[1], "ks")
     # plt.show()
 
+def test_clustering_graphing():
+    data = get_pseudorandom_coords(5000, 0, 1, 0, 1, 5, 0.2)
+    k_range = [k for k in range(3, 30)]
+    opt = [[], 0]
+    for k in k_range:
+        wrap = (k, data)
+        k, out, centroids = kmeans(wrap)
+        chi = optimal_k_decision(out, centroids)
+        if chi > opt[1]:
+            opt = [out, chi]
+    plot_clustered_data(opt[0])
+            
+
+
 def test_psrndm():
     c = get_pseudorandom_coords(200, 0, 20, 0, 20, 40, 0.1)
     c_p = diagonal_mirror(c)
@@ -120,7 +134,7 @@ def regex_test():
     print(string)
 
 if __name__ == "__main__":
-    test_clustering()
+    test_clustering_graphing()
 
 
 # to remove
