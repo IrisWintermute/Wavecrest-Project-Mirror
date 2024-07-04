@@ -10,7 +10,7 @@ from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
 #@profile
-def main(plot = False):
+def main(plot = 0):
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
@@ -53,7 +53,7 @@ def main(plot = False):
     # for i in range(1, 10):
     #     print(vector_array_n[i])
 
-    if plot:
+    if plot == 1:
         # plot_single_data(data_array_preprocessed, vector_array_n, 27)
         # plot_data(vector_array_n)
         plot_data_3d(vector_array_n)
@@ -94,7 +94,9 @@ def main(plot = False):
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
     plt.savefig("main/data/savefig.png") """
 
-    plot_clustered_data(clustered_data_optimal[0])
+    if plot == 2:
+        plot_clustered_data(clustered_data_optimal[0])
+        return 0
 
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
@@ -123,5 +125,5 @@ def main(plot = False):
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = False
+    plot_preprocessed_data = 0
     main(plot_preprocessed_data)
