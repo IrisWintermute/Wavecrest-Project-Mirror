@@ -18,6 +18,7 @@ def plot_clustered_data(clustered_data):
     def plot_scatter(vector):
         colors = ["r", "b", "g", "c", "m", "y"]
         x = [n for n in range(vector.shape[0] - 1)]
+        print(vector)
         plt.scatter(x, vector[:vector.shape[0] - 1], color=colors[int(vector[-1]) % len(colors)])
 
     np.apply_along_axis(plot_scatter, 1, clustered_data)
