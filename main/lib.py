@@ -298,20 +298,14 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes
     with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
-    preprocessed_record = np.empty(21, dtype=object)
-
-    # parse exception, attribute may have commas, horrible
-    # if len(record) >= 130:
-    #     for i, attr in enumerate(record):
-    #         if i < len(record) - 2 and attr and record[i + 1] and attr[0] == '"' and record[i + 1][0] == " ":
-    #             record = record[:i] + [record[i] + record[i + 1]] + record[i + 2:]
+    preprocessed_record = np.empty(13, dtype=object)
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
             
-        #elif attribute == "Cust. EP IP" or attribute == "Prov. EP IP":
-            #ip_data = extract_ip_data(record[i])
-            #preprocessed_record.extend(ip_data)
+        # elif attribute == "Cust. EP IP" or attribute == "Prov. EP IP":
+            #i p_data = extract_ip_data(record[i])
+            # preprocessed_record.extend(ip_data)
 
         if attribute == "IG Duration (min)":
             try:
@@ -363,26 +357,26 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                 # called number destination contained in new CDR
                 preprocessed_record[5] = (record[i + 1])
 
-        elif attribute == "IG Packet Received":
-            try:
-                difference = float(record[i - 40]) - float(record[i])
-                preprocessed_record[6] = (difference)
-            except ValueError:
-                print(record)
+        # elif attribute == "IG Packet Received":
+        #     try:
+        #         difference = float(record[i - 40]) - float(record[i])
+        #         preprocessed_record[6] = (difference)
+        #     except ValueError:
+        #         print(record)
 
-        elif attribute == "EG Packet Received":
-            try:
-                difference = float(record[i + 42]) - float(record[i])
-                preprocessed_record[7] = (difference)
-            except ValueError:
-                print(record)
+        # elif attribute == "EG Packet Received":
+        #     try:
+        #         difference = float(record[i + 42]) - float(record[i])
+        #         preprocessed_record[7] = (difference)
+        #     except ValueError:
+        #         print(record)
 
         elif attribute == "Prefix":
-            preprocessed_record[8] = (record[i] + "0" * (7 - len(record[i])))[:7]
+            preprocessed_record[6] = (record[i] + "0" * (7 - len(record[i])))[:7]
 
         elif attribute in persist:
             j = persist.index(attribute)
-            preprocessed_record[j + 9] = record[i]
+            preprocessed_record[j + 7] = record[i]
     return preprocessed_record
 
 def vectorise(attributes: np.ndarray) -> np.ndarray:
