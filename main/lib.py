@@ -15,7 +15,7 @@ def plot_data(vector_array_n):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data(clustered_data):
-    colors = ["r", "b", "g", "c"]
+    colors = ["r", "b", "g", "c", "m", "y"]
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
     for i, v in enumerate(clustered_data):
