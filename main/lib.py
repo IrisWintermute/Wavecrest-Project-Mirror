@@ -15,15 +15,12 @@ def plot_data(vector_array_n):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data(clustered_data):
-    colors = ["r", "b", "g", "c", "m", "y"]
-    get_last = lambda v: v[-1]
-    o_array = np.apply_along_axis(get_last, 1, clustered_data)
-    for i, v in enumerate(clustered_data):
-        pcnt = i // clustered_data.shape[0] * 100
-        if pcnt % 5 == 0: print(f"Graphing {pcnt}% complete")
-        # plt.scatter(np.array([i] * a.shape[0]), a)
-        x = [n for n in range(v.shape[0])]
-        plt.scatter(x, v, color=colors[int(o_array[i]) % len(colors)])
+    def plot_scatter(vector):
+        colors = ["r", "b", "g", "c", "m", "y"]
+        x = [n for n in range(vector.shape[0] - 1)]
+        plt.scatter(x, vector[:vector.shape[0] - 1], color=colors[int(vector[-1]) % len(colors)])
+
+    np.apply_along_axis(plot_scatter, 1, clustered_data)
     plt.savefig("main/data/savefig.png")
 
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
