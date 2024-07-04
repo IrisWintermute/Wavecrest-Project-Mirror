@@ -19,6 +19,8 @@ def plot_clustered_data(clustered_data):
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
     for i, v in enumerate(clustered_data):
+        pcnt = i // clustered_data.shape[0] * 100
+        if pcnt % 5 == 0: print(f"Graphing {pcnt}% complete")
         # plt.scatter(np.array([i] * a.shape[0]), a)
         x = [n for n in range(v.shape[0])]
         plt.scatter(x, v, color=colors[int(o_array[i]) % len(colors)])
