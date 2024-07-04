@@ -26,7 +26,7 @@ def plot_clustered_data(clustered_data):
     get_last = lambda v: v[-1]
     colors = ["r", "b", "g", "c", "m", "y"]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
-    n = np.max(o_array)
+    n = np.max(o_array) + 1
     # iterate over dimensions
     for i, attrs in enumerate(clustered_data.T):
         if i == clustered_data.shape[1] - 1: break
