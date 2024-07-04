@@ -15,13 +15,27 @@ def plot_data(vector_array_n):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data(clustered_data):
-    def plot_scatter(vector):
-        colors = ["r", "b", "g", "c", "m", "y"]
-        x = [n for n in range(vector.shape[0] - 1)]
-        print(vector)
-        plt.scatter(x, vector[:vector.shape[0] - 1], color=colors[int(vector[-1]) % len(colors)])
+    # def plot_scatter(vector):
+    #     colors = ["r", "b", "g", "c", "m", "y"]
+    #     x = [n for n in range(vector.shape[0] - 1)]
+    #     print(vector)
+    #     plt.scatter(x, vector[:vector.shape[0] - 1], color=colors[int(vector[-1]) % len(colors)])
 
-    np.apply_along_axis(plot_scatter, 1, clustered_data)
+    # np.apply_along_axis(plot_scatter, 1, clustered_data)
+
+    get_last = lambda v: v[-1]
+    colors = ["r", "b", "g", "c", "m", "y"]
+    o_array = np.apply_along_axis(get_last, 1, clustered_data)
+    n = np.max(o_array)
+    # iterate over dimensions
+    for i, attrs in enumerate(clustered_data.T):
+        if i == clustered_data.shape[1] - 1: break
+        # iterate over clusters
+        for j in range(n):
+            c_attrs = attrs[o_array == j]
+            plt.scatter(np.array([i] * c_attrs.shape[0]), c_attrs, color=colors[j % len(colors)])
+
+
     plt.savefig("main/data/savefig.png")
 
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
