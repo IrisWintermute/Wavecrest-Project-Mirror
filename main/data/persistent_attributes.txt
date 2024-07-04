@@ -1,1 +1,1 @@
-Customer,Provider,Destination,Duration (min),EG Disconnect Cause-SIP,IG Disconnect Cause-Sip
+Destination,Duration (min),EG Disconnect Cause-SIP,IG Disconnect Cause-Sip
