@@ -63,14 +63,15 @@ def test_clustering():
 
 def test_clustering_graphing():
     data = get_pseudorandom_coords(5000, 0, 1, 0, 1, 5, 0.2)
-    k_range = [k for k in range(3, 30)]
-    opt = [[], 0]
+    k_range = [k for k in range(5, 15)]
+    opt = [[], 0, 2]
     for k in k_range:
         wrap = (k, data)
         k, out, centroids = kmeans(wrap)
         chi = optimal_k_decision(out, centroids)
         if chi > opt[1]:
-            opt = [out, chi]
+            opt = [out, chi, k]
+    print(opt[2])
     plot_clustered_data(opt[0])
             
 
