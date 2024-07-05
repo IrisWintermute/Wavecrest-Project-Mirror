@@ -44,9 +44,9 @@ def main(plot = 0):
     print("Data normalised.")
 
     if plot == 1:
-        # plot_single_data(data_array_preprocessed, vector_array_n, 27)
+        plot_single_data(data_array_preprocessed, vector_array_n, 3)
         # plot_data(vector_array_n)
-        plot_data_3d(vector_array_n)
+        # plot_data_3d(vector_array_n)
         return 0
 
     while True:
