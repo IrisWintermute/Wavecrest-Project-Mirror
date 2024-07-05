@@ -313,7 +313,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes
     with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
-    preprocessed_record = np.empty(10, dtype=object)
+    preprocessed_record = np.empty(11, dtype=object)
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
@@ -337,27 +337,27 @@ def preprocess(record: np.ndarray) -> np.ndarray:
             day_seq = get_day_from_date(datetime[0])
             preprocessed_record[2] = day_seq
 
-        # elif attribute == "Calling Number":
-        #     num = record[i] 
+        elif attribute == "Calling Number":
+            num = record[i] 
 
-        #     if num == "anonymous":
-        #         preprocessed_record[3] = (0)
-        #     else:
-        #         # convert number to international format
-        #         try:
-        #             p = phonenumbers.parse("+" + num, None)
-        #             p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-        #             p_int = re.sub("[ +-]", "", p_int)
-        #         except phonenumbers.phonenumberutil.NumberParseException:
-        #             p_int = num
-        #         preprocessed_record[3] = (p_int + "0" * (13 - len(p_int)))[:13]
+            if num == "anonymous":
+                preprocessed_record[3] = (0)
+            else:
+                # convert number to international format
+                try:
+                    p = phonenumbers.parse("+" + num, None)
+                    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                    p_int = re.sub("[ +-]", "", p_int)
+                except phonenumbers.phonenumberutil.NumberParseException:
+                    p_int = num
+                preprocessed_record[3] = (p_int + "0" * (13 - len(p_int)))[:13]
 
         elif attribute == "Called Number":
             num = record[i]
 
             if num == "anonymous":
-                # preprocessed_record[4] = (0)
-                preprocessed_record[3] = ("N/a")
+                preprocessed_record[4] = (0)
+                preprocessed_record[5] = ("N/a")
             else:
                     # convert number to international format
                 try:
@@ -366,11 +366,11 @@ def preprocess(record: np.ndarray) -> np.ndarray:
                     p_int = re.sub("[ +-]", "", p_int)
                 except phonenumbers.phonenumberutil.NumberParseException:
                     p_int = num
-                # preprocessed_record[4] = (p_int + "0" * (13 - len(p_int)))[:13]
+                preprocessed_record[4] = (p_int + "0" * (13 - len(p_int)))[:13]
                 # get destination from number
                 # preprocessed_record[0] = (get_destination(str(p_int)[1:]))
                 # called number destination contained in new CDR
-                preprocessed_record[3] = (record[i + 1])
+                preprocessed_record[5] = (record[i + 1])
 
         # elif attribute == "IG Packet Received":
         #     try:
@@ -387,11 +387,11 @@ def preprocess(record: np.ndarray) -> np.ndarray:
         #         print(record)
 
         elif attribute == "Prefix":
-            preprocessed_record[4] = (record[i] + "0" * (7 - len(record[i])))[:7]
+            preprocessed_record[6] = (record[i] + "0" * (7 - len(record[i])))[:7]
 
         elif attribute in persist:
             j = persist.index(attribute)
-            preprocessed_record[j + 5] = record[i]
+            preprocessed_record[j + 7] = record[i]
     return preprocessed_record
 
 def vectorise(attributes: np.ndarray) -> np.ndarray:

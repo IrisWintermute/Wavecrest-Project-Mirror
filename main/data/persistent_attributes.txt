@@ -1,1 +1,1 @@
-Destination,Duration (min),EG Disconnect Cause-SIP,IG Disconnect Cause-Sip
+Destination,PDD (ms),Duration (min),EG Disconnect Cause-ISDN,IG Disconnect Cause - ISDN
