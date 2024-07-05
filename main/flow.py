@@ -9,7 +9,7 @@ import os
 from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
-@profile
+# @profile
 def main(plot = 0):
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
