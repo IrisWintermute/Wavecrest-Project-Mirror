@@ -22,37 +22,25 @@ def main(plot = 0):
 
     to_record = lambda s: sanitise_string(str(s)).split(",")[:129]
     csv_nested_list = list(map(to_record, csv_list))
-    del csv_list
-    del to_record
+    del csv_list, to_record
     data_array = np.array(csv_nested_list, dtype=object)
     del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
+    del data_array
     print("Data preprocessed.")
-
-    # for i in range(1, 10):
-    #     print(data_array_preprocessed[i])
-
-    # for array in data_array_preprocessed:
-    #     print(array[3])
-
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    del data_array_preprocessed
     print("Data vectorised.")  
-
-    # for i in range(1, 10):
-    #     print(vector_array[i])
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
-
-    # for i in range(1, 10):
-    #     print(vector_array_n[i])
 
     if plot == 1:
         # plot_single_data(data_array_preprocessed, vector_array_n, 27)
