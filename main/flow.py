@@ -32,6 +32,9 @@ def main(plot = 0):
     del data_array
     print("Data preprocessed.")
 
+    if plot == 1:
+        plot_single_data(data_array_preprocessed, vector_array_n, 3)
+
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
@@ -43,8 +46,7 @@ def main(plot = 0):
     del vector_array
     print("Data normalised.")
 
-    if plot == 1:
-        plot_single_data(data_array_preprocessed, vector_array_n, 3)
+    if plot == 2:
         # plot_data(vector_array_n)
         # plot_data_3d(vector_array_n)
         return 0
@@ -85,7 +87,7 @@ def main(plot = 0):
     plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
     plt.savefig("main/data/savefig.png") """
 
-    if plot == 2:
+    if plot == 3:
         plot_clustered_data(clustered_data_optimal[0])
         return 0
 
