@@ -15,7 +15,10 @@ def main(plot = 0):
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
             csv_list = f.readlines(mx)
+            del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
+
+    f.close()
 
     with open("main/data/plot.txt", "w") as f:
         f.write("")
