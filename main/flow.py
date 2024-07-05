@@ -36,7 +36,7 @@ def main(plot = 0):
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
-    # del data_array_preprocessed
+    del data_array_preprocessed
     print("Data vectorised.")  
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
@@ -116,5 +116,5 @@ def main(plot = 0):
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = 1
+    plot_preprocessed_data = 2
     main(plot_preprocessed_data)
