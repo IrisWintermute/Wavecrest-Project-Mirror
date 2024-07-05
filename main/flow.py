@@ -116,5 +116,5 @@ def main(plot = 0):
     print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = 2
+    plot_preprocessed_data = 1
     main(plot_preprocessed_data)
