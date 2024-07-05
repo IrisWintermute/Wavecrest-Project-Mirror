@@ -85,7 +85,7 @@ def main(plot = 0):
         plt.plot(x[0], y[0])
         plt.xlabel("Number of clusters")
         plt.ylabel("CH Index")
-        plt.title(f"CH index evaluation of clustering for set of {len(vector_array_n)} records.")
+        plt.title(f"CH index evaluation of clustering for set of {len(clustered_data_optimal[0])} records.")
         plt.savefig("main/data/savefig.png")
         return 0
 
