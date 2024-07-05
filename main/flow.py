@@ -18,8 +18,6 @@ def main(plot = 0):
             del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    f.close()
-
     with open("main/data/plot.txt", "w") as f:
         f.write("")
 
@@ -64,6 +62,7 @@ def main(plot = 0):
     clustered_data_optimal = (None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
+    del vector_array_n
     graph_data = []
     cores = os.cpu_count()
     lock = Lock()
