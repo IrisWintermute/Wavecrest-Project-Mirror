@@ -51,18 +51,18 @@ def plot_clustered_data_3d(clustered_data):
     n = np.max(o_array) + 1
     for i, a in enumerate(clustered_data.T):
         if i == clustered_data.shape[1] - 1: break
-        x = list(set(list(a)))
-        hash = dict([(vx, 0) for vx in x])
-        for v in a:
-            if hash.get(v): hash[v] += 1
-            else: hash[v] = 1
-        y = np.array(list(hash.values()))
-        y = y / np.max(y)
         for j in range(int(n)):
             offset = (-1 + 2 * (j / n)) * 0.1
-            c_attrs = y[o_array == j]
-            bx.scatter(np.array([i + offset] * c_attrs.shape[0]), c_attrs, color=colors[int(j) % len(colors)])
-            ax.scatter(x, c_attrs, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+            attrs = a[o_array == j]
+            x = list(set(list(a)))
+            hash = dict([(vx, 0) for vx in x])
+            for v in a:
+                if hash.get(v): hash[v] += 1
+                else: hash[v] = 1
+            y = np.array(list(hash.values()))
+            y = y / np.max(y)
+            bx.scatter(np.array([i + offset] * y.shape[0]), y, color=colors[int(j) % len(colors)])
+            ax.scatter(x, y, zdir="y", zs = i, color=colors[int(j) % len(colors)])
     
     ax.set_xlim(1, 0)
     ax.set_ylim(0, clustered_data.shape[1])
