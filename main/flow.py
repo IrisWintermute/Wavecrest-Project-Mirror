@@ -9,12 +9,13 @@ import os
 from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
-#@profile
+@profile
 def main(plot = 0):
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
     with open("main/data/cdr.csv", "r") as f:
             csv_list = f.readlines(mx)
+            del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     with open("main/data/plot.txt", "w") as f:
@@ -22,36 +23,25 @@ def main(plot = 0):
 
     to_record = lambda s: sanitise_string(str(s)).split(",")[:129]
     csv_nested_list = list(map(to_record, csv_list))
-    del csv_list
+    del csv_list, to_record
     data_array = np.array(csv_nested_list, dtype=object)
     del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
     data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
+    del data_array
     print("Data preprocessed.")
-
-    # for i in range(1, 10):
-    #     print(data_array_preprocessed[i])
-
-    # for array in data_array_preprocessed:
-    #     print(array[3])
-
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    del data_array_preprocessed
     print("Data vectorised.")  
-
-    # for i in range(1, 10):
-    #     print(vector_array[i])
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
-
-    # for i in range(1, 10):
-    #     print(vector_array_n[i])
 
     if plot == 1:
         # plot_single_data(data_array_preprocessed, vector_array_n, 27)
@@ -72,6 +62,7 @@ def main(plot = 0):
     clustered_data_optimal = (None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
+    del vector_array_n
     graph_data = []
     cores = os.cpu_count()
     lock = Lock()
