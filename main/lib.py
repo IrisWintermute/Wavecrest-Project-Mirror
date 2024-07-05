@@ -39,6 +39,44 @@ def plot_clustered_data(clustered_data):
 
     plt.savefig("main/data/savefig.png")
 
+def plot_clustered_data_3d(clustered_data):
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    fig.suptitle(f"Frequency visualisation of {clustered_data.shape[0]} {clustered_data.shape[1] - 1}-dimensional records.")
+    ax = fig.add_subplot(1, 2, 2, projection='3d')
+    bx = fig.add_subplot(1, 2, 1)
+
+    get_last = lambda v: v[-1]
+    colors = ["r", "b", "g", "c", "m", "y"]
+    o_array = np.apply_along_axis(get_last, 1, clustered_data)
+    n = np.max(o_array) + 1
+    for i, a in enumerate(clustered_data.T):
+        if i == clustered_data.shape[1] - 1: break
+        x = list(set(list(a)))
+        hash = dict([(vx, 0) for vx in x])
+        for v in a:
+            if hash.get(v): hash[v] += 1
+            else: hash[v] = 1
+        y = np.array(list(hash.values()))
+        y = y / np.max(y)
+        for j in range(int(n)):
+            offset = (-1 + 2 * (j / n)) * 0.1
+            c_attrs = y[o_array == j]
+            bx.scatter(np.array([i + offset] * c_attrs.shape[0]), c_attrs, color=colors[int(j) % len(colors)])
+            ax.scatter(x, c_attrs, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+    
+    ax.set_xlim(1, 0)
+    ax.set_ylim(0, clustered_data.shape[1])
+    ax.set_zlim(0, 1)
+    ax.set_xlabel('Range')
+    ax.set_ylabel('Dimension')
+    ax.set_zlabel('Normalised Frequency')
+    ax.view_init(elev=20., azim=-35)
+    
+    bx.set_xlabel('Dimension')
+    bx.set_ylabel('Range')
+
+    plt.savefig("main/data/savefig.png")
+
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
     """  """
     x = list(set(list(vector_array_n[:, test_index])))
@@ -78,7 +116,7 @@ def plot_data_3d(vector_array_n):
         bx.scatter(np.array([i] * a.shape[0]), a)
     
     ax.set_xlim(1, 0)
-    ax.set_ylim(0, vector_array_n.T.shape[0])
+    ax.set_ylim(0, vector_array_n.shape[1])
     ax.set_zlim(0, 1)
     ax.set_xlabel('Range')
     ax.set_ylabel('Dimension')
