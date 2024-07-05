@@ -56,7 +56,7 @@ def plot_clustered_data_3d(clustered_data):
             attrs = a[o_array == j]
             x = list(set(list(attrs)))
             hash = dict([(vx, 0) for vx in x])
-            for v in a:
+            for v in attrs:
                 if hash.get(v): hash[v] += 1
                 else: hash[v] = 1
             y = np.array(list(hash.values()))
