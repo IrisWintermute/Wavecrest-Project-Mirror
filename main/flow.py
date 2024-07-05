@@ -74,7 +74,6 @@ def main(plot = 0):
                 print(f"Evaluated data set with {k} clusters.")
                 if ch_index > clustered_data_optimal[1]:
                     clustered_data_optimal = (clustered_data, ch_index, k)
-    del k_range_wrap, k, clustered_data, centroids, ch_index, graph_data
     print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
 
     """ graph_data = sorted(graph_data, key=lambda x: x[0])
