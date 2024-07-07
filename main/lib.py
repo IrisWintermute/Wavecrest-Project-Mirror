@@ -15,14 +15,6 @@ def plot_data(vector_array_n):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data(clustered_data):
-    # def plot_scatter(vector):
-    #     colors = ["r", "b", "g", "c", "m", "y"]
-    #     x = [n for n in range(vector.shape[0] - 1)]
-    #     print(vector)
-    #     plt.scatter(x, vector[:vector.shape[0] - 1], color=colors[int(vector[-1]) % len(colors)])
-
-    # np.apply_along_axis(plot_scatter, 1, clustered_data)
-
     get_last = lambda v: v[-1]
     colors = ["r", "b", "g", "c", "m", "y"]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
@@ -35,7 +27,6 @@ def plot_clustered_data(clustered_data):
             offset = (-1 + 2 * (j / n)) * 0.1
             c_attrs = attrs[o_array == j]
             plt.scatter(np.array([i + offset] * c_attrs.shape[0]), c_attrs, color=colors[int(j) % len(colors)])
-
 
     plt.savefig("main/data/savefig.png")
 
@@ -55,17 +46,18 @@ def plot_clustered_data_3d(clustered_data):
             offset = (-1 + 2 * (j / n)) * 0.1
             attrs = a[o_array == j]
             x = list(set(list(attrs)))
+            x = np.array(x)
             hash = dict([(vx, 0) for vx in x])
             for v in attrs:
                 if hash.get(v): hash[v] += 1
                 else: hash[v] = 1
-            y = np.array(list(hash.values()))
-            y = y / np.max(y)
-            bx.scatter(np.array([i + offset] * y.shape[0]), y, color=colors[int(j) % len(colors)])
-            ax.scatter(x, y, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+            f = np.array(list(hash.keys()))
+            f = f / np.max(f)
+            bx.scatter(np.array([i + offset] * x.shape[0]), x, color=colors[int(j) % len(colors)])
+            ax.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
     
     ax.set_xlim(1, 0)
-    ax.set_ylim(0, clustered_data.shape[1])
+    ax.set_ylim(0, clustered_data.shape[1] - 2)
     ax.set_zlim(0, 1)
     ax.set_xlabel('Range')
     ax.set_ylabel('Dimension')
@@ -268,21 +260,11 @@ def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
     distances.sort()
     return distances[0], distances[1]
 
-""" def average(records: np.ndarray) -> np.ndarray:
-    # reduce list of input vectors into a single vector representing the average of input vectors
-    attributes = diagonal_mirror(records)
-    avg = np.array([np.sum(vals) / vals.shape[0] for vals in attributes])
-    return avg """
-
-    
-
-
 # return optimal k and clustered data from kmeans(k, data)
 def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
     vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
     clusters = centroids.shape[0]
     overall_centroid = np.apply_along_axis(np.average, 0, centroids)
-    print(overall_centroid)
     # calculate between-cluster sum of squares
     bcss, wcss = 0, 0
     for i, centroid in enumerate(centroids):
@@ -344,8 +326,6 @@ def sanitise_string(string):
     for i, h in enumerate(hyphen_str):
         string = re.sub(comma_str[i], h, string)
     return string
-
-
 
 def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes

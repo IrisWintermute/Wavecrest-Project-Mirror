@@ -62,8 +62,8 @@ def test_clustering():
     # plt.show()
 
 def test_clustering_graphing():
-    data = get_pseudorandom_coords(5000, 0, 1, 0, 1, 5, 0.2)
-    k_range = [k for k in range(5, 15)]
+    data = get_pseudorandom_coords(50, 0, 1, 0, 1, 5, 0.2)
+    k_range = [k for k in range(5, 10)]
     opt = [[], 0, 2]
     for k in k_range:
         wrap = (k, data)
@@ -72,7 +72,7 @@ def test_clustering_graphing():
         if chi > opt[1]:
             opt = [out, chi, k]
     print(opt[2])
-    plot_clustered_data(opt[0])
+    plot_clustered_data_3d(opt[0])
             
 
 
