@@ -33,9 +33,10 @@ def plot_clustered_data(clustered_data):
 def plot_clustered_data_3d(clustered_data):
     fig = plt.figure(figsize=plt.figaspect(1))
     fig.suptitle(f"Frequency visualisation of {clustered_data.shape[0]} {clustered_data.shape[1] - 1}-dimensional records.")
-    ax = fig.add_subplot(2, 2, 2, projection='3d')
-    bx = fig.add_subplot(2, 2, 1)
-    cx = fig.add_subplot(2, 2, 3)
+    ax = fig.add_subplot(2, 2, 1)
+    bx = fig.add_subplot(2, 2, 2)
+    cx = fig.add_subplot(2, 2, 3, projection='3d')
+    dx = fig.add_subplot(2, 2, 4, projection='3d')
 
     get_last = lambda v: v[-1]
     colors = ["r", "b", "g", "c", "m", "y"]
@@ -54,18 +55,29 @@ def plot_clustered_data_3d(clustered_data):
                 else: hash[v] = 1
             f = np.array(list(hash.values()))
             f = f / np.max(f)
-            bx.scatter(np.array([i + offset] * x.shape[0]), x, color=colors[int(j) % len(colors)])
-            ax.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
-            cx.scatter(np.array([i + offset] * x.shape[0]), f, color=colors[int(j) % len(colors)])
+            ax.scatter(np.array([i + offset] * x.shape[0]), x, color=colors[int(j) % len(colors)])
+            cx.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+            dx.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+            bx.scatter(np.array([i + offset] * x.shape[0]), f, color=colors[int(j) % len(colors)])
     
-    ax.set_xlim(1, 0)
-    ax.set_ylim(0, clustered_data.shape[1] - 2)
-    ax.set_zlim(0, 1)
-    ax.set_xlabel('Range')
-    ax.set_ylabel('Dimension')
-    ax.set_zlabel('Normalised Frequency')
-    ax.view_init(elev=20., azim=-35)
+    cx.set_xlim(1, 0)
+    cx.set_ylim(0, clustered_data.shape[1] - 2)
+    cx.set_zlim(0, 1)
+    cx.set_xlabel('Range')
+    cx.set_ylabel('Dimension')
+    cx.set_zlabel('Normalised Frequency')
+    cx.view_init(elev=20., azim=-35)
+
+    cx.set_xlim(1, 0)
+    cx.set_ylim(0, clustered_data.shape[1] - 2)
+    cx.set_zlim(0, 1)
+    cx.set_xlabel('Range')
+    cx.set_ylabel('Dimension')
+    cx.set_zlabel('Normalised Frequency')
+    cx.view_init(elev=20., azim=35)
     
+    ax.set_xlabel('Dimension')
+    ax.set_ylabel('Range')
     bx.set_xlabel('Dimension')
     bx.set_ylabel('Range')
 
