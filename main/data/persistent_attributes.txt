@@ -1,1 +1,1 @@
-Destination,PDD (ms),Duration (min)
+IG Product ID,EG Product ID,Destination,PDD (ms),Duration (min)
