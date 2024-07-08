@@ -31,10 +31,11 @@ def plot_clustered_data(clustered_data):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data_3d(clustered_data):
-    fig = plt.figure(figsize=plt.figaspect(0.5))
+    fig = plt.figure(figsize=plt.figaspect(1))
     fig.suptitle(f"Frequency visualisation of {clustered_data.shape[0]} {clustered_data.shape[1] - 1}-dimensional records.")
-    ax = fig.add_subplot(1, 2, 2, projection='3d')
-    bx = fig.add_subplot(1, 2, 1)
+    ax = fig.add_subplot(2, 2, 2, projection='3d')
+    bx = fig.add_subplot(2, 2, 1)
+    cx = fig.add_subplot(2, 2, 3)
 
     get_last = lambda v: v[-1]
     colors = ["r", "b", "g", "c", "m", "y"]
@@ -55,6 +56,7 @@ def plot_clustered_data_3d(clustered_data):
             f = f / np.max(f)
             bx.scatter(np.array([i + offset] * x.shape[0]), x, color=colors[int(j) % len(colors)])
             ax.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
+            cx.scatter(np.array([i + offset] * x.shape[0]), f, color=colors[int(j) % len(colors)])
     
     ax.set_xlim(1, 0)
     ax.set_ylim(0, clustered_data.shape[1] - 2)
