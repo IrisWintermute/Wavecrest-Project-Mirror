@@ -51,7 +51,7 @@ def plot_clustered_data_3d(clustered_data):
             for v in attrs:
                 if hash.get(v): hash[v] += 1
                 else: hash[v] = 1
-            f = np.array(list(hash.keys()))
+            f = np.array(list(hash.values()))
             f = f / np.max(f)
             bx.scatter(np.array([i + offset] * x.shape[0]), x, color=colors[int(j) % len(colors)])
             ax.scatter(x, f, zdir="y", zs = i, color=colors[int(j) % len(colors)])
