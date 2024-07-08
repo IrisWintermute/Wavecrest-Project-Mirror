@@ -91,7 +91,7 @@ def main(plot = 0):
         # plt.ylabel("CH Index")
         # plt.title(f"CH index evaluation of clustering for set of {len(clustered_data_optimal[0])} records.")
         # plt.savefig("main/data/savefig.png")
-        # return 0
+        return 0
 
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
