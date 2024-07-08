@@ -15,11 +15,9 @@ def main(plot = 0):
     # bring data -2D CSV array- into scope
     size = os.path.getsize("main/data/cdr.csv")
     filestep = size // mx
-    print(size)
-    print(filestep)
     with open("main/data/cdr.csv", "r") as f:
             # systematic sampling of dataset
-            csv_list = f.readlines(mx)[::filestep]
+            csv_list = f.readlines(size)[::filestep]
             del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
