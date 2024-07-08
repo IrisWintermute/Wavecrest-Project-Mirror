@@ -79,7 +79,7 @@ def plot_clustered_data_3d(clustered_data):
     ax.set_xlabel('Dimension')
     ax.set_ylabel('Range')
     bx.set_xlabel('Dimension')
-    bx.set_ylabel('Range')
+    bx.set_ylabel('Frequency')
 
     plt.savefig("main/data/savefig.png")
 
