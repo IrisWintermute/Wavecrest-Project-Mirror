@@ -1,1 +1,1 @@
-IG Product ID,EG Product ID,Destination,PDD (ms),Duration (min)
+Destination,PDD (ms),Duration (min),EG Disconnect Cause-ISDN,IG Disconnect Cause - ISDN
