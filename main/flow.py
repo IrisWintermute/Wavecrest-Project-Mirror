@@ -81,17 +81,17 @@ def main(plot = 0):
 
     if plot == 2:
         # plot_clustered_data(clustered_data_optimal[0])
-        # plot_clustered_data_3d(clustered_data_optimal[0])
+        plot_clustered_data_3d(clustered_data_optimal[0])
 
-        graph_data = sorted(graph_data, key=lambda x: x[0])
-        graph_array = np.stack(graph_data, axis=0).T
-        (x, y) = tuple(np.split(graph_array, 2, axis=0))
-        plt.plot(x[0], y[0])
-        plt.xlabel("Number of clusters")
-        plt.ylabel("CH Index")
-        plt.title(f"CH index evaluation of clustering for set of {len(clustered_data_optimal[0])} records.")
-        plt.savefig("main/data/savefig.png")
-        return 0
+        # graph_data = sorted(graph_data, key=lambda x: x[0])
+        # graph_array = np.stack(graph_data, axis=0).T
+        # (x, y) = tuple(np.split(graph_array, 2, axis=0))
+        # plt.plot(x[0], y[0])
+        # plt.xlabel("Number of clusters")
+        # plt.ylabel("CH Index")
+        # plt.title(f"CH index evaluation of clustering for set of {len(clustered_data_optimal[0])} records.")
+        # plt.savefig("main/data/savefig.png")
+        # return 0
 
     # with open("main/data/plot.txt", "r") as f:
     #     y = f.read().split(",")[1:]
