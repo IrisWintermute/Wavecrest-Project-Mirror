@@ -77,8 +77,8 @@ def main(plot = 0):
     print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
 
     if plot == 2:
-        plot_clustered_data(clustered_data_optimal[0])
-        # plot_clustered_data_3d(clustered_data_optimal[0])
+        # plot_clustered_data(clustered_data_optimal[0])
+        plot_clustered_data_3d(clustered_data_optimal[0])
         # graph_data = sorted(graph_data, key=lambda x: x[0])
         # graph_array = np.stack(graph_data, axis=0).T
         # (x, y) = tuple(np.split(graph_array, 2, axis=0))
