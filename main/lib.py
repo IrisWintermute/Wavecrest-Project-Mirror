@@ -134,7 +134,15 @@ def plot_data_3d(vector_array_n):
 
     plt.savefig("main/data/savefig.png")
     
-
+def plot_clustering_range(graph_data, data_len):
+    graph_data = sorted(graph_data, key=lambda x: x[0])
+    graph_array = np.stack(graph_data, axis=0).T
+    (x, y) = tuple(np.split(graph_array, 2, axis=0))
+    plt.plot(x[0], y[0])
+    plt.xlabel("Number of clusters")
+    plt.ylabel("CH Index")
+    plt.title(f"CH index evaluation of clustering for set of {data_len} records.")
+    plt.savefig("main/data/savefig.png")
 
 def profile_t(func):
     def wrapper(*args, **kwargs):
