@@ -353,7 +353,7 @@ def preprocess(record: np.ndarray) -> np.ndarray:
     # truncate and expand record attributes
     with open('main/data/attributes.txt') as a, open('main/data/persistent_attributes.txt') as b:
         attributes, persist = a.read().split(','), b.read().split(',')
-    preprocessed_record = np.empty(8, dtype=object)
+    preprocessed_record = np.empty(6, dtype=object)
 
     for i, attribute in enumerate(attributes):
         # enrich, truncate and translate CDR data
