@@ -82,6 +82,7 @@ def plot_clustered_data_3d(clustered_data):
     bx.set_xlabel('Dimension')
     bx.set_ylabel('Frequency')
 
+    fig.get_layout_engine().set(w_pad=4 / 72, h_pad=4 / 72, hspace=4/72, wspace=4/72)
     plt.savefig("main/data/savefig.png")
 
 def plot_single_data(preprocessed_array, vector_array_n, test_index):
