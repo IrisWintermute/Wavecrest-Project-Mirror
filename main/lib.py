@@ -75,7 +75,7 @@ def plot_clustered_data_3d(clustered_data):
     dx.set_xlabel('Range')
     dx.set_ylabel('Dimension')
     dx.view_init(elev=20., azim=35)
-    cx.set_position([0.6,0.6,0.1,0.1])
+    dx.set_position([0.6,0.6,0.1,0.1])
     
     ax.xaxis.tick_top()
     ax.set_xlabel('Dimension')
