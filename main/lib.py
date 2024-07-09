@@ -31,7 +31,7 @@ def plot_clustered_data(clustered_data):
     plt.savefig("main/data/savefig.png")
 
 def plot_clustered_data_3d(clustered_data):
-    fig = plt.figure(figsize=plt.figaspect(1))
+    fig = plt.figure(figsize=plt.figaspect(1), layout="constrained")
     fig.suptitle(f"Frequency visualisation of {clustered_data.shape[0]} {clustered_data.shape[1] - 1}-dimensional records.")
     ax = fig.add_subplot(2, 2, 1)
     bx = fig.add_subplot(2, 2, 2)
@@ -76,8 +76,10 @@ def plot_clustered_data_3d(clustered_data):
     dx.set_zlabel('Normalised Frequency')
     dx.view_init(elev=20., azim=35)
     
+    ax.xaxis.tick_top()
     ax.set_xlabel('Dimension')
     ax.set_ylabel('Range')
+    bx.xaxis.tick_bottom()
     bx.set_xlabel('Dimension')
     bx.set_ylabel('Frequency')
 
