@@ -27,7 +27,7 @@ def main(plot = 0):
     to_record = lambda s: sanitise_string(str(s)).split(",")[:129]
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list, to_record
-    data_array = np.array(csv_nested_list, dtype=">U32")
+    data_array = np.array(csv_nested_list, dtype=str)
     del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
