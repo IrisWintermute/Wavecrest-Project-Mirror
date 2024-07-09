@@ -81,8 +81,8 @@ def main(plot = 0):
 
     if plot == 2:
         # plot_clustered_data(clustered_data_optimal[0])
-        plot_clustered_data_3d(clustered_data_optimal[0])
-        # plot_clustering_range(graph_data, len(clustered_data_optimal[0]))
+        # plot_clustered_data_3d(clustered_data_optimal[0])
+        plot_clustering_range(graph_data, len(clustered_data_optimal[0]))
         return 0
 
     # with open("main/data/plot.txt", "r") as f:
