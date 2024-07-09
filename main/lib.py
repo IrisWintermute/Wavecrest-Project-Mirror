@@ -75,14 +75,16 @@ def plot_clustered_data_3d(clustered_data):
     dx.set_xlabel('Range')
     dx.set_ylabel('Dimension')
     dx.view_init(elev=20., azim=35)
-    dx.set_position([0.5,0.05,0.4,0.4])
+    dx.set_position([0.55,0.05,0.4,0.4])
     
     ax.xaxis.tick_top()
     ax.set_xlabel('Dimension')
     ax.set_ylabel('Range')
+    ax.set_position([0.05,0.5,0.4,0.4])
     bx.xaxis.tick_top()
     bx.set_xlabel('Dimension')
     bx.set_ylabel('Frequency')
+    bx.set_position([0.55,0.5,0.4,0.4])
 
 
     plt.savefig("main/data/savefig.png")
