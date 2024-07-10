@@ -378,7 +378,7 @@ def process_number(num):
 
 def preprocess_n(attrs):
     if attrs[0] == "Calling Number" or attrs[0] == "Called Number":
-        return process_number(attrs)
+        return np.array(list(map(process_number, attrs)))
     else:
         return attrs[1:]
 
