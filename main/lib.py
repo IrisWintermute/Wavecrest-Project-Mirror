@@ -377,10 +377,12 @@ def process_number(num):
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
-    if attrs[0] == "Calling Number" or attrs[0] == "Called Number":
+    col = attrs[0]
+    attrs = np.delete(attrs, 0)
+    if col == "Calling Number" or col == "Called Number":
         return np.array(list(map(process_number, attrs)))
     else:
-        return attrs[1:]
+        return attrs
 
 
 def preprocess(record: np.ndarray) -> np.ndarray:
