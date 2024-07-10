@@ -350,7 +350,7 @@ def sanitise_string(string):
     return string
 
 def load_attrs(data_array):
-    attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]).T
+    attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     data_array = np.hstack(
         data_array[:,9],
         data_array[:,12],
@@ -365,9 +365,12 @@ def process_number(num):
     if num == "anonymous": 
         return (0) 
     # convert number to international format
-    p = phonenumbers.parse("+" + num, None)
-    p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-    p_int = re.sub("[ +-]", "", p_int)
+    try:
+        p = phonenumbers.parse("+" + num, None)
+        p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        p_int = re.sub("[ +-]", "", p_int)
+    except phonenumbers.phonenumberutil.NumberParseException:
+        p_int = num
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
