@@ -32,15 +32,15 @@ def main(plot = 0):
 
     # enrich and truncate records to optimise for clustering and fraud detection
 
-    data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
-    del data_array
-    print("Data preprocessed.")
-
-    # data_array_loaded = load_attrs(data_array)
+    # data_array_preprocessed = np.apply_along_axis(preprocess, 1, data_array)
     # del data_array
-    # data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
-    # del data_array_loaded
     # print("Data preprocessed.")
+
+    data_array_loaded = load_attrs(data_array)
+    del data_array
+    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
+    del data_array_loaded
+    print("Data preprocessed.")
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
