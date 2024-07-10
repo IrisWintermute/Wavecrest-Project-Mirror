@@ -359,6 +359,7 @@ def load_attrs(data_array):
         data_array[:,14],
         data_array[:,22],
     ))
+    print(data_array)
     return np.vstack((attrs, data_array))
 
 def process_number(num):
