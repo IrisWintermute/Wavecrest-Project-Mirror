@@ -351,14 +351,15 @@ def sanitise_string(string):
 
 def load_attrs(data_array):
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
-    print(data_array[:,9].T)
+    t = lambda a: np.array([a]).T
+    print(t(data_array[:,9]))
     data_array = np.hstack((
-        data_array[:,9].T,
-        data_array[:,12].T,
-        data_array[:,13].T,
-        data_array[:,11].T,
-        data_array[:,14].T,
-        data_array[:,22].T,
+        t(data_array[:,9]),
+        t(data_array[:,12]),
+        t(data_array[:,13]),
+        t(data_array[:,11]),
+        t(data_array[:,14]),
+        t(data_array[:,22]),
     ))
     print(data_array)
     return np.vstack((attrs, data_array))
