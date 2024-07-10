@@ -24,7 +24,8 @@ def main(plot = 0):
     with open("main/data/plot.txt", "w") as f:
         f.write("")
 
-    to_record = lambda s: sanitise_string(str(s)).split(",")[:129]
+    # data in csv has row length of 129
+    to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list, to_record
     data_array = np.array(csv_nested_list, dtype=object)
