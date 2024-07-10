@@ -9,7 +9,7 @@ import os
 from multiprocessing import Pool, Lock
 
 # instance recieves command to process data
-# @profile
+@profile
 def main(plot = 0):
     mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
     # bring data -2D CSV array- into scope
@@ -103,22 +103,22 @@ def main(plot = 0):
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
+    if plot == 0:
+        with open("main/data/output_data_vectorised.txt", "w") as f:
+            records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
+            f.writelines(records)
+        print("Clustered and vectorised data written to output_data_vectorised.txt.")
 
-    with open("main/data/output_data_vectorised.txt", "w") as f:
-        records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
-        f.writelines(records)
-    print("Clustered and vectorised data written to output_data_vectorised.txt.")
-
-    with open("main/data/output_data.txt", "w") as f:
-        get_last = lambda v: v[-1]
-        o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
-        o_array = o_array.astype(str)
-        records = [",".join([str(attr) for attr in vector[:128]]) for vector in data_array]
-        for i, v in enumerate(o_array):
-            records[i] += (',"",' + str(v))
-        f.writelines(records)
-    print("Clustered data written to output_data.txt.")
+        with open("main/data/output_data.txt", "w") as f:
+            get_last = lambda v: v[-1]
+            o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
+            o_array = o_array.astype(str)
+            records = [",".join([str(attr) for attr in vector[:128]]) for vector in data_array]
+            for i, v in enumerate(o_array):
+                records[i] += (',"",' + str(v))
+            f.writelines(records)
+        print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = 2
+    plot_preprocessed_data = 3
     main(plot_preprocessed_data)
