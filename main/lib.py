@@ -352,7 +352,6 @@ def sanitise_string(string):
 def load_attrs(data_array):
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     t = lambda a: np.array([a]).T
-    print(t(data_array[:,9]))
     data_array = np.hstack((
         t(data_array[:,9]),
         t(data_array[:,12]),
@@ -361,7 +360,6 @@ def load_attrs(data_array):
         t(data_array[:,14]),
         t(data_array[:,22]),
     ))
-    print(data_array)
     return np.vstack((attrs, data_array))
 
 def process_number(num):
