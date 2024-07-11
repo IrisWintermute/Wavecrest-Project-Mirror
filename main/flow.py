@@ -18,7 +18,7 @@ def main(plot = 0):
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
             csv_list_r = f.readlines(size)
-            csv_list = csv_list[::filestep]
+            csv_list = csv_list_r[::filestep]
             del csv_list_r
             del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
