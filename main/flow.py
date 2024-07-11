@@ -17,7 +17,9 @@ def main(plot = 0):
     filestep = size // mx if size // mx >= 1 else 1
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
-            csv_list = f.readlines(size)[::filestep]
+            csv_list_r = f.readlines(size)
+            csv_list = csv_list[::filestep]
+            del csv_list_r
             del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
