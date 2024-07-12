@@ -41,7 +41,7 @@ def plot_clustered_data_3d(clustered_data):
     get_last = lambda v: v[-1]
     colors = ["r", "b", "g", "c", "m", "y"]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
-    n = np.max(o_array) + 1
+    n = int(np.max(o_array) + 1)
     for i, a in enumerate(clustered_data.T):
         if i == clustered_data.shape[1] - 1: break
         for j in range(int(n)):
@@ -156,7 +156,7 @@ def plot_clustered_data_batch(clustered_data):
     dims = ["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
-    n = np.max(o_array) + 1
+    n = int(np.max(o_array) + 1)
     hash = {}
     for i in [3, 5, 4]:
         for j in [0, 1]:
