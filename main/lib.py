@@ -151,6 +151,27 @@ def plot_clustering_range(graph_data, data_len):
     plt.title(f"CH index evaluation of clustering for set of {data_len} records.")
     plt.savefig("main/data/savefig.png")
 
+def plot_clustered_data_batch(clustered_data):
+    colors = ["r", "b", "g", "c", "m", "y"]
+    dims = ["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]
+    get_last = lambda v: v[-1]
+    o_array = np.apply_along_axis(get_last, 1, clustered_data)
+    n = np.max(o_array) + 1
+    hash = {}
+    for i in [3, 5, 4]:
+        for j in [0, 1]:
+            if i != j and not (hash.get((i, j)) or hash.get((j, i))):
+                hash[(i, j)] = 1
+                x, y = clustered_data[:,j], clustered_data[:,i]
+                for k in range(n):
+                    x_p, y_p = x[o_array == k], y[o_array == k]
+                    plt.scatter(x_p, y_p, color=colors[k % len(colors)])
+                plt.savefig(f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png")
+
+
+
+
+
 def profile_t(func):
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
