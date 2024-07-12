@@ -8,6 +8,7 @@ import time
 import os
 import psutil
 import matplotlib.pyplot as plt
+import subprocess
 
 def plot_data(vector_array_n):
     for i, a in enumerate(vector_array_n.T):
@@ -154,6 +155,7 @@ def plot_clustering_range(graph_data, data_len):
 def plot_clustered_data_batch(clustered_data):
     colors = ["r", "b", "g", "c", "m", "y"]
     dims = ["Calling-Number", "Called-Number", "Buy-Destination", "Destination", "PDD-ms", "Duration-min"]
+    filenames = []
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
     n = int(np.max(o_array) + 1)
@@ -166,7 +168,21 @@ def plot_clustered_data_batch(clustered_data):
                 for k in range(n):
                     x_p, y_p = x[o_array == k], y[o_array == k]
                     plt.scatter(x_p, y_p, color=colors[k % len(colors)])
-                plt.savefig(f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png")
+                f = f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png"
+                plt.savefig(f)
+                filenames.append(f)
+
+    # not the cleanest solution
+    with open("batch.sh", "w") as r:
+        r.write("#!/usr/bin/env bash")
+    with open("batch.sh", "a") as r:
+        for f in filenames:
+            l = f"sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key {f} --body {f}"
+            r.write("\n" + l)
+
+    subprocess.call("./batch.sh")
+    
+
 
 
 
