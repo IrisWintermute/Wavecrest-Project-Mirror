@@ -180,7 +180,7 @@ def plot_clustered_data_batch(clustered_data):
             l = f"sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key {f} --body {f}"
             r.write("\n" + l)
 
-    subprocess.run("chmod +x batch.sh")
+    subprocess.run(["chmod", "+x", "batch.sh"])
     subprocess.call("./batch.sh")
     
 
