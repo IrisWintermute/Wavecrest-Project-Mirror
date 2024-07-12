@@ -153,7 +153,7 @@ def plot_clustering_range(graph_data, data_len):
 
 def plot_clustered_data_batch(clustered_data):
     colors = ["r", "b", "g", "c", "m", "y"]
-    dims = ["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]
+    dims = ["Calling-Number", "Called-Number", "Buy-Destination", "Destination", "PDD-ms", "Duration-min"]
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
     n = int(np.max(o_array) + 1)
