@@ -165,11 +165,12 @@ def plot_clustered_data_batch(clustered_data):
             if i != j and not (hash.get((i, j)) or hash.get((j, i))):
                 hash[(i, j)] = 1
                 x, y = clustered_data[:,j], clustered_data[:,i]
+                fig, ax = plt.subplots(figsize=(6, 3))
                 for k in range(n):
                     x_p, y_p = x[o_array == k], y[o_array == k]
-                    plt.scatter(x_p, y_p, color=colors[k % len(colors)])
+                    ax.scatter(x_p, y_p, color=colors[k % len(colors)])
                 f = f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png"
-                plt.legend([f"cluster {l}" for l in range(n)], loc="upper right", bbox_to_anchor=(1.5,1))
+                ax.legend([f"cluster {l}" for l in range(n)], loc="upper right", bbox_to_anchor=(1.5,1))
                 plt.savefig(f)
                 filenames.append(f)
 
