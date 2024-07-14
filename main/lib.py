@@ -169,6 +169,7 @@ def plot_clustered_data_batch(clustered_data):
                     x_p, y_p = x[o_array == k], y[o_array == k]
                     plt.scatter(x_p, y_p, color=colors[k % len(colors)])
                 f = f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png"
+                plt.legend([f"cluster {l}" for l in range(n)])
                 plt.savefig(f)
                 filenames.append(f)
 
