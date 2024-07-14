@@ -160,8 +160,8 @@ def plot_clustered_data_batch(clustered_data):
     o_array = np.apply_along_axis(get_last, 1, clustered_data)
     n = int(np.max(o_array) + 1)
     hash = {}
-    for i in [0, 1]:
-        for j in [2, 3]:
+    for i in range(len(dims)):
+        for j in range(len(dims)):
             if i != j and not (hash.get((i, j)) or hash.get((j, i))):
                 hash[(i, j)] = 1
                 x, y = clustered_data[:,j], clustered_data[:,i]
