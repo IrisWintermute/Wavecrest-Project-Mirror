@@ -84,7 +84,7 @@ def main(plot = 0):
                 ch_index = optimal_k_decision(clustered_data, centroids)
                 graph_data.append(np.array([k, ch_index]))
                 print(f"Evaluated data set with {k} clusters.")
-                if ch_index > clustered_data_optimal[1]:
+                if ch_index > clustered_data_optimal[2]:
                     clustered_data_optimal = (clustered_data, centroids, ch_index, k)
     print(f"Range searched. Optimal clustering found with {clustered_data_optimal[3]} (CH index of {clustered_data_optimal[2]}).")
     with open("clustering_stats.txt", "w") as f:
