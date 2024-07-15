@@ -171,6 +171,7 @@ def plot_clustered_data_batch(clustered_data):
                     centroids[0].append(np.average(x_p))
                     centroids[1].append(np.average(y_p))
                     plt.scatter(x_p, y_p, color=colors[k % len(colors)])
+                print(centroids)
                 plt.scatter(centroids[0], centroids[1], color="k", shape=",")
                 f = f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png"
                 plt.legend([f"cluster {l}" for l in range(n)], loc="upper right")
