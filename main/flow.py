@@ -71,7 +71,7 @@ def main(plot = 0):
         step = int(input("Enter step of k search range: "))
         if (end - start) >= step: break
 
-    clustered_data_optimal = (None, 0, start)
+    clustered_data_optimal = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
     del vector_array_n
@@ -85,8 +85,15 @@ def main(plot = 0):
                 graph_data.append(np.array([k, ch_index]))
                 print(f"Evaluated data set with {k} clusters.")
                 if ch_index > clustered_data_optimal[1]:
-                    clustered_data_optimal = (clustered_data, ch_index, k)
-    print(f"Range searched. Optimal clustering found with {clustered_data_optimal[2]} (CH index of {clustered_data_optimal[1]}).")
+                    clustered_data_optimal = (clustered_data, centroids, ch_index, k)
+    print(f"Range searched. Optimal clustering found with {clustered_data_optimal[3]} (CH index of {clustered_data_optimal[2]}).")
+    with open("clustering_stats.txt", "w") as f:
+        get_last = lambda v: v[-1]
+        o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
+        for i, centroid in enumerate(clustered_data_optimal[1]):
+            f.write(f"Centroid {i}:")
+            f.write(centroid)
+            f.write(f"count: {clustered_data_optimal[0][o_array == i]}")
 
     if plot == 2:
         # plot_clustered_data(clustered_data_optimal[0])
