@@ -56,9 +56,9 @@ def main(plot = 0):
     # print("Data normalised.")
 
     if plot == 1:
-        plot_single_data(data_array_preprocessed, vector_array_n, 3)
+        # plot_single_data(data_array_preprocessed, vector_array_n, 3)
         # plot_data(vector_array_n)
-        # plot_data_3d(vector_array_n)
+        plot_data_3d(vector_array_n)
         return 0
 
     while True:
@@ -122,5 +122,5 @@ def main(plot = 0):
         print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_preprocessed_data = 2
-    main(plot_preprocessed_data)
+    plot_data = 1
+    main(plot_data)
