@@ -47,13 +47,13 @@ def main(plot = 0):
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
-    vector_array_n = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
 
-    # vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
-    # del vector_array
-    # print("Data normalised.")
+    vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
+    del vector_array
+    print("Data normalised.")
 
     if plot == 1:
         # plot_single_data(data_array_preprocessed, vector_array_n, 3)
@@ -122,5 +122,5 @@ def main(plot = 0):
         print("Clustered data written to output_data.txt.")
 
 if __name__ == "__main__":
-    plot_data = 1
+    plot_data = 2
     main(plot_data)
