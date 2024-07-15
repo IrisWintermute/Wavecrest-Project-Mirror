@@ -92,7 +92,7 @@ def main(plot = 0):
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
         for i, centroid in enumerate(clustered_data_optimal[1]):
             f.write(f"Centroid {i}: \n")
-            [f.write(f"{v:.6f}") for v in centroid]
+            [f.write(f"{v:.6f} ") for v in centroid]
             f.write("\n")
             f.write(f"count: {clustered_data_optimal[0][o_array == i].shape[0]} \n")
 
