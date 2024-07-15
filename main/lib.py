@@ -171,12 +171,12 @@ def plot_clustered_data_batch(clustered_data):
                     x_c.append(np.average(x_p))
                     y_c.append(np.average(y_p))
                     plt.scatter(x_p, y_p, color=colors[k % len(colors)])
-                    if k == n - 1:
-                        plt.scatter(x_c, y_c, c="k", marker="s")
                 print(x_c, y_c)
+                plt.scatter(x_c, y_c, c="k", marker="s")
                 f = f"main/data/savefig_batch/{dims[i]}_{dims[j]}.png"
                 plt.legend([f"cluster {l}" for l in range(n)], loc="upper right")
                 plt.savefig(f)
+                plt.clf()
                 filenames.append(f)
 
     # not the cleanest solution
