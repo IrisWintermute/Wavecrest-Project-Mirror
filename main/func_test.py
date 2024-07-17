@@ -148,7 +148,7 @@ def cluster_size_dist():
 
 
 if __name__ == "__main__":
-    test_clustering_graphing()
+    cluster_size_dist()
 
 
 # to remove
