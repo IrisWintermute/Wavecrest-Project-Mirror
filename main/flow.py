@@ -106,7 +106,7 @@ def main(plot = 0):
         get_last = lambda v: v[-1]
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
         sizes = [clustered_data_optimal[0][o_array == i].shape[0] for i in range(len(clustered_data_optimal[1]))]
-        f.write(f"{clustered_data_optimal[0].shape[0]}:" + ",".join(sizes) + "\n")
+        f.write(str(clustered_data_optimal[0].shape[0]) + ":" + ",".join(sizes) + "\n")
 
     if plot == 2:
         # plot_clustered_data(clustered_data_optimal[0])
