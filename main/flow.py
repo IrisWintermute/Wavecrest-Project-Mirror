@@ -105,7 +105,7 @@ def main(plot = 0):
     with open("clustering_stats.txt", "a") as f:
         get_last = lambda v: v[-1]
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
-        sizes = [clustered_data_optimal[0][o_array == i].shape[0] for i in range(len(clustered_data_optimal[1]))]
+        sizes = [str(clustered_data_optimal[0][o_array == i].shape[0]) for i in range(len(clustered_data_optimal[1]))]
         f.write(str(clustered_data_optimal[0].shape[0]) + ":" + ",".join(sizes) + "\n")
 
     if plot == 2:
