@@ -1,6 +1,7 @@
 from lib import *
 import matplotlib.pyplot as plt
 import random
+import subprocess
 
 marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
 
@@ -133,6 +134,18 @@ def regex_test():
     for i, h in enumerate(hyphen_str):
         string = re.sub(comma_str[i], h, string)
     print(string)
+
+def cluster_size_dist():
+    load_sizes = [0.05, 0.1]
+    for s in load_sizes:
+        subprocess.run(["python3 flow.py"])
+        subprocess.run([f"{s}"])
+        subprocess.run(["2"])
+        subprocess.run(["9"])
+        subprocess.run(["1"])
+    with open("clustering_stats.txt", "r") as f:
+        [print(l) for l in f.readlines()]
+
 
 if __name__ == "__main__":
     test_clustering_graphing()
