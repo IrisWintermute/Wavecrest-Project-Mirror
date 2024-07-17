@@ -136,11 +136,11 @@ def regex_test():
     print(string)
 
 def cluster_size_dist():
-    load_sizes = [0.05, 0.1, 0.2]
+    load_sizes = [0.5, 0.75, 1]
     with open("clustering_stats.txt", "w") as f:
         pass
     for s in load_sizes:
-        for _ in range(2):
+        for _ in range(3):
             subprocess.run(["chmod", "+x", "run.sh"])
             subprocess.run(["./run.sh", f"{s}", "2", "9", "1"])
     with open("clustering_stats.txt", "r") as f:
