@@ -81,10 +81,6 @@ def main(plot = 0):
             step = int(input("Enter step of k search range: "))
             if (end - start) >= step: break
 
-    
-    with open("clustering_stats.txt", "w") as f:
-        pass
-
     clustered_data_optimal = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
