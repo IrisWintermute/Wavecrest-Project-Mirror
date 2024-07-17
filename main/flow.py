@@ -7,10 +7,15 @@ import numpy as np
 from memory_profiler import profile
 import os
 from multiprocessing import Pool, Lock
+import sys
 
 # instance recieves command to process data
 def main(plot = 0):
-    mx = int(float(input("Enter memory limit (GB): ")) * 1024**3)
+    if len(sys.argv) > 1:
+        mxg = sys.argv[1]
+    else:
+        mxg = input("Enter memory limit (GB): ")
+    mx = int(float(mxg) * 1024**3)
     # bring data -2D CSV array- into scope
     size = os.path.getsize("main/data/cdr.csv")
     filestep = size // mx if size // mx >= 1 else 1
@@ -61,15 +66,20 @@ def main(plot = 0):
         plot_data_3d(vector_array_n)
         return 0
 
-    while True:
-        start = int(input("Enter start of k search range: "))
-        if start < len(vector_array_n): break
-    while True:
-        end = int(input("Enter end of k search range: "))
-        if end > start and end < len(vector_array_n): break
-    while True:
-        step = int(input("Enter step of k search range: "))
-        if (end - start) >= step: break
+    if len(sys.argv) > 4:
+        start = int(sys.argv[2])
+        end = int(sys.argv[3])
+        step = int(sys.argv[4])
+    else:
+        while True:
+            start = int(input("Enter start of k search range: "))
+            if start < len(vector_array_n): break
+        while True:
+            end = int(input("Enter end of k search range: "))
+            if end > start and end < len(vector_array_n): break
+        while True:
+            step = int(input("Enter step of k search range: "))
+            if (end - start) >= step: break
 
     
     with open("clustering_stats.txt", "w") as f:
@@ -91,7 +101,7 @@ def main(plot = 0):
                 if ch_index > clustered_data_optimal[2]:
                     clustered_data_optimal = (clustered_data, centroids, ch_index, k)
     print(f"Range searched. Optimal clustering found with {clustered_data_optimal[3]} (CH index of {clustered_data_optimal[2]}).")
-    
+
     with open("clustering_stats.txt", "a") as f:
         get_last = lambda v: v[-1]
         o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
