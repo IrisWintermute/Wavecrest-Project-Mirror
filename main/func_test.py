@@ -140,7 +140,7 @@ def cluster_size_dist():
     with open("clustering_stats.txt", "w") as f:
         pass
     for s in load_sizes:
-        for _ in range(3):
+        for _ in range(2):
             subprocess.run(["chmod", "+x", "run.sh"])
             subprocess.run(["./run.sh", f"{s}", "2", "9", "1"])
     with open("clustering_stats.txt", "r") as f:
