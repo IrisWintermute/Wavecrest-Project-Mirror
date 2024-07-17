@@ -138,6 +138,7 @@ def regex_test():
 def cluster_size_dist():
     load_sizes = [0.05, 0.1]
     for s in load_sizes:
+        subprocess.run(["chmod", "+x", "run.sh"])
         subprocess.call("./run.sh")
         subprocess.run([f"{s}"])
         subprocess.run(["2"])
