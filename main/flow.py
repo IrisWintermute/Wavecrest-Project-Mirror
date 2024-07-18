@@ -146,6 +146,8 @@ def main(plot = 0):
                 c_vals = c_records[:, j]
                 stdevs[i,j] = np.sqrt(np.sum(np.pow(c_vals - mean, 2)) / (c_vals.shape[0] - 1))
         stdevs = np.array(stdevs)
+        print(centroids)
+        print(stdevs)
 
         # chosen randomly from input records for testing
         incoming_records = np.stack([cluster_data[i] for i in np.random.randint(cluster_data.shape[0], size=20)])
