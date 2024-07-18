@@ -171,5 +171,5 @@ def main(plot = 0):
 
 
 if __name__ == "__main__":
-    plot_data = 3
+    plot_data = 0
     main(plot_data)
