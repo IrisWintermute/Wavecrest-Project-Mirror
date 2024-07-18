@@ -137,34 +137,7 @@ def main(plot = 0):
         print("Clustered data written to output_data.txt.")
 
     if plot == 0:
-        # 1: get mean and stdev for each cluster
-        centroids = cluster_data[1]
-        stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
-        for i, centroid in enumerate(centroids):
-            c_records = cluster_data[0][o_array == i]
-            for j, mean in enumerate(centroid):
-                c_vals = c_records[:, j]
-                stdevs[i,j] = np.sqrt(np.sum(np.pow(c_vals - mean, 2)) / (c_vals.shape[0] - 1))
-        stdevs = np.array(stdevs)
-        print(centroids)
-        print(stdevs)
-
-        # chosen randomly from input records for testing
-        incoming_records = np.stack([cluster_data[i] for i in np.random.randint(cluster_data.shape[0], size=20)])
-        o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
-        o_array_assigned = np.empty(incoming_records.shape[0])
-        normaldist = lambda mu, sd, x: np.pow(sd*np.sqrt(2*np.pi),-1)*np.pow(np.e,-np.pow(x-mu,2)/(2*np.pow(sd, 2)))
-        for i, record in enumerate(incoming_records):
-            s_eval = (0, 0)
-            for j, means in enumerate(centroids):
-                eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in means]
-                c_eval = sum(eval_list) / max(eval_list)
-                s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
-            (_, c_i) = s_eval
-            o_array_assigned[i] = c_i
-        # compare test array to assigned array to see how effective the assignment process is
-        alignment = np.sum(np.logical_xor(o_array_test, o_array_assigned))
-        print(f"Alignment: {alignment * 100 / incoming_records.shape[0]}")
+        save_clustering_parameters(cluster_data[1], cluster_data[0], o_array)
 
             
 

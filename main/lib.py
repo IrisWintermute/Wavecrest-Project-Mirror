@@ -470,11 +470,30 @@ def extract_ip_data(ip_address: str) -> dict[str]:
     return data
  """
 
+def save_clustering_parameters(centroids, clustered_records, o_array):
+    # 1: get mean and stdev for each cluster
+    stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
+    for i, centroid in enumerate(centroids):
+        c_records = clustered_records[o_array == i]
+        for j, mean in enumerate(centroid):
+            c_vals = c_records[:, j]
+            stdevs[i,j] = np.sqrt(np.sum(np.power(np.array(c_vals) - mean, 2)) / (len(c_vals) - 1))
+
+    to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
+    with open("clustering_parameters.txt", "w") as f:
+        f.write(to_str(centroids) + "\n\n" + to_str(stdevs))
+
+def get_clustering_parameters():
+    to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
+    with open("clustering_parameters.txt", "r") as f:
+        out = f.readlines()
+    return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
+
 def assign_cluster(record, centroids, stdevs):
-    normaldist = lambda mu, sd, x: np.pow(sd*np.sqrt(2*np.pi),-1)*np.pow(np.e,-np.pow(x-mu,2)/(2*np.pow(sd, 2)))
+    normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     s_eval = (0, 0)
     for j, means in enumerate(centroids):
-        eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in means]
+        eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in enumerate(means)]
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
     (_, c_i) = s_eval

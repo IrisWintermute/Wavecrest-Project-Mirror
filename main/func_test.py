@@ -176,8 +176,49 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
+def test_assignments(data_size):
+    data = get_pseudorandom_coords(data_size, 0, 1, 0, 1, 4, 0.2)
+    wrap = (4, data)
+    _, out, centroids = kmeans(wrap)
+    get_last = lambda v: v[-1]
+    o_array = np.apply_along_axis(get_last, 1, out)
+    save_clustering_parameters(centroids, out, o_array)
+
+
+    # chosen randomly from input records for testing
+    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=data_size // 10)])
+    o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+
+    (centroids, stdevs) = get_clustering_parameters()
+    assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
+    o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
+    # print(f"Assigned: {o_array_assigned}")
+    # print(f"test: {o_array_test}")
+
+    alignment = np.sum(o_array_test == o_array_assigned)
+    alignment_p = alignment * 100 / incoming_records.shape[0]
+    # print(f"Alignment: {alignment_p}%")
+    return alignment_p
+
+def graph_test_assignments():
+    # fig, ax = plt.subplots()
+    # test_repeats = 8
+    # x = [200 * (2 ** v) for v in range(6, 9)] * test_repeats
+    # y = [test_assignments(v) for v in x]
+    # ax.scatter(x, y)
+    # ax.set_xlabel("Dataset size (2D points)")
+    # ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
+    # plt.show()
+
+    x = [v for v in range(20)]
+    y = [test_assignments(5000) for _ in x]
+    plt.plot(x, y)
+    plt.show()
+
+
+
 if __name__ == "__main__":
-    plot_cluster_dist()
+    graph_test_assignments()
 
 
 # to remove
