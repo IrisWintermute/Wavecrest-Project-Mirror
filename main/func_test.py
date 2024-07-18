@@ -4,10 +4,6 @@ import random
 import subprocess
 
 marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
-
-def get_test_data(name):
-    with open(f"test_data_{name}.txt", "r") as f:
-        return f.readlines()
         
 def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
     out = []
@@ -19,21 +15,6 @@ def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
             c_y = random.gauss(c_y, v)
             out.append(np.array([c_x, c_y]))
     return np.array(out)
-
-
-# || EXTRACT, ENRICH, PREPROCESS AND VECTORISE DATA ||
-def test_preprocessing():
-    d_raw = get_test_data("cdr")
-    d = [record.split(",") for record in d_raw]
-    out = [preprocess(r) for r in d]
-    #print(out)
-    #print(len(out))
-    out = diagonal_mirror(out)
-    out_2 = vectorise(out)
-    #print(diagonal_mirror(out_2))
-    out_3 = normalise(out_2)
-    out_3 = diagonal_mirror(out_3)
-    #print(out_3)
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
@@ -84,30 +65,6 @@ def test_psrndm():
     plt.show()
 
 def plot_profile():
-
-    '''
-    x = range(50, 5050, 50)
-    data_set = [get_pseudorandom_coords(i, 0, 20, 0, 20, 10, 0.1) for i in x]
-    print("Coords generated")
-    x = [v for v in x]
-
-    k_range = [5, 10, 20]
-    for j, k in enumerate(k_range):
-        with open("main/data/plot.txt", "w") as f:
-            f.write("")
-
-        for i, d in enumerate(data_set):
-            , _, _ = kmeans(k, d)
-            print(x[i])
-
-        with open("main/data/plot.txt", "r") as f:
-            y = f.read().split(",")[1:]
-        y = [float(v) for v in y]
-        plt.scatter(x, y, color=marker[j][0])
-
-    plt.legend([f"k={k}" for k in k_range], loc="upper right")
-    plt.show()
-    '''
     with open("main/data/plot.txt", "w") as f:
         f.write("")
     data = get_pseudorandom_coords(10000, 0, 20, 0, 20, 50, 0.2)
@@ -210,9 +167,10 @@ def graph_test_assignments():
     # ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
     # plt.show()
 
-    x = [v for v in range(20)]
-    y = [test_assignments(5000) for _ in x]
-    plt.plot(x, y)
+    x = [v for v in range(15)]
+    y = [test_assignments(50000) for _ in x]
+    plt.scatter(x, y)
+    plt.plot(x, [sum(y) / len(y)] * len(y))
     plt.show()
 
 
