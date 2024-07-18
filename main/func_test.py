@@ -147,11 +147,37 @@ def cluster_size_dist():
         lines = f.readlines()
         [print(l) for l in lines]
 
-    
-
+def plot_cluster_dist():
+    colors = ["r", "b", "g", "c", "m", "y"]
+    hash = {}
+    artists = []
+    fig, ax = plt.subplots()
+    with open("main/clustering_stats.txt", "r") as f:
+        lines = f.readlines()
+    for l in lines:
+        s = l.split(": ")[0]
+        v_r = hash.get(s)
+        if not v_r:
+            hash[s] = len(hash) + 1
+            v = len(hash)
+        else:
+            v = v_r
+        y = np.array(sorted([float(n) for n in l.split(": ")[1].split(",")]))
+        y = y / float(s)
+        x = np.arange(y.shape[0])
+        print(y)
+        if v_r:
+            ax.plot(x, y, c=colors[v - 1])
+        else:
+            line, = ax.plot(x, y, c=colors[v - 1], label=f"{s}")
+            artists.append(line)
+    ax.legend(handles=artists, title="Dataset size")
+    ax.set_xlabel('Clusters (ordered by size, ascending)')
+    ax.set_ylabel('Cluster size (as fraction of total dataset size)')
+    plt.show()
 
 if __name__ == "__main__":
-    cluster_size_dist()
+    plot_cluster_dist()
 
 
 # to remove

@@ -81,7 +81,7 @@ def main(plot = 0):
             step = int(input("Enter step of k search range: "))
             if (end - start) >= step: break
 
-    clustered_data_optimal = (None, None, 0, start)
+    cluster_data = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
     del vector_array_n
@@ -94,21 +94,22 @@ def main(plot = 0):
                 ch_index = optimal_k_decision(clustered_data, centroids)
                 graph_data.append(np.array([k, ch_index]))
                 print(f"Evaluated data set with {k} clusters.")
-                if ch_index > clustered_data_optimal[2]:
-                    clustered_data_optimal = (clustered_data, centroids, ch_index, k)
-    print(f"Range searched. Optimal clustering found with {clustered_data_optimal[3]} (CH index of {clustered_data_optimal[2]}).")
+                if ch_index > cluster_data[2]:
+                    cluster_data = (clustered_data, centroids, ch_index, k)
+    print(f"Range searched. Optimal clustering found with {cluster_data[3]} (CH index of {cluster_data[2]}).")
 
-    with open("clustering_stats.txt", "a") as f:
-        get_last = lambda v: v[-1]
-        o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
-        sizes = [str(clustered_data_optimal[0][o_array == i].shape[0]) for i in range(len(clustered_data_optimal[1]))]
-        f.write(str(clustered_data_optimal[0].shape[0]) + "," + ",".join(sizes) + "\n")
+    get_last = lambda v: v[-1]
+    o_array = np.apply_along_axis(get_last, 1, cluster_data[0])
 
     if plot == 2:
-        # plot_clustered_data(clustered_data_optimal[0])
-        # plot_clustered_data_3d(clustered_data_optimal[0])
-        # plot_clustering_range(graph_data, len(clustered_data_optimal[0]))
-        plot_clustered_data_batch(clustered_data_optimal[0])
+        # plot_clustered_data(cluster_data[0])
+        # plot_clustered_data_3d(cluster_data[0])
+        # plot_clustering_range(graph_data, len(cluster_data[0]))
+        plot_clustered_data_batch(cluster_data[0])
+
+        with open("clustering_stats.txt", "a") as f:
+            sizes = [str(cluster_data[0][o_array == i].shape[0]) for i in range(len(cluster_data[1]))]
+            f.write(str(cluster_data[0].shape[0]) + "," + ",".join(sizes) + "\n")
         return 0
 
     # with open("main/data/plot.txt", "r") as f:
@@ -121,21 +122,56 @@ def main(plot = 0):
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
-    if plot == 0:
+    if plot == 3:
         with open("main/data/output_data_vectorised.txt", "w") as f:
-            records = [",".join([str(attr) for attr in vector]) for vector in clustered_data_optimal[0]]
+            records = [",".join([str(attr) for attr in vector]) for vector in cluster_data[0]]
             f.writelines(records)
         print("Clustered and vectorised data written to output_data_vectorised.txt.")
 
         with open("main/data/output_data.txt", "w") as f:
-            get_last = lambda v: v[-1]
-            o_array = np.apply_along_axis(get_last, 1, clustered_data_optimal[0])
             o_array = o_array.astype(str)
             records = [",".join([str(attr) for attr in vector[:128]]) for vector in data_array]
             for i, v in enumerate(o_array):
                 records[i] += (',"",' + str(v))
             f.writelines(records)
         print("Clustered data written to output_data.txt.")
+
+    if plot == 0:
+        # 1: get mean and stdev for each cluster
+        centroids = cluster_data[1]
+        stdevs = []
+        for i, centroid in enumerate(centroids):
+            c_stdevs = []
+            c_records = cluster_data[0][o_array == i]
+            for j, mean in enumerate(centroid):
+                c_vals = c_records[:, j]
+                sd = np.sqrt(np.sum(np.pow(c_vals - mean, 2)) / (c_vals.shape[0] - 1))
+                c_stdevs.append(sd)
+            stdevs.append(c_stdevs)
+        stdevs = np.array(stdevs)
+
+        # chosen randomly from input records for testing
+        incoming_records = np.stack([cluster_data[i] for i in np.random.randint(cluster_data.shape[0], size=20)])
+        o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+        o_array_assigned = np.empty(incoming_records.shape[0])
+        normaldist = lambda mu, sd, x: np.pow(sd*np.sqrt(2*np.pi),-1)*np.pow(np.e,-np.pow(x-mu,2)/(2*np.pow(sd, 2)))
+        for i, record in enumerate(incoming_records):
+            s_eval = (0, 0)
+            for j, means in enumerate(centroids):
+                eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in means]
+                c_eval = sum(eval_list) / max(eval_list)
+                s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
+            (_, c_i) = s_eval
+            o_array_assigned[i] = c_i
+        # compare test array to assigned array to see how effective the assignment process is
+        alignment = np.sum(np.logical_xor(o_array_test, o_array_assigned))
+        print(f"Alignment: {alignment * 100 / incoming_records.shape[0]}")
+
+            
+
+
+
+
 
 if __name__ == "__main__":
     plot_data = 3
