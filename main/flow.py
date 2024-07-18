@@ -139,15 +139,12 @@ def main(plot = 0):
     if plot == 0:
         # 1: get mean and stdev for each cluster
         centroids = cluster_data[1]
-        stdevs = []
+        stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
         for i, centroid in enumerate(centroids):
-            c_stdevs = []
             c_records = cluster_data[0][o_array == i]
             for j, mean in enumerate(centroid):
                 c_vals = c_records[:, j]
-                sd = np.sqrt(np.sum(np.pow(c_vals - mean, 2)) / (c_vals.shape[0] - 1))
-                c_stdevs.append(sd)
-            stdevs.append(c_stdevs)
+                stdevs[i,j] = np.sqrt(np.sum(np.pow(c_vals - mean, 2)) / (c_vals.shape[0] - 1))
         stdevs = np.array(stdevs)
 
         # chosen randomly from input records for testing
