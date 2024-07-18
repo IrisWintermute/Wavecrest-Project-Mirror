@@ -469,3 +469,13 @@ def extract_ip_data(ip_address: str) -> dict[str]:
     ]
     return data
  """
+
+def assign_cluster(record, centroids, stdevs):
+    normaldist = lambda mu, sd, x: np.pow(sd*np.sqrt(2*np.pi),-1)*np.pow(np.e,-np.pow(x-mu,2)/(2*np.pow(sd, 2)))
+    s_eval = (0, 0)
+    for j, means in enumerate(centroids):
+        eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in means]
+        c_eval = sum(eval_list) / max(eval_list)
+        s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
+    (_, c_i) = s_eval
+    return np.append(record, [c_i])
