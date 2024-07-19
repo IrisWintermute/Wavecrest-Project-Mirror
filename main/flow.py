@@ -11,8 +11,8 @@ import sys
 
 # instance recieves command to process data
 def main(plot = 0):
-    if len(sys.argv) > 1:
-        mxg = sys.argv[1]
+    if len(sys.argv) > 2:
+        mxg = sys.argv[2]
     else:
         mxg = input("Enter memory limit (GB): ")
     mx = int(float(mxg) * 1024**3)
@@ -66,10 +66,10 @@ def main(plot = 0):
         plot_data_3d(vector_array_n)
         return 0
 
-    if len(sys.argv) > 4:
-        start = int(sys.argv[2])
-        end = int(sys.argv[3])
-        step = int(sys.argv[4])
+    if len(sys.argv) > 5:
+        start = int(sys.argv[3])
+        end = int(sys.argv[4])
+        step = int(sys.argv[5])
     else:
         while True:
             start = int(input("Enter start of k search range: "))
@@ -146,5 +146,5 @@ def main(plot = 0):
 
 
 if __name__ == "__main__":
-    plot_data = 0
+    plot_data = sys.argv[1]
     main(plot_data)

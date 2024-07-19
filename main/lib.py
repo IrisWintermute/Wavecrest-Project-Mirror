@@ -498,3 +498,38 @@ def assign_cluster(record, centroids, stdevs):
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
     (_, c_i) = s_eval
     return np.append(record, [c_i])
+
+def get_preprocessed_data(mx):
+    size = os.path.getsize("main/data/cdr.csv")
+    filestep = size // mx if size // mx >= 1 else 1
+    with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
+            # systematic sampling of dataset
+            csv_list_r = f.readlines(size)
+            csv_list = csv_list_r[::filestep]
+            del csv_list_r
+            del mx
+    print(f"CDR data ({len(csv_list)} records) loaded.")
+
+    # data in csv has row length of 129
+    to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
+    csv_nested_list = list(map(to_record, csv_list))
+    del csv_list, to_record
+    data_array = np.array(csv_nested_list, dtype=object)
+    del csv_nested_list
+
+    data_array_loaded = load_attrs(data_array)
+    del data_array
+    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
+    del data_array_loaded
+    print("Data preprocessed.")
+
+    # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
+    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    with open("main/data/values_dump.txt", "w") as f:
+        f.write("")
+    del data_array_preprocessed
+    print("Data vectorised.")  
+
+    vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
+    print("Data normalised.")
+    return vector_array_n

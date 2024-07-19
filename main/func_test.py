@@ -133,18 +133,20 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(data_size):
-    data = get_pseudorandom_coords(data_size, 0, 1, 0, 1, 4, 0.2)
-    wrap = (4, data)
-    _, out, centroids = kmeans(wrap)
+def test_assignments(mx):
+
+    vector_array_n = get_preprocessed_data(mx)
+
+    _, out, cs = kmeans((4, vector_array_n))
+    
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, out)
-    save_clustering_parameters(centroids, out, o_array)
-
+    save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=data_size // 10)])
+    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 10)])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+
 
     (centroids, stdevs) = get_clustering_parameters()
     assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
@@ -154,8 +156,8 @@ def test_assignments(data_size):
 
     alignment = np.sum(o_array_test == o_array_assigned)
     alignment_p = alignment * 100 / incoming_records.shape[0]
-    # print(f"Alignment: {alignment_p}%")
-    return alignment_p
+    print(f"Alignment: {alignment_p}%")
+    # return alignment_p
 
 def graph_test_assignments():
     # fig, ax = plt.subplots()
