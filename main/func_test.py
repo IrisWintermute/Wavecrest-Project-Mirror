@@ -134,9 +134,7 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(mx, no_v):
-
-    vector_array_n = get_preprocessed_data(mx)
+def test_assignments(vector_array_n, no_v):
 
     _, out, cs = kmeans((4, vector_array_n))
     
@@ -145,28 +143,27 @@ def test_assignments(mx, no_v):
     save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    alignments = []
-    for i in range(5):
-        incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 20)])
-        o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 20)])
+    o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
 
 
-        (centroids, stdevs) = get_clustering_parameters()
-        assigned_records = np.array([assign_cluster(record, centroids, stdevs, no_v) for record in incoming_records])
-        o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
-        # print(f"Assigned: {o_array_assigned}")
-        # print(f"test: {o_array_test}")
+    (centroids, stdevs) = get_clustering_parameters()
+    assigned_records = np.array([assign_cluster(record, centroids, stdevs, no_v) for record in incoming_records])
+    o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
+    # print(f"Assigned: {o_array_assigned}")
+    # print(f"test: {o_array_test}")
 
-        alignments.append(np.sum(o_array_test == o_array_assigned))
-    alignment_p = (sum(alignments) / len(alignments)) * 100 / incoming_records.shape[0]
+    alignment = np.sum(o_array_test == o_array_assigned)
+    alignment_p = alignment * 100 / incoming_records.shape[0]
     print(f"Alignment: {alignment_p}%")
     return alignment_p
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
     x = [v for v in range(10)]
+    vector_array_n = get_preprocessed_data(0.1)
     for i in range(2):
-        y = [test_assignments(v, i) for v in x]
+        y = [test_assignments(vector_array_n, i) for _ in x]
         ax.scatter(x, y)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
