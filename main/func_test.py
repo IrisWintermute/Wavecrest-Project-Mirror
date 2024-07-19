@@ -134,7 +134,8 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(vector_array_n, no_v):
+def test_assignments(mx, no_v):
+    vector_array_n = get_preprocessed_data(mx)
 
     _, out, cs = kmeans((4, vector_array_n))
     
@@ -160,10 +161,9 @@ def test_assignments(vector_array_n, no_v):
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
-    x = [v for v in range(10)]
-    vector_array_n = get_preprocessed_data(0.1)
+    x = [v for v in range(0.1, 0.55, 0.05)]
     for i in range(2):
-        y = [test_assignments(vector_array_n, i) for _ in x]
+        y = [test_assignments(v, i) for v in x]
         ax.scatter(x, y)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
