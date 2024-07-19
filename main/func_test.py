@@ -166,7 +166,7 @@ def graph_test_assignments():
     artists = []
     for i in range(2):
         y = [test_assignments(v, i) for v in x]
-        line, = ax.scatter(x, y, c=color[i])
+        line = ax.scatter(x, y, c=color[i])
         ax.plot(x, np.average(np.array(y)), c=color[i])
         artists.append(line)
     ax.set_xlabel("Dataset size")
