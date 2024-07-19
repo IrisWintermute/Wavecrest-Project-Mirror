@@ -161,7 +161,7 @@ def test_assignments(mx, no_v):
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
-    x = [v for v in range(0.1, 0.55, 0.05)]
+    x = [v / 20 for v in range(2, 9, 1)]
     for i in range(2):
         y = [test_assignments(v, i) for v in x]
         ax.scatter(x, y)
