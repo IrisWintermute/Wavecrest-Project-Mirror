@@ -167,7 +167,7 @@ def graph_test_assignments():
     for i in range(2):
         y = [test_assignments(v, i) for v in x]
         line = ax.scatter(x, y, c=color[i])
-        ax.plot(x, np.average(np.array(y)), c=color[i])
+        ax.plot(x, [sum(y) / len(y)] * len(x), c=color[i])
         artists.append(line)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
