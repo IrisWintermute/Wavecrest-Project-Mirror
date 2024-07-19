@@ -167,7 +167,7 @@ def graph_test_assignments():
 
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [v * 0.1 for v in range(5, 16)] * 3
+    x = [v * 0.05 for v in range(10, 32)] * 3
     y = [test_assignments(out, cs, a) for a in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
