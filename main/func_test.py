@@ -161,13 +161,17 @@ def test_assignments(mx, no_v):
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
+    color = ["r", "g", "b"]
     x = [v / 20 for v in range(2, 9, 1)]
+    artists = []
     for i in range(2):
         y = [test_assignments(v, i) for v in x]
-        ax.scatter(x, y)
+        line, = ax.scatter(x, y, c=color[i])
+        ax.plot(x, np.average(np.array(y)), c=color[i])
+        artists.append(line)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
-    plt.legend(["With vertical weighting", "Without vertical weighting"])
+    plt.legend(artists, ["With vertical weighting", "Without vertical weighting"])
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
