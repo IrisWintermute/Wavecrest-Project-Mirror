@@ -134,10 +134,10 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(mx, no_v):
-    vector_array_n = get_preprocessed_data(mx)
+def test_assignments(out, cs, alpha):
+    # vector_array_n = get_preprocessed_data(mx)
 
-    _, out, cs = kmeans((4, vector_array_n))
+    # _, out, cs = kmeans((4, vector_array_n))
     
     get_last = lambda v: v[-1]
     o_array = np.apply_along_axis(get_last, 1, out)
@@ -149,7 +149,7 @@ def test_assignments(mx, no_v):
 
 
     (centroids, stdevs) = get_clustering_parameters()
-    assigned_records = np.array([assign_cluster(record, centroids, stdevs, no_v) for record in incoming_records])
+    assigned_records = np.array([assign_cluster(record, centroids, stdevs, alpha) for record in incoming_records])
     o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
     # print(f"Assigned: {o_array_assigned}")
     # print(f"test: {o_array_test}")
@@ -160,18 +160,18 @@ def test_assignments(mx, no_v):
     return alignment_p
 
 def graph_test_assignments():
+    
+    vector_array_n = get_preprocessed_data(0.1)
+
+    _, out, cs = kmeans((4, vector_array_n))
+
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [0.1] * 10
-    artists = []
-    for i in range(2):
-        y = [test_assignments(v, i) for v in x]
-        line = ax.scatter(x, y, c=color[i])
-        ax.plot(x, [sum(y) / len(y)] * len(x), c=color[i])
-        artists.append(line)
+    x = [v * 0.1 for v in range(5, 21)] * 5
+    y = [test_assignments(out, cs, a) for a in x]
+    ax.scatter(x, y)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
-    plt.legend(artists, ["With vertical weighting", "Without vertical weighting"])
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 

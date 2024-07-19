@@ -489,14 +489,11 @@ def get_clustering_parameters():
         out = f.readlines()
     return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
 
-def assign_cluster(record, centroids, stdevs, no_v = 0):
+def assign_cluster(record, centroids, stdevs, alpha):
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     s_eval = (0, 0)
     for j, means in enumerate(centroids):
-        if no_v: 
-            eval_list = [normaldist(mean, stdevs[j,k], record[k]) for k, mean in enumerate(means)]
-        else:
-            eval_list = [normaldist(mean, stdevs[j,k], record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in enumerate(means)]
+        eval_list = [normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k])) for k, mean in enumerate(means)]
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
     (_, c_i) = s_eval
