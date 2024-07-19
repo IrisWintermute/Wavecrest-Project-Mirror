@@ -1,5 +1,3 @@
-
-
 l_dim = 5
 hash = {}
 for i in range(l_dim):

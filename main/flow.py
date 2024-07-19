@@ -67,8 +67,8 @@ def main(plot = 0):
         plot_data_3d(vector_array_n)
         return 0
 
-    if len(sys.argv) > 5:
-        start = int(sys.argv[3])
+    if len(sys.argv) >= 5:
+        start = int(sys.argv[3]) 
         end = int(sys.argv[4])
         step = int(sys.argv[5])
     else:
@@ -140,12 +140,10 @@ def main(plot = 0):
     if plot == 0:
         save_clustering_parameters(cluster_data[1], cluster_data[0], o_array)
 
-            
-
-
-
-
 
 if __name__ == "__main__":
-    plot_data = sys.argv[1]
+    if (len(sys.argv) > 1):
+        plot_data = sys.argv[1]
+    else:
+        plot_data = 0
     main(plot_data)
