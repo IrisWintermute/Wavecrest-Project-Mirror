@@ -147,6 +147,7 @@ def main(plot = 0):
 
 
 if __name__ == "__main__":
+    print(sys.argv)
     if (len(sys.argv) > 0):
         plot_data = sys.argv[1]
     else:
