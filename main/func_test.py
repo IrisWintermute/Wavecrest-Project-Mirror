@@ -2,6 +2,7 @@ from lib import *
 import matplotlib.pyplot as plt
 import random
 import subprocess
+import sys
 
 marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
         
@@ -178,7 +179,7 @@ def graph_test_assignments():
 
 
 if __name__ == "__main__":
-    graph_test_assignments()
+    test_assignments(sys.argv[1])
 
 
 # to remove
