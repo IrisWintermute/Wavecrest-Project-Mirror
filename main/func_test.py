@@ -160,7 +160,7 @@ def test_assignments(mx):
         alignments.append(np.sum(o_array_test == o_array_assigned))
     alignment_p = (sum(alignments) / len(alignments)) * 100 / incoming_records.shape[0]
     print(f"Alignment: {alignment_p}%")
-    # return alignment_p
+    return alignment_p
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
