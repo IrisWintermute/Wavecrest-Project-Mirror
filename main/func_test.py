@@ -134,7 +134,7 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(mx):
+def test_assignments(mx, no_v):
 
     vector_array_n = get_preprocessed_data(mx)
 
@@ -152,7 +152,7 @@ def test_assignments(mx):
 
 
         (centroids, stdevs) = get_clustering_parameters()
-        assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
+        assigned_records = np.array([assign_cluster(record, centroids, stdevs, no_v) for record in incoming_records])
         o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
         # print(f"Assigned: {o_array_assigned}")
         # print(f"test: {o_array_test}")
@@ -164,14 +164,13 @@ def test_assignments(mx):
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
-    x = [0.1, 0.2, 0.5]
-    y = [0] * len(x)
-    for i, v in enumerate(x):
-        y[i] = test_assignments(v)
-        print(f"{(i + 1) / len(x) * 100}% complete")
-    ax.scatter(x, y)
+    x = [v for v in range(10)]
+    for i in range(2):
+        y = [test_assignments(v, i) for v in x]
+        ax.scatter(x, y)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
+    plt.legend(["With vertical weighting", "Without vertical weighting"])
     plt.savefig("savefig.png")
     subprocess.run(["sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key savefig.png --body savefig.png"])
 
