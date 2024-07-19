@@ -162,7 +162,7 @@ def test_assignments(mx, no_v):
 def graph_test_assignments():
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [v / 20 for v in range(2, 9, 1)]
+    x = [0.1] * 10
     artists = []
     for i in range(2):
         y = [test_assignments(v, i) for v in x]
