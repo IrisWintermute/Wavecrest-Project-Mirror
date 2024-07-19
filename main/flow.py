@@ -12,6 +12,7 @@ import sys
 # instance recieves command to process data
 @profile
 def main(plot = 0):
+    print(len(sys.argv))
     if len(sys.argv) > 2:
         mxg = sys.argv[2]
     else:
