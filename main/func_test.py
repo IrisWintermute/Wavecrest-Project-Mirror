@@ -167,12 +167,12 @@ def graph_test_assignments():
 
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [v * 0.1 for v in range(2, 36)] * 3
+    x = [v * 0.1 for v in range(3, 31)] * 3
     y = [test_assignments(out, cs, a) for a in x]
     ax.scatter(x, y)
-    ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
+    ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
-    plt.title("Accuracy over mult. factor range, 0.1GB records, 4 clusters")
+    plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
