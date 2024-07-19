@@ -161,25 +161,22 @@ def test_assignments(mx):
     # return alignment_p
 
 def graph_test_assignments():
-    # fig, ax = plt.subplots()
-    # test_repeats = 8
-    # x = [200 * (2 ** v) for v in range(6, 9)] * test_repeats
-    # y = [test_assignments(v) for v in x]
-    # ax.scatter(x, y)
-    # ax.set_xlabel("Dataset size (2D points)")
-    # ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
-    # plt.show()
-
-    x = [v for v in range(15)]
-    y = [test_assignments(50000) for _ in x]
-    plt.scatter(x, y)
-    plt.plot(x, [sum(y) / len(y)] * len(y))
-    plt.show()
-
-
+    fig, ax = plt.subplots()
+    test_repeats = 5
+    x = [0.1, 0.2, 0.5] * test_repeats
+    y = [test_assignments(v) for v in x]
+    y = [0] * len(x)
+    for i, v in enumerate(x):
+        y[i] = test_assignments(v)
+        print(f"{i / len(x) * 100}% complete")
+    ax.scatter(x, y)
+    ax.set_xlabel("Dataset size")
+    ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
+    plt.savefig("savefig.png")
+    subprocess.run(["sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key main/data/savefig.png --body main/data/savefig.png"])
 
 if __name__ == "__main__":
-    test_assignments(sys.argv[1])
+    graph_test_assignments()
 
 
 # to remove
