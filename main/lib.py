@@ -202,7 +202,7 @@ def profile_t(func):
         result = func(*args, **kwargs)
         end = time.perf_counter()
         t = end - start
-        print(f"{func.__name__}: execution time: {t}")
+        print(f"{func.__name__}: execution time: {t:.6f}")
         return result
     return wrapper
 
@@ -241,7 +241,7 @@ def profile_m(func):
         result = func(*args, **kwargs)
         end = process_memory()
         m = end - start
-        print(f"{func.__name__}:consumed memory: {m}")
+        print(f"{func.__name__}:consumed memory: {m:.6f}")
         return result
     return wrapper
 

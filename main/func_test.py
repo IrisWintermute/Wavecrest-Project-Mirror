@@ -156,23 +156,26 @@ def test_assignments(out, cs, beta):
 
     alignment = np.sum(o_array_test == o_array_assigned)
     alignment_p = alignment * 100 / incoming_records.shape[0]
-    print(f"Alignment: {alignment_p:.6f}%")
+    print(f"Alignment: {alignment_p:.2f}%")
     return alignment_p
 
 def graph_test_assignments():
     
-    vector_array_n = get_preprocessed_data(0.1)
-
-    _, out, cs = kmeans((4, vector_array_n))
-
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [v * 0.05 for v in range(16, 25)] * 8
-    y = [test_assignments(out, cs, a) for a in x]
-    ax.scatter(x, y)
+
+    for i in [0.1, 0.5, 1.0]:
+        vector_array_n = get_preprocessed_data(i)
+
+        _, out, cs = kmeans((4, vector_array_n))
+
+        x = [v * 0.025 for v in range(25, 61)] * 10
+        y = [test_assignments(out, cs, a) for a in x]
+        ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
     plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
+    plt.legend(["0.1GB", "0.5GB", "1.0GB"])
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
