@@ -499,8 +499,8 @@ def assign_cluster(record, centroids, stdevs):
     (_, c_i) = s_eval
     return np.append(record, [c_i])
 
-def get_preprocessed_data(mx):
-    mx = float(mx)
+def get_preprocessed_data(mxg):
+    mx = int(float(mxg) * 1024**3)
     size = os.path.getsize("main/data/cdr.csv")
     filestep = size // mx if size // mx >= 1 else 1
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
