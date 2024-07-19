@@ -164,17 +164,16 @@ def test_assignments(mx):
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
-    x = [0.1, 0.2, 0.5, 1.0]
-    y = [test_assignments(v) for v in x]
+    x = [0.1, 0.2, 0.5]
     y = [0] * len(x)
     for i, v in enumerate(x):
         y[i] = test_assignments(v)
-        print(f"{i / len(x) * 100}% complete")
+        print(f"{(i + 1) / len(x) * 100}% complete")
     ax.scatter(x, y)
     ax.set_xlabel("Dataset size")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
     plt.savefig("savefig.png")
-    subprocess.run(["sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key main/data/savefig.png --body main/data/savefig.png"])
+    subprocess.run(["sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key savefig.png --body savefig.png"])
 
 if __name__ == "__main__":
     graph_test_assignments()
