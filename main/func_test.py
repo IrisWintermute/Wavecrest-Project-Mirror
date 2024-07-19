@@ -134,7 +134,7 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(out, cs, alpha):
+def test_assignments(out, cs, beta):
     # vector_array_n = get_preprocessed_data(mx)
 
     # _, out, cs = kmeans((4, vector_array_n))
@@ -149,14 +149,14 @@ def test_assignments(out, cs, alpha):
 
 
     (centroids, stdevs) = get_clustering_parameters()
-    assigned_records = np.array([assign_cluster(record, centroids, stdevs, alpha) for record in incoming_records])
+    assigned_records = np.array([assign_cluster(record, centroids, stdevs, beta) for record in incoming_records])
     o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
     # print(f"Assigned: {o_array_assigned}")
     # print(f"test: {o_array_test}")
 
     alignment = np.sum(o_array_test == o_array_assigned)
     alignment_p = alignment * 100 / incoming_records.shape[0]
-    print(f"Alignment: {alignment_p}%")
+    print(f"Alignment: {alignment_p:.6f}%")
     return alignment_p
 
 def graph_test_assignments():
@@ -167,12 +167,12 @@ def graph_test_assignments():
 
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-    x = [v * 0.1 for v in range(2, 36)] * 5
+    x = [v * 0.1 for v in range(2, 36)] * 3
     y = [test_assignments(out, cs, a) for a in x]
     ax.scatter(x, y)
-    ax.set_xlabel("Value of mult. factor applied to s.d. of n.d.")
+    ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
-    plt.title("Accuracy over alpha factor range, 0.1GB records, 4 clusters")
+    plt.title("Accuracy over mult. factor range, 0.1GB records, 4 clusters")
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
