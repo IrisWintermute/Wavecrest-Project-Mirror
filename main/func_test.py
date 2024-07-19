@@ -145,25 +145,26 @@ def test_assignments(mx):
     save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 10)])
-    o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+    alignments = []
+    for i in range(5):
+        incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 20)])
+        o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
 
 
-    (centroids, stdevs) = get_clustering_parameters()
-    assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
-    o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
-    # print(f"Assigned: {o_array_assigned}")
-    # print(f"test: {o_array_test}")
+        (centroids, stdevs) = get_clustering_parameters()
+        assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
+        o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
+        # print(f"Assigned: {o_array_assigned}")
+        # print(f"test: {o_array_test}")
 
-    alignment = np.sum(o_array_test == o_array_assigned)
-    alignment_p = alignment * 100 / incoming_records.shape[0]
+        alignments.append(np.sum(o_array_test == o_array_assigned))
+    alignment_p = (sum(alignments) / len(alignments)) * 100 / incoming_records.shape[0]
     print(f"Alignment: {alignment_p}%")
     # return alignment_p
 
 def graph_test_assignments():
     fig, ax = plt.subplots()
-    test_repeats = 5
-    x = [0.1, 0.2, 0.5] * test_repeats
+    x = [0.1, 0.2, 0.5, 1.0]
     y = [test_assignments(v) for v in x]
     y = [0] * len(x)
     for i, v in enumerate(x):
