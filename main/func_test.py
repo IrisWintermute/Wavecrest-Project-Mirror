@@ -56,14 +56,6 @@ def test_clustering_graphing():
             opt = [out, chi, k]
     print(opt[2])
     plot_clustered_data_3d(opt[0])
-            
-
-
-def test_psrndm():
-    c = get_pseudorandom_coords(200, 0, 20, 0, 20, 40, 0.1)
-    c_p = diagonal_mirror(c)
-    plt.plot(c_p[0], c_p[1], "bo")
-    plt.show()
 
 def plot_profile():
     with open("main/data/plot.txt", "w") as f:
@@ -84,14 +76,6 @@ def plot_profile():
     plt.ylabel("Execution time (s)")
     plt.title(f"Execution time evalutation for kmeans() for {len(data)} pseudorandom records.")
     plt.savefig("main/data/savefig.png")
-
-def regex_test():
-    string = '"horse,donkey",mule,0,6,"",petrol,"camel, spine"'
-    comma_str = re.findall('"[^,"]+,[^,"]+"', string)
-    hyphen_str = [re.sub(',', '-', s) for s in comma_str]
-    for i, h in enumerate(hyphen_str):
-        string = re.sub(comma_str[i], h, string)
-    print(string)
 
 def cluster_size_dist():
     load_sizes = [0.2, 0.75]
@@ -181,12 +165,3 @@ def graph_test_assignments():
 
 if __name__ == "__main__":
     graph_test_assignments()
-
-
-# to remove
-# EG Codec, IG Codec
-# EG dest group
-# PDD
-# ReleaseSource
-# Row Type
-# RTP Media

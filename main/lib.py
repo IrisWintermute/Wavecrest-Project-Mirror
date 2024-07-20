@@ -191,11 +191,6 @@ def plot_clustered_data_batch(clustered_data):
     subprocess.call("./batch.sh")
     
 
-
-
-
-
-
 def profile_t(func):
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
@@ -456,20 +451,6 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     return norm(attributes)
     
     
-""" 
-def extract_ip_data(ip_address: str) -> dict[str]:
-    someone got angy at league
-    response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
-    data = [
-        response.get("city"),
-        response.get("region"),
-        response.get("country_calling_code"),
-        response.get("utc_offset"),
-        response.get("currency")
-    ]
-    return data
- """
-
 def save_clustering_parameters(centroids, clustered_records, o_array):
     # 1: get mean and stdev for each cluster
     stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
@@ -500,7 +481,7 @@ def assign_cluster(record, centroids, stdevs, beta):
     (_, c_i) = s_eval
     return np.append(record, [c_i])
 
-def get_preprocessed_data(mxg):
+def get_raw_data(mxg):
     mx = int(float(mxg) * 1024**3)
     size = os.path.getsize("main/data/cdr.csv")
     filestep = size // mx if size // mx >= 1 else 1
@@ -510,14 +491,18 @@ def get_preprocessed_data(mxg):
             csv_list = csv_list_r[::filestep]
             del csv_list_r
             del mx
-    print(f"CDR data ({len(csv_list)} records) loaded.")
+    print(f"CDR file parsed.")
 
     # data in csv has row length of 129
     to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list, to_record
     data_array = np.array(csv_nested_list, dtype=object)
-    del csv_nested_list
+    return data_array
+
+def get_preprocessed_data(mxg):
+    data_array = get_raw_data(mxg)
+    print(f"CDR data ({data_array.shape[0]} records) loaded.")
 
     data_array_loaded = load_attrs(data_array)
     del data_array
@@ -534,4 +519,4 @@ def get_preprocessed_data(mxg):
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     print("Data normalised.")
-    return vector_array_n
+    return data_array, vector_array_n
