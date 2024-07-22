@@ -43,7 +43,7 @@ def main(plot = 0):
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
 
-    del csv_list, to_record
+    del csv_list
 
     counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
