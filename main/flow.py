@@ -8,6 +8,7 @@ from memory_profiler import profile
 import os
 from multiprocessing import Pool, Lock
 import sys
+import time
 
 # instance recieves command to process data
 @profile
@@ -32,7 +33,11 @@ def main(plot = 0):
         f.write("")
 
     # data in csv has row length of 129
+    counter_start = time.perf_counter()
     to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
+    counter_stop = time.perf_counter()
+    print(f"sanitise string took {counter_stop - counter_start} seconds")
+
     csv_nested_list = list(map(to_record, csv_list))
     del csv_list, to_record
     data_array = np.array(csv_nested_list, dtype=object)
@@ -44,12 +49,20 @@ def main(plot = 0):
     # del data_array
     # print("Data preprocessed.")
 
+    counter_start = time.perf_counter()
     data_array_loaded = load_attrs(data_array)
+    counter_stop = time.perf_counter()
+    print(f"load_attrs took {counter_stop - counter_start} seconds")
     del data_array
-    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
-    del data_array_loaded
-    print("Data preprocessed.")
 
+    counter_start = time.perf_counter()
+    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
+    counter_stop = time.perf_counter()
+    print(f"data_array_preprocessed took {counter_stop - counter_start} seconds")
+    del data_array_loaded
+
+    print("Data preprocessed.")
+    
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
