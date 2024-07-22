@@ -429,7 +429,7 @@ def vectorise(attributes: np.ndarray) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
     with open("main/data/values_dump.txt", "r") as f:
-        values_hash = dict([tuple(l.split(": ")) for l in f.readlines()]) or {}
+        values_hash = dict([tuple(l.split(": ")) for l in f.readlines() if l.count(": ") == 1]) or {}
 
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
