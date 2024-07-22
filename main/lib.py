@@ -406,6 +406,7 @@ def load_attrs(data_array):
     return np.vstack((attrs, data_array))
 
 def process_number(num):
+    import phonenumbers
     if num == "anonymous": 
         return (0) 
     # convert number to international format
