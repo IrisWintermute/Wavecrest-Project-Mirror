@@ -427,7 +427,10 @@ def preprocess_n(attrs):
 
 def vectorise(attributes: np.ndarray) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
-    values_hash = {}
+
+    with open("main/data/values_dump.txt", "r") as f:
+        values_hash = dict([tuple(l.split(": ")) for l in f.readlines()]) or {}
+
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
         if can_cast_to_int(attr):
@@ -441,7 +444,7 @@ def vectorise(attributes: np.ndarray) -> np.ndarray:
     if values_hash:
         with open("main/data/values_dump.txt", "a") as f:
             values_to_write = "\n".join([f"{v}: {k}" for (v, k) in values_hash.items()])
-            f.write("\n" + values_to_write + "\n")
+            f.write(values_to_write)
         
     return attributes_out
 
@@ -516,12 +519,29 @@ def get_preprocessed_data(mxg):
     print("Data preprocessed.")
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
-    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
+    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     print("Data normalised.")
     return vector_array_n
+
+def preprocess_incoming_record(raw_record):
+    r_arr = np.array(to_record(raw_record))
+    r_loaded = load_attrs(r_arr)
+    r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
+    r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed)
+    return np.apply_along_axis(normalise, 0, r_vec)
+
+# naive solution
+def rate_cluster_fraud(stdevs):
+    hash = {}
+    ls = [float(np.average(c)) for c in stdevs]
+    mx = max(ls)
+    ls = [v / mx for v in ls]
+    for i, v in enumerate(ls):
+        hash[i] = v
+    return hash
