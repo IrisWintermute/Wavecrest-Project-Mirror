@@ -43,6 +43,15 @@ def main(plot = 0):
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
 
+    # counter_start = time.perf_counter()
+    # data_array_r = np.array(csv_list.split(","), dtype=object)
+    # data_array_r = np.array[:, :25]
+    # data_array = to_record(data_array_r)
+    # del data_array_r
+    # counter_stop = time.perf_counter()
+    # print(f"generating data_array took {counter_stop - counter_start} seconds")
+
+
     del csv_list
 
     counter_start = time.perf_counter()
