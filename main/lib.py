@@ -521,4 +521,4 @@ def get_preprocessed_data(mxg):
 
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     print("Data normalised.")
-    return data_array, vector_array_n
+    return vector_array_n
