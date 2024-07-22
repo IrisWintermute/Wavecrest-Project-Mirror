@@ -7,6 +7,7 @@ import sys
 marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
         
 def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
+    '''Generate 2D coordinates in a '''
     out = []
     for _ in range(k):
         c = (random.random() * (xm - x0) + x0, random.random() * (ym - y0) + y0)
