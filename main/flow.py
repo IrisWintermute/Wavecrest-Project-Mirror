@@ -38,26 +38,25 @@ def main(plot = 0):
     # counter_stop = time.perf_counter()
     # print(f"sanitise string took {counter_stop - counter_start} seconds")
 
+    counter_start = time.perf_counter()
+    csv_nested_list = list(map(to_record, csv_list))
+    counter_stop = time.perf_counter()
+    print(f"mapping csv list took {counter_stop - counter_start} seconds")
+
     # counter_start = time.perf_counter()
-    # csv_nested_list = [to_record (x) for x in csv_list]
+    # data_array_r = np.array([str(l.split(",")) for l in csv_list], dtype=object)
+    # data_array_r = data_array_r[:, :25]
+    # data_array = to_record(data_array_r)
+    # del data_array_r
     # counter_stop = time.perf_counter()
-    # print(f"mapping csv list took {counter_stop - counter_start} seconds")
+    # print(f"generating data_array took {counter_stop - counter_start} seconds")
+
+    del csv_list
 
     counter_start = time.perf_counter()
-    data_array_r = np.array([l.split(",") for l in csv_list], dtype=object)
-    data_array_r = data_array_r[:, :25]
-    data_array = to_record(data_array_r)
-    del data_array_r
+    data_array = np.array(csv_nested_list, dtype=object)
     counter_stop = time.perf_counter()
-    print(f"generating data_array took {counter_stop - counter_start} seconds")
-
-
-    # del csv_list
-
-    # counter_start = time.perf_counter()
-    # data_array = np.array(csv_nested_list, dtype=object)
-    # counter_stop = time.perf_counter()
-    # print(f"converting list to array took {counter_stop - counter_start} seconds")
+    print(f"converting list to array took {counter_stop - counter_start} seconds")
 
     del csv_nested_list
 
