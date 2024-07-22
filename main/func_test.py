@@ -165,4 +165,4 @@ def graph_test_assignments():
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
 if __name__ == "__main__":
-    graph_test_assignments()
+    test_clustering()

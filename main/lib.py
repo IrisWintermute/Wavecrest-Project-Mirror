@@ -273,7 +273,10 @@ def kmeans(wrap: tuple) -> np.ndarray:
             closest_centroid_index = index_1
             if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
                 o_hash[record[-1]] -= 1
-                o_hash[closest_centroid_index] += 1
+                if o_hash.get(closest_centroid_index):
+                    o_hash[closest_centroid_index] += 1
+                else:
+                    o_hash[closest_centroid_index] = 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
 
