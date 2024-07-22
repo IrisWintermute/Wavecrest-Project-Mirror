@@ -97,11 +97,12 @@ def main(plot = 0):
         plot_data_3d(vector_array_n)
         return 0
 
-    if len(sys.argv) >= 5:
+    if len(sys.argv) >= 6:
         start = int(sys.argv[3]) 
         end = int(sys.argv[4])
         step = int(sys.argv[5])
     else:
+        print(sys.argv)
         while True:
             start = int(input("Enter start of k search range: "))
             if start < len(vector_array_n): break
