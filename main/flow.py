@@ -41,6 +41,7 @@ def main(plot = 0):
     counter_start = time.perf_counter()
     csv_nested_list = list(map(to_record, csv_list))
     print(f"size of csv_nested_list {sys.getsizeof(csv_nested_list)}")
+    print(f"size of csv_list {sys.getsizeof(csv_list)}")
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
 
