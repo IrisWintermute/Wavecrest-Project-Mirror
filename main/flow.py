@@ -40,8 +40,6 @@ def main(plot = 0):
 
     counter_start = time.perf_counter()
     csv_nested_list = list(map(to_record, csv_list))
-    print(f"size of csv_nested_list {sys.getsizeof(csv_nested_list)}")
-    print(f"size of csv_list {sys.getsizeof(csv_list)}")
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
 
@@ -93,7 +91,7 @@ def main(plot = 0):
     del vector_array
     print("Data normalised.")
 
-    if plot == 1:
+    """if plot == 1:
         # plot_single_data(data_array_preprocessed, vector_array_n, 3)
         # plot_data(vector_array_n)
         plot_data_3d(vector_array_n)
@@ -170,7 +168,7 @@ def main(plot = 0):
         print("Clustered data written to output_data.txt.")
 
     if plot == 0:
-        save_clustering_parameters(cluster_data[1], cluster_data[0], o_array)
+        save_clustering_parameters(cluster_data[1], cluster_data[0], o_array)"""
 
 
 if __name__ == "__main__":
