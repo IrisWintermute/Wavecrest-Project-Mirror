@@ -254,17 +254,18 @@ def kmeans(wrap: tuple) -> np.ndarray:
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
     
-    get_last = lambda v: v[-1]
-    o_count = np.apply_along_axis(get_last, 1, data_array).T
-    o_hash = {}
-    for c_r in np.nditer(o_count):
-        c = int(c_r)
-        if o_hash.get(c): o_hash[c] += 1
-        else: o_hash[c] = 1
         
-
     iter = 0
     while True:
+
+
+        get_last = lambda v: v[-1]
+        o_count = np.apply_along_axis(get_last, 1, data_array).T
+        o_hash = {}
+        for c_r in np.nditer(o_count):
+            c = int(c_r)
+            if o_hash.get(c): o_hash[c] += 1
+            else: o_hash[c] = 1
 
         reassignments = 0
         # assign each data point to closest centroid
@@ -273,10 +274,10 @@ def kmeans(wrap: tuple) -> np.ndarray:
             closest_centroid_index = index_1
             if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
                 o_hash[record[-1]] -= 1
-                if o_hash.get(closest_centroid_index):
-                    o_hash[closest_centroid_index] += 1
-                else:
-                    o_hash[closest_centroid_index] = 1
+                # if o_hash.get(closest_centroid_index):
+                #     o_hash[closest_centroid_index] += 1
+                # else:
+                #     o_hash[closest_centroid_index] = 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
 
