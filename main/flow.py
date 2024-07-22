@@ -135,7 +135,7 @@ def main(plot = 0):
     if plot == 2:
         # plot_clustered_data(cluster_data[0])
         # plot_clustered_data_3d(cluster_data[0])
-        # plot_clustering_range(graph_data, len(cluster_data[0]))
+        plot_clustering_range(graph_data, len(cluster_data[0]))
         plot_clustered_data_batch(cluster_data[0])
 
         with open("clustering_stats.txt", "a") as f:
