@@ -406,7 +406,6 @@ def load_attrs(data_array):
     return np.vstack((attrs, data_array))
 
 def process_number(num):
-    countre_start = time.perf_counter()
     if num == "anonymous": 
         return (0) 
     # convert number to international format
@@ -416,8 +415,6 @@ def process_number(num):
         p_int = re.sub("[ +-]", "", p_int)
     except phonenumbers.phonenumberutil.NumberParseException:
         p_int = num
-    counter_stop = time.perf_counter()
-    print(counter_stop - countre_start)
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
