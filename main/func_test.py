@@ -153,9 +153,9 @@ def graph_test_assignments():
 
         _, out, cs = kmeans((4, vector_array_n))
 
-        x = [v * 0.025 for v in range(25, 61)] * 10
-        # y = [test_assignments(out, cs, a) for a in x]
-        # ax.scatter(x, y)
+        x = [v for v in range(25)]
+        y = [test_assignments(out, cs) for _ in x]
+        ax.scatter(x, y)
     # ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel("Assignment accuracy % (relative to clustering, 10% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
