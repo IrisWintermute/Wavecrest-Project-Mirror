@@ -410,9 +410,9 @@ def process_number(num):
         return (0) 
     # convert number to international format
     try:
-        p = phonenumbers.parse("+" + num, None)
-        p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-        p_int = re.sub("[ +-]", "", p_int)
+        # p = phonenumbers.parse("+" + num, None)
+        # p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        p_int = re.sub("[ +-]", "", num)
     except phonenumbers.phonenumberutil.NumberParseException:
         p_int = num
     return (p_int + "0" * (13 - len(p_int)))[:13]
