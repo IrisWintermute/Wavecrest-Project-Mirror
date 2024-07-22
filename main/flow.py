@@ -45,7 +45,7 @@ def main(plot = 0):
 
     counter_start = time.perf_counter()
     data_array_r = np.array([l.split(",") for l in csv_list], dtype=object)
-    data_array_r = np.array[:, :25]
+    data_array_r = data_array_r[:, :25]
     data_array = to_record(data_array_r)
     del data_array_r
     counter_stop = time.perf_counter()
