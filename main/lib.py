@@ -408,16 +408,13 @@ def load_attrs(data_array):
 def process_number(num):
     if num == "anonymous": 
         return (0) 
-    
-    print(num)
     # convert number to international format
     try:
-        p = phonenumbers.parse("+" + num, None)
-        p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-        p_int = re.sub("[ +-]", "", p_int)
+        # p = phonenumbers.parse("+" + num, None)
+        # p_int = phonenumbers.format_number(p, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        p_int = re.sub("[ +-]", "", num)
     except phonenumbers.phonenumberutil.NumberParseException:
         p_int = num
-    print((p_int + "0" * (13 - len(p_int)))[:13])
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
