@@ -108,14 +108,14 @@ def main(plot = 0):
             if start < len(vector_array_n): break
         while True:
             end = int(input("Enter end of k search range: "))
-            if end > start and end < len(vector_array_n): break
-        while True:
-            step = int(input("Enter step of k search range: "))
-            if (end - start) >= step: break
+            if end < len(vector_array_n): break
+        # while True:
+        #     step = int(input("Enter step of k search range: "))
+        #     if (end - start) >= step: break
 
     cluster_data = (None, None, 0, start)
-    print(f"Searching for optimal clustering in range {start}-{end} with step {step}...")
-    k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1, step)]
+    print(f"Searching for optimal clustering in range {start}-{end} with step 0...")
+    k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1)]
     del vector_array_n
     graph_data = []
     cores = os.cpu_count()
