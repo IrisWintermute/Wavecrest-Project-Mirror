@@ -415,6 +415,7 @@ def process_number(num):
         p_int = re.sub("[ +-]", "", num)
     except phonenumbers.phonenumberutil.NumberParseException:
         p_int = num
+    print((p_int + "0" * (13 - len(p_int)))[:13])
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
