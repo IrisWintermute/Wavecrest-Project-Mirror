@@ -131,7 +131,7 @@ def test_assignments(out, cs):
     # chosen randomly from input records for testing
     incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 20)])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
-
+    incoming_records = incoming_records[:, :incoming_records.shape[1]]
 
     (centroids, stdevs) = get_clustering_parameters()
     assigned_records = np.array([assign_cluster(record, centroids, stdevs) for record in incoming_records])
@@ -149,12 +149,12 @@ def graph_test_assignments():
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
 
-    for i in [0.1, 0.5, 1.0]:
+    for i in [0.1, 0.2, 0.5]:
         vector_array_n = get_preprocessed_data(i)
 
         _, out, cs = kmeans((4, vector_array_n))
 
-        x = [v for v in range(25)]
+        x = [v for v in range(10)]
         y = [test_assignments(out, cs) for _ in x]
         ax.scatter(x, y)
     # ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
