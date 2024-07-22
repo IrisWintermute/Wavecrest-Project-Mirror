@@ -280,7 +280,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
 
-        # stop algorithm when <1% of records are reassigned
+        # stop algorithm when <0.1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments) with {k} clusters")
         iter += 1
