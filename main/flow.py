@@ -19,9 +19,14 @@ def main(plot = 0):
         mxg = input("Enter memory limit (GB): ")
     mx = int(float(mxg) * 1024**3)
     # bring data -2D CSV array- into scope
+    # size = os.path.getsize("main/data/cdr.csv")
+    # filestep = size // mx if size // mx >= 1 else 1
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
-            csv_list = f.readlines(mx)
+            # csv_list_r = f.readlines(size)
+            csv_list = f.readline(mx)
+            # del csv_list_r
+            # del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     with open("main/data/plot.txt", "w") as f:
