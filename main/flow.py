@@ -33,14 +33,23 @@ def main(plot = 0):
         f.write("")
 
     # data in csv has row length of 129
-    counter_start = time.perf_counter()
-    to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
-    counter_stop = time.perf_counter()
-    print(f"sanitise string took {counter_stop - counter_start} seconds")
+    # counter_start = time.perf_counter()
+    # to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
+    # counter_stop = time.perf_counter()
+    # print(f"sanitise string took {counter_stop - counter_start} seconds")
 
-    csv_nested_list = list(map(to_record, csv_list))
-    del csv_list, to_record
+    counter_start = time.perf_counter()
+    csv_nested_list = [to_record (x) for x in csv_list]
+    counter_stop = time.perf_counter()
+    print(f"mapping csv list took {counter_stop - counter_start} seconds")
+
+    del csv_list
+
+    counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
+    counter_stop = time.perf_counter()
+    print(f"converting list to array took {counter_stop - counter_start} seconds")
+
     del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
@@ -62,7 +71,7 @@ def main(plot = 0):
     del data_array_loaded
 
     print("Data preprocessed.")
-    
+
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
