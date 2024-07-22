@@ -389,6 +389,9 @@ def sanitise_string(string):
         string = re.sub(comma_str[i], h, string)
     return string
 
+def to_record(s):
+    return sanitise_string(str(s)).split(",")[:25]
+
 def load_attrs(data_array):
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     t = lambda a: np.array([a]).T
