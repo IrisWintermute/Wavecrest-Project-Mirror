@@ -28,7 +28,7 @@ def main(plot = 0):
             del mx
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-   """ with open("main/data/plot.txt", "w") as f:
+    """ with open("main/data/plot.txt", "w") as f:
         f.write("")
 
     # data in csv has row length of 129
