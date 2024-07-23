@@ -148,35 +148,31 @@ def graph_test_assignments():
     
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
-
-    rnge = [v * 0.1 for v in range(17, 26)]
     test_p = 5
 
     vector_array_n = get_preprocessed_data(sys.argv[1])
     _, out, cs = kmeans((4, vector_array_n))
 
-    x = [v * 0.1 for v in range(8, 13)] * 2
+    x = [v * 0.05 for v in range(18, 24)]
     y = [test_assignments(out, cs, test_p, alpha=1, beta=j) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
     #plt.legend(["b=" + str(v) for v in rnge])
-    plt.savefig("savefig.png")
-    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
-    
-    plt.clf()
-    
-    x = [v * 0.1 for v in range(17, 25)] * 2
+
+    x = [v * 0.1 for v in range(25, 30)]
     y = [test_assignments(out, cs, test_p, alpha=j, beta=1) for j in x]
     ax.scatter(x, y)
-    ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
+    ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
     plt.title(f"{sys.argv[1]} GB")
-    #plt.legend(["a=" + str(v) for v in rnge])
-    plt.savefig("savefig_2.png")
-    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig_2.png", "--body", "savefig_2.png"])
+    plt.legend(["beta range", "alpha range"])
+    
+    plt.savefig("savefig.png")
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
+    
 
 if __name__ == "__main__":
     graph_test_assignments()
