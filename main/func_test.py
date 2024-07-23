@@ -148,7 +148,7 @@ def graph_test_assignments():
     vector_array_n = get_preprocessed_data(sys.argv[1])
     _, o_array, cs = kmeans((4, vector_array_n))
 
-    x = [v * 0.05 for v in range(18, 24)]
+    x = [v * 0.025 for v in range(38, 44)]
     y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=1, beta=j) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
@@ -156,7 +156,7 @@ def graph_test_assignments():
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
     #plt.legend(["b=" + str(v) for v in rnge])
 
-    x = [v * 0.1 for v in range(25, 30)]
+    x = [v * 0.1 for v in range(22, 42, 2)]
     y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=j, beta=1) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
