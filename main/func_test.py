@@ -20,16 +20,14 @@ def get_pseudorandom_coords(n, x0, xm, y0, ym, k, v):
 
 # || TEST K-MEANS CLUSTERING, K-MEANS++ AND OPTIMAL K DECISION ||
 def test_clustering():
-    data = get_pseudorandom_coords(5000, 0, 1, 0, 1, 5, 0.2)
-    k_range = [k for k in range(3, 30)]
+    data = get_pseudorandom_coords(1000, 0, 1, 0, 1, 5, 0.2)
+    k_range = [k for k in range(3, 15)]
     k_optimal = np.array([np.zeros(2) for _ in k_range])
     for i, k in enumerate(k_range):
         print(f"k: {k}")
         wrap = (k, data)
-        k, out, centroids = kmeans(wrap)
-        #print("Clustered data and centroids: ")
-        #print(centroids)
-        chi = optimal_k_decision(out, centroids)
+        k, o_array, centroids = kmeans(wrap)
+        chi = optimal_k_decision(data, centroids, o_array)
         k_optimal[i][0] = k
         k_optimal[i][1] = chi
     #print(k_optimal)
@@ -119,17 +117,14 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(out, cs, test_p, alpha, beta):
-    # vector_array_n = get_preprocessed_data(mx)
-
-    # _, out, cs = kmeans((4, vector_array_n))
-    
+def test_assignments(out, o_array, cs, test_p, alpha, beta):
     get_last = lambda v: v[-1]
-    o_array = np.apply_along_axis(get_last, 1, out)
+    
     save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // (100 // test_p))])
+    sample_size = out.shape[0] // (100 // test_p)
+    incoming_records = np.stack([np.append(out[i], [o_array[i]]) for i in np.random.randint(out.shape[0], size=sample_size)])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
     incoming_records = np.delete(incoming_records, -1, 1)
 
@@ -151,10 +146,10 @@ def graph_test_assignments():
     test_p = 5
 
     vector_array_n = get_preprocessed_data(sys.argv[1])
-    _, out, cs = kmeans((4, vector_array_n))
+    _, o_array, cs = kmeans((4, vector_array_n))
 
     x = [v * 0.05 for v in range(18, 24)]
-    y = [test_assignments(out, cs, test_p, alpha=1, beta=j) for j in x]
+    y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=1, beta=j) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
@@ -162,7 +157,7 @@ def graph_test_assignments():
     #plt.legend(["b=" + str(v) for v in rnge])
 
     x = [v * 0.1 for v in range(25, 30)]
-    y = [test_assignments(out, cs, test_p, alpha=j, beta=1) for j in x]
+    y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=j, beta=1) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
@@ -175,4 +170,4 @@ def graph_test_assignments():
     
 
 if __name__ == "__main__":
-    graph_test_assignments()
+    test_clustering()

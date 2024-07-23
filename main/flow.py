@@ -112,7 +112,8 @@ def main(plot = 0):
         # while True:
         #     step = int(input("Enter step of k search range: "))
         #     if (end - start) >= step: break
-
+    
+    t = lambda a: np.array([a]).T
     cluster_data = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step 0...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1)]
@@ -121,17 +122,16 @@ def main(plot = 0):
     cores = os.cpu_count()
     lock = Lock()
     with Pool(processes=cores) as p:
-        for k, clustered_data, centroids in p.imap_unordered(kmeans, k_range_wrap):
+        for k, o_array, centroids in p.imap_unordered(kmeans, k_range_wrap):
             with lock:
-                ch_index = optimal_k_decision(clustered_data, centroids)
+                ch_index = optimal_k_decision(vector_array_n, centroids, o_array)
                 graph_data.append(np.array([k, ch_index]))
                 print(f"Evaluated data set with {k} clusters.")
                 if ch_index > cluster_data[2]:
-                    cluster_data = (clustered_data, centroids, ch_index, k)
+                    cluster_data = (o_array, centroids, ch_index, k)
     print(f"Range searched. Optimal clustering found with {cluster_data[3]} (CH index of {cluster_data[2]}).")
 
-    get_last = lambda v: v[-1]
-    o_array = np.apply_along_axis(get_last, 1, cluster_data[0])
+
 
     if plot == 2:
         # plot_clustered_data(cluster_data[0])
@@ -154,9 +154,11 @@ def main(plot = 0):
     # plt.title(f"Execution time evalutation for kmeans() for {len(vector_array_n)} records.")
     # plt.savefig("main/data/savefig.png")
 
+    o_array = cluster_data[0]
+
     if plot == 3:
         with open("main/data/output_data_vectorised.txt", "w") as f:
-            records = [",".join([str(attr) for attr in vector]) for vector in cluster_data[0]]
+            records = [",".join([str(attr) for attr in vector]) for vector in np.concatenate((vector_array_n, t(o_array)), axis=1)]
             f.writelines(records)
         print("Clustered and vectorised data written to output_data_vectorised.txt.")
 

@@ -282,7 +282,10 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 reassignments += 1
 
         # stop algorithm when <0.1% of records are reassigned
-        if reassignments <= (data_array.shape[0] // 100): return k, data_array, centroids
+        if reassignments <= (data_array.shape[0] // 100): 
+            get_last = lambda v: v[-1]
+            o_array = np.apply_along_axis(get_last, 1, data_array)
+            return k, o_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments) with {k} clusters")
         iter += 1
 
@@ -334,17 +337,16 @@ def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
     return distances[0], distances[1]
 
 # return optimal k and clustered data from kmeans(k, data)
-def optimal_k_decision(clustered_data: np.ndarray, centroids: np.ndarray) -> float:
-    vectors = clustered_data.shape[0] * clustered_data[0].shape[0]
+def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> float:
+    vectors = data.shape[0] * data.shape[1]
     clusters = centroids.shape[0]
     overall_centroid = np.apply_along_axis(np.average, 0, centroids)
     # calculate between-cluster sum of squares
     bcss, wcss = 0, 0
     for i, centroid in enumerate(centroids):
-        fltr = np.array([i])
-        vectors_in_centroid = clustered_data[np.in1d(clustered_data[:, -1], fltr)]
+        vectors_in_centroid = data[o_array == i]
         # calculate within-cluster sum of squares
-        wcss += np.sum([distance_to_centroid(vec[:vec.shape[0] - 1], centroid) ** 2 for vec in vectors_in_centroid])
+        wcss += np.sum([distance_to_centroid(vec, centroid) ** 2 for vec in vectors_in_centroid])
         # calculate between-cluster sum of squares
         bcss += vectors_in_centroid.shape[0] * (distance_to_centroid(centroid, overall_centroid) ** 2)
     # calculate Calinski–Harabasz (CH) index
@@ -461,11 +463,11 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     return norm(attributes)
     
     
-def save_clustering_parameters(centroids, clustered_records, o_array):
+def save_clustering_parameters(centroids, data_array, o_array):
     # 1: get mean and stdev for each cluster
     stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
     for i, centroid in enumerate(centroids):
-        c_records = clustered_records[o_array == i]
+        c_records = data_array[o_array == i]
         for j, mean in enumerate(centroid):
             c_vals = c_records[:, j]
             stdevs[i,j] = np.sqrt(np.sum(np.power(np.array(c_vals) - mean, 2)) / (len(c_vals) - 1))
