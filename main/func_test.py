@@ -161,7 +161,7 @@ def graph_test_assignments():
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
-    plt.legend(["b=" + str(v) for v in rnge])
+    #plt.legend(["b=" + str(v) for v in rnge])
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
     
@@ -173,7 +173,8 @@ def graph_test_assignments():
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
-    plt.legend(["a=" + str(v) for v in rnge])
+    plt.title(f"{sys.argv[1]} GB")
+    #plt.legend(["a=" + str(v) for v in rnge])
     plt.savefig("savefig_2.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig_2.png", "--body", "savefig_2.png"])
 
