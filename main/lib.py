@@ -253,14 +253,13 @@ def kmeans(wrap: tuple) -> np.ndarray:
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
+    t = lambda a: np.array(a).T
     
         
     iter = 0
     while True:
 
-
-        get_last = lambda v: v[-1]
-        o_count = np.apply_along_axis(get_last, 1, data_array).T
+        o_count = data_array[:, -1]
         o_hash = {}
         for c_r in np.nditer(o_count):
             c = int(c_r)
@@ -281,16 +280,15 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
 
+        o_array = t(data_array[:, -1])
+
         # stop algorithm when <0.1% of records are reassigned
         if reassignments <= (data_array.shape[0] // 100): 
-            get_last = lambda v: v[-1]
-            o_array = np.apply_along_axis(get_last, 1, data_array)
             return k, o_array, centroids
         print(f"    Iter {iter} ({reassignments} reassignments) with {k} clusters")
         iter += 1
 
         # calculate new centroid coordinates
-        o_array = np.apply_along_axis(get_last, 1, data_array)
         for i, _ in enumerate(centroids):
             owned_records = data_array[o_array == i]
             owned_records = np.delete(owned_records, -1, 1)
