@@ -148,21 +148,13 @@ def graph_test_assignments():
     vector_array_n = get_preprocessed_data(sys.argv[1])
     _, o_array, cs = kmeans((4, vector_array_n))
 
-    x = [v * 0.02 for v in range(45, 61)]
+    x = [v * 0.01 for v in range(95, 104)] * 2
     y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=1, beta=j) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
-    # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
-    #plt.legend(["b=" + str(v) for v in rnge])
 
-    x = [v * 0.1 for v in range(22, 52, 2)]
-    y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=j, beta=1) for j in x]
-    ax.scatter(x, y)
-    ax.set_xlabel("Value of mult. factor applied to n.d. magnitude")
-    ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
-    # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
-    plt.title(f"{sys.argv[1]} GB")
+    plt.title(f"Accuracy over exp. factor range, {sys.argv[1]}GB records, 4 clusters")
     plt.legend(["beta range", "alpha range"])
     
     plt.savefig("savefig.png")
