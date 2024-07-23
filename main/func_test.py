@@ -149,15 +149,15 @@ def graph_test_assignments():
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
 
-    rnge = [v * 0.1 for v in range(6, 26)]
+    rnge = [v * 0.1 for v in range(17, 26)]
     test_p = 5
 
-    vector_array_n = get_preprocessed_data(0.1)
+    vector_array_n = get_preprocessed_data(10)
     _, out, cs = kmeans((4, vector_array_n))
     
     for i in rnge:
 
-        x = [v * 0.1 for v in range(6, 17)] * 3
+        x = [v * 0.1 for v in range(8, 13)] * 3
         y = [test_assignments(out, cs, test_p, alpha=i, beta=j) for j in x]
         ax.scatter(x, y)
     # ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
