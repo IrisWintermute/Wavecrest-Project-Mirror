@@ -170,4 +170,4 @@ def graph_test_assignments():
     
 
 if __name__ == "__main__":
-    test_clustering()
+    graph_test_assignments()
