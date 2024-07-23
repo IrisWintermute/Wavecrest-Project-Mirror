@@ -119,7 +119,7 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(out, cs):
+def test_assignments(out, cs, test_p):
     # vector_array_n = get_preprocessed_data(mx)
 
     # _, out, cs = kmeans((4, vector_array_n))
@@ -129,7 +129,7 @@ def test_assignments(out, cs):
     save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // 20)])
+    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // (100 / test_p))])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
     incoming_records = np.delete(incoming_records, -1, 1)
 
@@ -149,18 +149,20 @@ def graph_test_assignments():
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
 
-    for i in [0.1, 0.2, 0.5]:
+    rnge = [1.0]
+    test_p = 5
+    for i in rnge:
         vector_array_n = get_preprocessed_data(i)
 
         _, out, cs = kmeans((4, vector_array_n))
 
-        x = [v for v in range(10)]
-        y = [test_assignments(out, cs) for _ in x]
+        x = [v for v in range(15)]
+        y = [test_assignments(out, cs, test_p) for _ in x]
         ax.scatter(x, y)
     # ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
-    ax.set_ylabel("Assignment accuracy % (relative to clustering, 5% of input data)")
+    ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
-    plt.legend(["0.1GB", "0.5GB", "1.0GB"])
+    plt.legend([str(v) + "GB" for v in rnge])
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
