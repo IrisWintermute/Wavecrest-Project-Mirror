@@ -152,20 +152,30 @@ def graph_test_assignments():
     rnge = [v * 0.1 for v in range(17, 26)]
     test_p = 5
 
-    vector_array_n = get_preprocessed_data(10)
+    vector_array_n = get_preprocessed_data(sys.argv[1])
     _, out, cs = kmeans((4, vector_array_n))
-    
-    for i in rnge:
 
-        x = [v * 0.1 for v in range(8, 13)] * 3
-        y = [test_assignments(out, cs, test_p, alpha=i, beta=j) for j in x]
-        ax.scatter(x, y)
-    # ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
+    x = [v * 0.1 for v in range(8, 13)] * 2
+    y = [test_assignments(out, cs, test_p, alpha=1, beta=j) for j in x]
+    ax.scatter(x, y)
+    ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
+    ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
+    # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
+    plt.legend(["b=" + str(v) for v in rnge])
+    plt.savefig("savefig.png")
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
+    
+    plt.clf()
+    
+    x = [v * 0.1 for v in range(17, 25)] * 2
+    y = [test_assignments(out, cs, test_p, alpha=j, beta=1) for j in x]
+    ax.scatter(x, y)
+    ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")
     # plt.title("Accuracy over exp. factor range, 0.1GB records, 4 clusters")
     plt.legend(["a=" + str(v) for v in rnge])
-    plt.savefig("savefig.png")
-    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
+    plt.savefig("savefig_2.png")
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig_2.png", "--body", "savefig_2.png"])
 
 if __name__ == "__main__":
     graph_test_assignments()
