@@ -129,7 +129,7 @@ def test_assignments(out, cs, test_p):
     save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
-    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // (100 / test_p))])
+    incoming_records = np.stack([out[i] for i in np.random.randint(out.shape[0], size=out.shape[0] // (100 // test_p))])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
     incoming_records = np.delete(incoming_records, -1, 1)
 
