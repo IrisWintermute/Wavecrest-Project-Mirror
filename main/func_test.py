@@ -149,7 +149,7 @@ def graph_test_assignments():
     fig, ax = plt.subplots()
     color = ["r", "g", "b"]
 
-    rnge = [1.0]
+    rnge = [0.1, 1.0]
     test_p = 5
     for i in rnge:
         vector_array_n = get_preprocessed_data(i)
