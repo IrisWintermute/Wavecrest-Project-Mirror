@@ -480,7 +480,7 @@ def get_clustering_parameters():
         out = f.readlines()
     return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
 
-def assign_cluster(record, centroids, stdevs, alpha, beta):
+def assign_cluster(record, centroids, stdevs, alpha = 4, beta = 0.99):
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
     # alpha = 2
