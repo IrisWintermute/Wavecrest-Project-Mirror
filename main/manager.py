@@ -41,7 +41,7 @@ async def handle_echo(reader, writer):
     result = assign(record)
 
     print(f"Send: {record}")
-    writer.write(result)
+    writer.write(result.encode())
     await writer.drain()
 
     print("Close the connection")
@@ -63,6 +63,6 @@ if __name__ == "__main__":
     update = th.Thread(target = daily_cluster_update)
     update.start()
     # launch async server to handle incoming requests
-
+    asyncio.run(main())
 
 
