@@ -12,8 +12,10 @@ import time
 
 # instance recieves command to process data
 # @profile
-def main(plot = 0):
-    if len(sys.argv) > 2:
+def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
+    if mxg:
+        pass
+    elif len(sys.argv) > 2:
         mxg = sys.argv[2]
     else:
         mxg = input("Enter memory limit (GB): ")
@@ -97,10 +99,12 @@ def main(plot = 0):
         plot_data_3d(vector_array_n)
         return 0
 
-    if len(sys.argv) >= 6:
+    if start and end:
+        pass
+    elif len(sys.argv) >= 5:
         start = int(sys.argv[3]) 
         end = int(sys.argv[4])
-        step = int(sys.argv[5])
+        # step = int(sys.argv[5])
     else:
         print(sys.argv)
         while True:

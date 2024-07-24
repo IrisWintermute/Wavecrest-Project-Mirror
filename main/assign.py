@@ -1,8 +1,7 @@
 import numpy as np
 from lib import *
 
-def main():
-    raw_record = get_record()
+def main(raw_record):
 
     # needs to use values_dump generated from dataset preprocessing
     preprocessed_record = preprocess_incoming_record(raw_record)

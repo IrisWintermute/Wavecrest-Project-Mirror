@@ -472,12 +472,12 @@ def save_clustering_parameters(centroids, data_array, o_array):
 
     to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
     with open("clustering_parameters.txt", "w") as f:
-        f.write(to_str(centroids) + "\n\n" + to_str(stdevs))
+        f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
 
 def get_clustering_parameters():
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("clustering_parameters.txt", "r") as f:
-        out = f.readlines()
+        out = f.readlines()[2:]
     return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
 
 def assign_cluster(record, centroids, stdevs, alpha = 4, beta = 0.99):
@@ -549,3 +549,20 @@ def rate_cluster_fraud(stdevs):
     for i, v in enumerate(ls):
         hash[i] = v
     return hash
+
+def assign(raw_record):
+
+    # needs to use values_dump generated from dataset preprocessing
+    preprocessed_record = preprocess_incoming_record(raw_record)
+
+    (centroids, stdevs) = get_clustering_parameters()
+
+    # cluster indexes as keys, fraud ratings as values
+    fraud_hash = rate_cluster_fraud(stdevs)
+
+    assigned_record = assign_cluster(preprocessed_record, centroids, stdevs)
+
+    rating = fraud_hash.get(assigned_record[-1])
+
+    print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating} / 1.0")
+    return rating
