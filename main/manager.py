@@ -25,7 +25,7 @@ def daily_cluster_update():
     while True:
         prev_time = get_time("clustering_stats.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time == 86400 - cluster_time:
+        if time.time() - prev_time >= 86400 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
