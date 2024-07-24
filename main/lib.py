@@ -10,6 +10,8 @@ import psutil
 import matplotlib.pyplot as plt
 import subprocess
 
+#  <<DATA VISUALISATION>>
+
 def plot_data(vector_array_n):
     for i, a in enumerate(vector_array_n.T):
         plt.scatter(np.array([i] * a.shape[0]), a)
@@ -190,6 +192,7 @@ def plot_clustered_data_batch(clustered_data):
     subprocess.run(["chmod", "+x", "batch.sh"])
     subprocess.call("./batch.sh")
     
+#  <<FUNCTION PROFILING>>
 
 def profile_t(func):
     def wrapper(*args, **kwargs):
@@ -239,6 +242,8 @@ def profile_m(func):
         print(f"{func.__name__}:consumed memory: {m:.6f}")
         return result
     return wrapper
+
+#  <<K-MEANS CLUSTERING>>
 
 # cluster data using k-means algorithm
 #@profile_t_plot
@@ -349,7 +354,9 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
         bcss += vectors_in_centroid.shape[0] * (distance_to_centroid(centroid, overall_centroid) ** 2)
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
-    
+
+#  <<DATA PREPROCESSING>>
+
 def get_destination(number):
     with open("main/data/MDL_160524.csv", "r") as f:
         lines = [(line.split(",")[4], line.split(",")[1]) for line in f.readlines()]
@@ -428,7 +435,7 @@ def preprocess_n(attrs):
         return np.array(list(map(process_number, attrs)))
     else:
         return attrs
-
+    
 def vectorise(attributes: np.ndarray) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
@@ -459,39 +466,6 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     rnge = mx - mn if mx - mn else mx
     norm = lambda a: (a - mn) / rnge
     return norm(attributes)
-    
-    
-def save_clustering_parameters(centroids, data_array, o_array):
-    # 1: get mean and stdev for each cluster
-    stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
-    for i, centroid in enumerate(centroids):
-        c_records = data_array[o_array == i]
-        for j, mean in enumerate(centroid):
-            c_vals = c_records[:, j]
-            stdevs[i,j] = np.sqrt(np.sum(np.power(np.array(c_vals) - mean, 2)) / (len(c_vals) - 1))
-
-    to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
-    with open("clustering_parameters.txt", "w") as f:
-        f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
-
-def get_clustering_parameters():
-    to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
-    with open("clustering_parameters.txt", "r") as f:
-        out = f.readlines()[2:]
-    return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
-
-def assign_cluster(record, centroids, stdevs, alpha = 4, beta = 0.99):
-    normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
-    # experimentally determined to be optimal
-    # alpha = 2
-    # beta = 0.95
-    s_eval = (0, 0)
-    for j, means in enumerate(centroids):
-        eval_list = [normaldist(mean, stdevs[j,k] * alpha, record[k]) * ((stdevs[j,k] / np.max(stdevs[:,k])) ** beta) for k, mean in enumerate(means)]
-        c_eval = sum(eval_list) / max(eval_list)
-        s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
-    (_, c_i) = s_eval
-    return np.append(record, [c_i])
 
 def get_raw_data(mxg):
     mx = int(float(mxg) * 1024**3)
@@ -532,13 +506,40 @@ def get_preprocessed_data(mxg):
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     print("Data normalised.")
     return vector_array_n
+    
+#  <<RESULT MANAGEMENT AND INCOMING RECORD ASSIGNMENT>>
 
-def preprocess_incoming_record(raw_record):
-    r_arr = np.array(to_record(raw_record))
-    r_loaded = load_attrs(r_arr)
-    r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
-    r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed)
-    return np.apply_along_axis(normalise, 0, r_vec)
+def save_clustering_parameters(centroids, data_array, o_array):
+    # 1: get mean and stdev for each cluster
+    stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
+    for i, centroid in enumerate(centroids):
+        c_records = data_array[o_array == i]
+        for j, mean in enumerate(centroid):
+            c_vals = c_records[:, j]
+            stdevs[i,j] = np.sqrt(np.sum(np.power(np.array(c_vals) - mean, 2)) / (len(c_vals) - 1))
+
+    to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
+    with open("clustering_parameters.txt", "w") as f:
+        f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
+
+def get_clustering_parameters():
+    to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
+    with open("clustering_parameters.txt", "r") as f:
+        out = f.readlines()[2:]
+    return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
+
+def assign_cluster(record, centroids, stdevs, alpha = 4, beta = 0.99):
+    normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
+    # experimentally determined to be optimal
+    # alpha = 2
+    # beta = 0.95
+    s_eval = (0, 0)
+    for j, means in enumerate(centroids):
+        eval_list = [normaldist(mean, stdevs[j,k] * alpha, record[k]) * ((stdevs[j,k] / np.max(stdevs[:,k])) ** beta) for k, mean in enumerate(means)]
+        c_eval = sum(eval_list) / max(eval_list)
+        s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
+    (_, c_i) = s_eval
+    return np.append(record, [c_i])
 
 # naive solution
 def rate_cluster_fraud(stdevs):
@@ -549,6 +550,13 @@ def rate_cluster_fraud(stdevs):
     for i, v in enumerate(ls):
         hash[i] = v
     return hash
+
+def preprocess_incoming_record(raw_record):
+    r_arr = np.array(to_record(raw_record))
+    r_loaded = load_attrs(r_arr)
+    r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
+    r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed)
+    return np.apply_along_axis(normalise, 0, r_vec)
 
 def assign(raw_record):
 
