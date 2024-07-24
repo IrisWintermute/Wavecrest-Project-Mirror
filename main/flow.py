@@ -13,6 +13,9 @@ import time
 # instance recieves command to process data
 # @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
+    # get latest cdr data from s3
+    subprocess.run(["bash", "reload.sh"])
+
     if mxg:
         pass
     elif len(sys.argv) > 2:
