@@ -8,8 +8,12 @@ import threading as th
 # function to run assign.py and return assessments
 # must run alongside main while loop
 
-with open("clustering_stats.txt", "w") as f, open("ctime.txt", "w") as g:
-    pass
+with open("clustering_stats.txt", "+r") as f:
+    if not f.read():
+        f.write(str(time.time()))
+with open("ctime.txt", "+r") as g:
+    if not f.read():
+        f.write("0")
 
 def daily_cluster_update():
     def cluster():
@@ -31,8 +35,8 @@ def daily_cluster_update():
     
     cluster_time = 0
     while True:
-        prev_time = get_time("clustering_stats.txt")
-        cluster_time = get_time("ctime.txt")
+        prev_time = get_time("clustering_stats.txt") or time.time()
+        cluster_time = get_time("ctime.txt") or 0
         if time.time() - prev_time >= 30 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
