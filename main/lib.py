@@ -559,9 +559,8 @@ def preprocess_incoming_record(raw_record):
     return np.apply_along_axis(normalise, 0, r_vec)
 
 def assign(raw_record):
-
     # needs to use values_dump generated from dataset preprocessing
-    preprocessed_record = preprocess_incoming_record(raw_record)
+    preprocessed_record = preprocess_incoming_record(raw_record[1:len(raw_record) - 1])
 
     (centroids, stdevs) = get_clustering_parameters()
 
