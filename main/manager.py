@@ -35,10 +35,11 @@ def daily_cluster_update():
 
     def get_time(fname):
         with open(fname, "r") as f:
-            return int(f.readline())
+            return int(str(f.readline()).split(".")[0])
     
     cluster_time = 0
     while True:
+        print("current time: " + str(time.time()))
         prev_time = get_time("clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
         if time.time() - prev_time >= 100 - cluster_time:
