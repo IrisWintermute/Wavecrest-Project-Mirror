@@ -16,7 +16,7 @@ except FileExistsError:
     pass
 
 with open("ctime.txt", "w") as g:
-    f.write("0")
+    g.write("0")
 
 def daily_cluster_update():
     def cluster():
