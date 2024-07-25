@@ -2,6 +2,7 @@ from lib import *
 import matplotlib.pyplot as plt
 import random
 import subprocess
+import asyncio
 import sys
 
 marker = ["ro", "bo", "go", "co", "mo", "yo", "ko","r^", "b^", "g^", "c^", "m^", "y^", "k^"]
@@ -159,7 +160,22 @@ def graph_test_assignments():
     
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
+
+async def tcp_echo_client(message):
+    reader, writer = await asyncio.open_connection(
+        '127.0.0.1', 8888)
+
+    print(f'Send: {message!r}')
+    writer.write(message.encode())
+    await writer.drain()
+
+    data = await reader.read(100)
+    print(f'Received: {data.decode()!r}')
+
+    print('Close the connection')
+    writer.close()
+    await writer.wait_closed()
     
 
 if __name__ == "__main__":
-    graph_test_assignments()
+    asyncio.run(tcp_echo_client(sys.argv[1]))

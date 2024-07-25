@@ -1,11 +1,7 @@
-import time
 import asyncio
-import subprocess
-import sys
-import threading as th
 
 async def handle_echo(reader, writer):
-    data = await reader.read(-1)
+    data = await reader.read(16)
     record = data.decode()
     addr = writer.get_extra_info('peername')
 
@@ -31,6 +27,4 @@ async def main():
     async with server:
         await server.serve_forever()
 
-if __name__ == "__main__":
-    # launch async server to handle incoming requests
-    asyncio.run(main())
+asyncio.run(main())

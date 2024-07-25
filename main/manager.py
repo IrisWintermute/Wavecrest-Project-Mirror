@@ -13,7 +13,10 @@ def daily_cluster_update():
         start = time.time()
         print(f"Clustering operation begun at {time.ctime(start)}.")
         # default read size of 10 GB
-        flow.main(0, 10, 4, 4)
+        # testing with 0.05 GB
+        # flow.main(0, 0.05, 4, 4)
+        with open("clustering_stats.txt", "w") as f:
+            f.write(str(start))
         end = time.time()
         print(f"Clustering operation finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
@@ -27,20 +30,22 @@ def daily_cluster_update():
     while True:
         prev_time = get_time("clustering_stats.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time >= 86400 - cluster_time:
+        if time.time() - prev_time >= 30 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
-        time.sleep(1800)
+        time.sleep(5)
 
 async def handle_echo(reader, writer):
-    data = await reader.read(-1)
+    data = await reader.read(1024)
     record = data.decode()
     addr = writer.get_extra_info('peername')
 
     print(f"Received {record} from {addr}")
 
-    result = assign(record)
+    # result = assign(record)
+    with open("clustering_stats.txt", "r") as f:
+        result = record + f.read()
 
     print(f"Send: {record}")
     writer.write(result.encode())
