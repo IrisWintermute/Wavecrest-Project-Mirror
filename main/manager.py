@@ -8,10 +8,10 @@ import threading as th
 # function to run assign.py and return assessments
 # must run alongside main while loop
 
-with open("clustering_parameters.txt", "+r") as f:
+with open("clustering_parameters.txt", "w") as f:
     if not f.read():
         f.write(str(time.time()))
-with open("ctime.txt", "+r") as g:
+with open("ctime.txt", "w") as g:
     if not f.read():
         f.write("0")
 
