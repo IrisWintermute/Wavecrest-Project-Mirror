@@ -59,7 +59,7 @@ async def handle_echo(reader, writer):
     with open("clustering_parameters.txt", "r") as f:
         result = record + f.read()
 
-    print(f"Send: {record}")
+    print(f"Send: {result}")
     writer.write(result.encode())
     await writer.drain()
 
