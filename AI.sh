@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-arg = $1
+arg = $(1)
 if [["${arg}" = "start"]]; then
     git pull
     python3 main/manager.py
