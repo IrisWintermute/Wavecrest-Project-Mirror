@@ -9,11 +9,9 @@ import threading as th
 # must run alongside main while loop
 
 with open("clustering_parameters.txt", "w") as f:
-    if not f.read():
-        f.write(str(time.time()))
+    f.write(str(time.time()))
 with open("ctime.txt", "w") as g:
-    if not f.read():
-        f.write("0")
+    f.write("0")
 
 def daily_cluster_update():
     def cluster():
