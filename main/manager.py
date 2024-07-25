@@ -8,15 +8,13 @@ import threading as th
 # function to run assign.py and return assessments
 # must run alongside main while loop
 
-with open("clustering_parameters.txt", 'x') as f:
-    f.write("0")
-
 try: 
     with open("clustering_parameters.txt", 'x') as f:
     # clustering is executed immediately if no previous clustering data exists
         f.write("0") 
 except FileExistsError:
-    pass
+    with open("clustering_parameters.txt", 'w') as f:
+        f.write("0")
 
 with open("ctime.txt", "w") as g:
     g.write("0")
