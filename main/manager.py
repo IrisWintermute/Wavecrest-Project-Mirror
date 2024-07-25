@@ -8,6 +8,9 @@ import threading as th
 # function to run assign.py and return assessments
 # must run alongside main while loop
 
+with open("clustering_stats.txt", "w") as f, open("ctime.txt", "w") as g:
+    pass
+
 def daily_cluster_update():
     def cluster():
         start = time.time()
