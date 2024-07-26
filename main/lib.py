@@ -491,7 +491,7 @@ def normalise_single(attributes: np.ndarray) -> np.ndarray:
         mxmn = f.read().split(";")
     out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
-        mx, mn = tuple([int(v) for v in mxmn[i].split(",")])
+        mx, mn = tuple([float(v) for v in mxmn[i].split(",")])
         if not mx: mx += 1
         rnge = mx - mn if mx - mn else mx
         out[i] = (attr - mn) / rnge
