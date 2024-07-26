@@ -285,7 +285,8 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 #     o_hash[closest_centroid_index] = 1
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
-            print(f"{100 * (i / data_array.shape[0])}%")
+            if i % (data_array.shape[0] // 100) == 0:
+                print(f"{100 * (i / data_array.shape[0]):.4f}%")
 
         o_array = t(data_array[:, -1])
 
