@@ -27,7 +27,7 @@ def daily_cluster_update():
         print(f"Clustering operation begun at {time.ctime(start)}.")
         # default read size of 10 GB
         # testing with 0.01 GB
-        flow.main(0, 0.01, 4, 4)
+        flow.main(0, 1, 4, 4)
         # TESTING
         # with open("clustering_parameters.txt", "w") as f:
         #     f.write(str(start))
