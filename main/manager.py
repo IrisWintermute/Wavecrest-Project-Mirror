@@ -11,13 +11,13 @@ import threading as th
 try: 
     with open("clustering_parameters.txt", 'x') as f:
     # clustering is executed immediately if no previous clustering data exists
-        f.write("0") 
+        f.write(str(time.time() - 200)) 
 except FileExistsError:
     with open("clustering_parameters.txt", 'w') as f:
-        f.write("0")
+        f.write(str(time.time() - 200))
 
 with open("ctime.txt", "w") as g:
-    g.write("0")
+    g.write(str(time.time() - 50))
 
 def daily_cluster_update():
     def cluster():
@@ -44,11 +44,11 @@ def daily_cluster_update():
         print("current time: " + str(time.time()))
         prev_time = get_time("clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time >= 60 - cluster_time:
+        if time.time() - prev_time >= 300 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
-        time.sleep(10)
+        time.sleep(30)
 
 async def handle_echo(reader, writer):
     data = await reader.read(1024)
