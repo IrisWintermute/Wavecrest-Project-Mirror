@@ -191,7 +191,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         print("Clustered data written to output_data.txt.")
 
     if plot == 0:
-        save_clustering_parameters(cluster_data[1], cluster_data[0], o_array)
+        save_clustering_parameters(cluster_data[1], vector_array_n, o_array)
 
 
 if __name__ == "__main__":
