@@ -487,10 +487,9 @@ def save_minmax(data_array: np.ndarray):
         f.write(";".join(out))
 
 def normalise_single(attributes: np.ndarray) -> np.ndarray:
-    with open("minmax.txt", "w") as f:
-        mxmn = f.read()
+    with open("minmax.txt", "r") as f:
+        mxmn = f.read().split(";")
     out = np.empty(attributes.shape[0])
-    mxmn = mxmn.split(";")
     for i, attr in enumerate(attributes):
         mx, mn = tuple(mxmn[i].split(","))
         if not mx: mx += 1
