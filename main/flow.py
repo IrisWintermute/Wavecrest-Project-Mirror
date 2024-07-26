@@ -104,7 +104,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     del data_array_preprocessed
     print("Data vectorised.")  
 
-    save_minmax(vector_array_n)
+    save_minmax(vector_array)
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     del vector_array
     print("Data normalised.")
