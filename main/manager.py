@@ -8,16 +8,17 @@ import threading as th
 # function to run assign.py and return assessments
 # must run alongside main while loop
 
+init_cluster_time = 35 * 60
 try: 
     with open("clustering_parameters.txt", 'x') as f:
     # clustering is executed immediately if no previous clustering data exists
-        f.write(str(time.time() - 400)) 
+        f.write(str(time.time() - init_cluster_time)) 
 except FileExistsError:
     with open("clustering_parameters.txt", 'w') as f:
-        f.write(str(time.time() - 400))
+        f.write(str(time.time() - init_cluster_time))
 
 with open("ctime.txt", "w") as g:
-    g.write(str(1000))
+    g.write(str(init_cluster_time))
 
 def daily_cluster_update():
     def cluster():
@@ -44,7 +45,7 @@ def daily_cluster_update():
         print("current time: " + str(time.time()))
         prev_time = get_time("clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time >= 500 - cluster_time:
+        if time.time() - prev_time >= 86400 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
