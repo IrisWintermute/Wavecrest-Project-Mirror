@@ -17,7 +17,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     subprocess.run(["chmod", "+x", "main/get_keys.sh"])
     subprocess.call(["./main/get_keys.sh"])
     with open("cache.txt", "r") as f:
-        l = re.findall("\n[^}{]+\n", f.read())
+        l = re.findall("\n[^}{]+\n", f.read())[0]
     print(l)
     # l = l[1:len(l) - 1].split(",")
     # l = [int(k.split("_")[-1].split(".")[0]) for k in l]
