@@ -9,16 +9,17 @@ import threading as th
 # must run alongside main while loop
 
 init_cluster_time = 35 * 60
+day = 86400
 try: 
     with open("clustering_parameters.txt", 'x') as f:
     # clustering is executed immediately if no previous clustering data exists
-        f.write(str(time.time() - init_cluster_time)) 
+        f.write(str(time.time() - day)) 
 except FileExistsError:
     with open("clustering_parameters.txt", 'w') as f:
-        f.write(str(time.time() - init_cluster_time))
+        f.write(str(time.time() - day))
 
 with open("ctime.txt", "w") as g:
-    g.write(str(init_cluster_time))
+    g.write(str(day))
 
 def daily_cluster_update():
     def cluster():
