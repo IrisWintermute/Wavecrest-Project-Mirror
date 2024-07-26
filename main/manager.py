@@ -25,7 +25,7 @@ def daily_cluster_update():
     def cluster():
         start = time.time()
         print(f"Clustering operation begun at {time.ctime(start)}.")
-        flow.main(0, 1, 4, 4)
+        flow.main(0, 10, 4, 4)
         end = time.time()
         print(f"Clustering operation finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
