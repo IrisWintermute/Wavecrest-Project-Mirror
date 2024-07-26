@@ -87,7 +87,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     data_array_loaded = load_attrs(data_array)
     counter_stop = time.perf_counter()
     print(f"load_attrs took {counter_stop - counter_start} seconds")
-    del data_array
+    data_array
 
     counter_start = time.perf_counter()
     data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
