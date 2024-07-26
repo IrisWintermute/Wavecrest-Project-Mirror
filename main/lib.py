@@ -403,17 +403,20 @@ def sanitise_string(string):
 def to_record(s):
     return sanitise_string(str(s)).split(",")[:25]
 
-def load_attrs(data_array):
+def load_attrs(data_array, single = False):
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     t = lambda a: np.array([a]).T
-    data_array = np.hstack((
-        t(data_array[:,9]),
-        t(data_array[:,12]),
-        t(data_array[:,13]),
-        t(data_array[:,11]),
-        t(data_array[:,14]),
-        t(data_array[:,22]),
-    ))
+    if not single:
+        data_array = np.hstack((
+            t(data_array[:,9]),
+            t(data_array[:,12]),
+            t(data_array[:,13]),
+            t(data_array[:,11]),
+            t(data_array[:,14]),
+            t(data_array[:,22]),
+        ))
+    else:
+        data_array = np.array([data_array[9], data_array[12], data_array[13], data_array[11], data_array[14], data_array[22]])
     return np.vstack((attrs, data_array))
 
 def process_number(num):
@@ -436,21 +439,31 @@ def preprocess_n(attrs):
     else:
         return attrs
     
-def vectorise(attributes: np.ndarray) -> np.ndarray:
+def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.split(": ")) for l in f.readlines() if l.count(": ") == 1]) or {}
 
-    attributes_out = np.empty(attributes.shape[0])
-    for i, attr in enumerate(attributes):
+    if not single:
+        attributes_out = np.empty(attributes.shape[0])
+        for i, attr in enumerate(attributes):
+            if can_cast_to_int(attr):
+                attributes_out[i] = int(attr)
+            elif values_hash.get(attr, 0):
+                attributes_out[i] = values_hash[attr]
+            else:
+                values_hash[attr] = len(values_hash)
+                attributes_out[i] = values_hash[attr]
+    else:
+        attr = attributes
         if can_cast_to_int(attr):
-            attributes_out[i] = int(attr)
+            return int(attr)
         elif values_hash.get(attr, 0):
-            attributes_out[i] = values_hash[attr]
+            return values_hash[attr]
         else:
             values_hash[attr] = len(values_hash)
-            attributes_out[i] = values_hash[attr]
+            return values_hash[attr]
     
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
@@ -466,6 +479,21 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     rnge = mx - mn if mx - mn else mx
     norm = lambda a: (a - mn) / rnge
     return norm(attributes)
+
+def save_minmax(data_array: np.ndarray):
+    minmax = lambda attrs: ",".join([str(np.max(attrs)), str(np.min(attrs))])
+    out = np.apply_along_axis(minmax, 0, data_array).T.tolist()
+    with open("minmax.txt", "w") as f:
+        f.write(";".join(out))
+
+def normalise_single(attributes: np.ndarray) -> np.ndarray:
+    with open("minmax.txt", "w") as f:
+        mxmn = f.read().split(";")
+    for i, attr in enumerate(attributes):
+        mx, mn = tuple(mxmn[i].split(","))
+        if not mx: mx += 1
+        rnge = mx - mn if mx - mn else mx
+        return (attr - mn) / rnge
 
 def get_raw_data(mxg):
     mx = int(float(mxg) * 1024**3)
@@ -553,7 +581,7 @@ def rate_cluster_fraud(stdevs):
 
 def preprocess_incoming_record(raw_record):
     r_arr = np.array(to_record(raw_record))
-    r_loaded = load_attrs(r_arr)
+    r_loaded = load_attrs(r_arr, single = True)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
     r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed)
     return np.apply_along_axis(normalise, 0, r_vec)
