@@ -17,12 +17,12 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     subprocess.run(["chmod", "+x", "main/get_keys.sh"])
     subprocess.call(["./main/get_keys.sh"])
     with open("cache.txt", "r") as f:
-        l = f.readlines()[2].split("\"")[-2]
+        l = re.findall("[{].+[}]", f.read())[0].split("\n")
     print(l)
     # l = l[1:len(l) - 1].split(",")
     # l = [int(k.split("_")[-1].split(".")[0]) for k in l]
     # t = max(l)
-    l = re.findall("[0-9]\\{14\\}", l)
+    l = re.findall("[0-9]{14}", l)
     t = max([int(s) for s in l])
     print(t)
     subprocess.run(["chmod", "+x", "main/reload.sh"])
