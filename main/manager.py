@@ -11,11 +11,11 @@ import threading as th
 init_cluster_time = 35 * 60
 day = 86400
 try: 
-    with open("clustering_parameters.txt", 'x') as f:
+    with open("main/data/clustering_parameters.txt", 'x') as f:
     # clustering is executed immediately if no previous clustering data exists
         f.write(str(time.time() - day)) 
 except FileExistsError:
-    with open("clustering_parameters.txt", 'w') as f:
+    with open("main/data/clustering_parameters.txt", 'w') as f:
         f.write(str(time.time() - day))
 
 with open("ctime.txt", "w") as g:
@@ -25,13 +25,7 @@ def daily_cluster_update():
     def cluster():
         start = time.time()
         print(f"Clustering operation begun at {time.ctime(start)}.")
-        # default read size of 10 GB
-        # testing with 0.01 GB
         flow.main(0, 2, 4, 4)
-        # TESTING
-        # with open("clustering_parameters.txt", "w") as f:
-        #     f.write(str(start))
-        # /TESTING
         end = time.time()
         print(f"Clustering operation finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
@@ -44,7 +38,7 @@ def daily_cluster_update():
     cluster_time = 0
     for i in range(3):
         print("current time: " + str(time.time()))
-        prev_time = get_time("clustering_parameters.txt")
+        prev_time = get_time("main/data/clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
         if time.time() - prev_time >= 86400 - cluster_time:
             c = th.Thread(target = cluster)
@@ -61,10 +55,6 @@ async def handle_echo(reader, writer):
     print(f"Received {record} from {addr}")
 
     result = assign(record)
-    # TESTING
-    # with open("clustering_parameters.txt", "r") as f:
-    #     result = record + f.read()
-    # /TESTING
 
     print(f"Send: {result}")
     writer.write(result.encode())

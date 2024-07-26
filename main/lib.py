@@ -554,12 +554,12 @@ def save_clustering_parameters(centroids, data_array, o_array):
             stdevs[i,j] = np.sqrt(np.sum(np.power(np.array(c_vals) - mean, 2)) / (len(c_vals) - 1))
 
     to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
-    with open("clustering_parameters.txt", "w") as f:
+    with open("main/data/clustering_parameters.txt", "w") as f:
         f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
 
 def get_clustering_parameters():
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
-    with open("clustering_parameters.txt", "r") as f:
+    with open("main/data/clustering_parameters.txt", "r") as f:
         out = f.readlines()[2:]
     return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
 
@@ -601,7 +601,7 @@ def assign(raw_record):
 
     # cluster indexes as keys, fraud ratings as values
     fraud_hash = rate_cluster_fraud(stdevs)
-
+    print(fraud_hash)
     assigned_record = assign_cluster(preprocessed_record, centroids, stdevs)
 
     rating = str(fraud_hash.get(assigned_record[-1]))
