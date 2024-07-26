@@ -2,7 +2,7 @@
 # ||control flow of k-means program||
 # ||running inside an AWS EC2 instance||
 from lib import *
-import matplotlib.pyplot as plt
+from func_test import test_assignments
 import numpy as np
 from memory_profiler import profile
 import os
@@ -199,7 +199,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
                 record = data_array[o_array == i][0]
                 f.write(",".join(record.tolist()))
                 f.write("\n")
-
+        test_assignments(np.concatenate((vector_array_n, t(o_array)), axis=1), o_array, cluster_data[1], 3)
 
 
 if __name__ == "__main__":

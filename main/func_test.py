@@ -118,7 +118,7 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(out, o_array, cs, test_p, alpha, beta):
+def test_assignments(out, o_array, cs, test_p, alpha = 4, beta = 0.99):
     get_last = lambda v: v[-1]
     
     save_clustering_parameters(cs, out, o_array)
@@ -138,7 +138,7 @@ def test_assignments(out, o_array, cs, test_p, alpha, beta):
     alignment = np.sum(o_array_test == o_array_assigned)
     alignment_p = alignment * 100 / incoming_records.shape[0]
     print(f"Alignment: {alignment_p:.2f}%")
-    return alignment_p
+    # return alignment_p
 
 def graph_test_assignments():
     
