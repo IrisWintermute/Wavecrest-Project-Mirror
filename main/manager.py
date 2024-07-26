@@ -54,6 +54,7 @@ def daily_cluster_update():
 
 async def handle_echo(reader, writer):
     data = await reader.read(1024)
+    start = time.time()
     record = data.decode()
     addr = writer.get_extra_info('peername')
 
@@ -68,7 +69,8 @@ async def handle_echo(reader, writer):
     print(f"Send: {result}")
     writer.write(result.encode())
     await writer.drain()
-
+    end = time.time()
+    print(f"Record handled and processed in {end - start:.4f} seconds.")
     print("Close the connection")
     writer.close()
     await writer.wait_closed()
