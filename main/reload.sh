@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 arg=$1
 echo "$arg.csv loading..."
-rm -f "AI-Project/main/data/$arg.csv.zip"
+rm -f "AI-Project/main/data/cdr.csv"
 aws s3api get-object --bucket wavecrest-terraform-ops-ew1-ai --key "$arg.csv.zip" "$arg.csv.zip"
 unzip -o "$arg.csv.zip"
 sed -i '1d' "$arg.csv"
