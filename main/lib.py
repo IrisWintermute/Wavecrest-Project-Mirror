@@ -286,7 +286,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 data_array[i,-1] = closest_centroid_index
                 reassignments += 1
 
-            if i % (data_array.shape[0] // 100) == 0:
+            if i % (data_array.shape[0] // 25) == 0:
                 print(f"{100 * (i / data_array.shape[0]):.4f}%")
 
         o_array = t(data_array[:, -1])
@@ -304,9 +304,6 @@ def kmeans(wrap: tuple) -> np.ndarray:
             owned_records = np.delete(owned_records, -1, 1)
             if owned_records.any(): 
                 centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
-                
-            if i % (data_array.shape[0] // 100) == 0:
-                print(f"{100 * (i / data_array.shape[0]):.4f}%")
 
         centroids = centroids_new
 
