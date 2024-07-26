@@ -14,8 +14,6 @@ import time
 # @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # get latest cdr data from s3
-    with open("cache.txt", "w") as f:
-        pass
     subprocess.run(["bash", "get_keys.sh"])
     with open("cache.txt", "r") as f:
         l = f.read()
