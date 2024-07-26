@@ -195,7 +195,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         save_clustering_parameters(cluster_data[1], vector_array_n, o_array)
         mx = np.max(o_array)
         with open("main/dump.txt", "w") as f:
-            for i in range(mx):
+            for i in range(int(mx)):
                 record = data_array[o_array == i][0]
                 f.write(record)
                 f.write("\n")
