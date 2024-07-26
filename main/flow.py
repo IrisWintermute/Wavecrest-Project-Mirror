@@ -26,7 +26,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     t = max([int(s) for s in l])
     print(t)
     subprocess.run(["chmod", "+x", "main/reload.sh"])
-    subprocess.run(["bash", "main/reload.sh", "exp_odine_u_332_p_1_e_270_{t}"])
+    subprocess.run(["bash", "main/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
 
     if mxg:
         pass
