@@ -178,4 +178,6 @@ async def tcp_echo_client(message):
     
 
 if __name__ == "__main__":
-    asyncio.run(tcp_echo_client(sys.argv[1]))
+    with open("dump.txt", "r") as f:
+        l = f.read()
+    asyncio.run(tcp_echo_client(l))

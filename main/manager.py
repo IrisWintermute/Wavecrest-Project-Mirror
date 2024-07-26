@@ -57,9 +57,11 @@ async def handle_echo(reader, writer):
 
     print(f"Received {record} from {addr}")
 
-    # result = assign(record)
-    with open("clustering_parameters.txt", "r") as f:
-        result = record + f.read()
+    result = assign(record)
+    # TESTING
+    # with open("clustering_parameters.txt", "r") as f:
+    #     result = record + f.read()
+    # /TESTING
 
     print(f"Send: {result}")
     writer.write(result.encode())
