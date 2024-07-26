@@ -44,11 +44,11 @@ def daily_cluster_update():
         print("current time: " + str(time.time()))
         prev_time = get_time("clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time >= 300 - cluster_time:
+        if time.time() - prev_time >= 500 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
-        time.sleep(30)
+        time.sleep(100)
 
 async def handle_echo(reader, writer):
     data = await reader.read(1024)
