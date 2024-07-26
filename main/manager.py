@@ -38,11 +38,11 @@ def daily_cluster_update():
             return int(str(f.readline()).split(".")[0])
     
     cluster_time = 0
-    while True:
+    for i in range(3):
         print("current time: " + str(time.time()))
         prev_time = get_time("clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
-        if time.time() - prev_time >= 100 - cluster_time:
+        if time.time() - prev_time >= 60 - cluster_time:
             c = th.Thread(target = cluster)
             c.start()
 
