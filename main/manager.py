@@ -17,7 +17,7 @@ except FileExistsError:
         f.write(str(time.time() - 400))
 
 with open("ctime.txt", "w") as g:
-    g.write(str(time.time() - 100))
+    g.write(str(1000))
 
 def daily_cluster_update():
     def cluster():
