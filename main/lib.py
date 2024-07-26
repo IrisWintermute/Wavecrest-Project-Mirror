@@ -559,8 +559,8 @@ def get_clustering_parameters():
 def assign_cluster(record, centroids, stdevs, alpha = 4, beta = 0.99):
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
-    # alpha = 2
-    # beta = 0.95
+    # alpha = 4
+    # beta = 0.99
     s_eval = (0, 0)
     for j, means in enumerate(centroids):
         eval_list = [normaldist(mean, stdevs[j,k] * alpha, record[k]) * ((stdevs[j,k] / np.max(stdevs[:,k])) ** beta) for k, mean in enumerate(means)]
@@ -584,7 +584,7 @@ def preprocess_incoming_record(raw_record):
     r_loaded = load_attrs(r_arr, single = True)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
     r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed)
-    return np.apply_along_axis(normalise, 0, r_vec)
+    return normalise_single(r_vec)
 
 def assign(raw_record):
     # needs to use values_dump generated from dataset preprocessing
