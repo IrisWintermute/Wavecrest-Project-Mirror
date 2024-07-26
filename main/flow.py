@@ -22,7 +22,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # l = l[1:len(l) - 1].split(",")
     # l = [int(k.split("_")[-1].split(".")[0]) for k in l]
     # t = max(l)
-    l = re.findall("[0-9]\{14\}", l)
+    l = re.findall("[0-9]\\{14\\}", l)
     t = max([int(s) for s in l])
     print(t)
     subprocess.run(["chmod", "+x", "main/reload.sh"])
