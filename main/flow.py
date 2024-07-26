@@ -14,7 +14,8 @@ import time
 # @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # get latest cdr data from s3
-    subprocess.run(["./get_keys.sh"])
+    subprocess.run(["chmod", "+x", "get_keys.sh"])
+    subprocess.call(["./get_keys.sh"])
     with open("cache.txt", "r") as f:
         l = f.read()
     print(l)
@@ -24,7 +25,8 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     l = re.findall("[0-9]\{14\}", l)
     t = max([int(s) for s in l])
     print(t)
-    subprocess.run(["bash", "reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
+    subprocess.run(["chmod", "+x", "reload.sh"])
+    subprocess.call(f"./reload.sh exp_odine_u_332_p_1_e_270_{t}")
 
     if mxg:
         pass
