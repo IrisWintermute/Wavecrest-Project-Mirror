@@ -560,7 +560,7 @@ def preprocess_incoming_record(raw_record):
 
 def assign(raw_record):
     # needs to use values_dump generated from dataset preprocessing
-    preprocessed_record = preprocess_incoming_record(raw_record[1:len(raw_record) - 1])
+    preprocessed_record = preprocess_incoming_record(raw_record)
 
     (centroids, stdevs) = get_clustering_parameters()
 
