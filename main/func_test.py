@@ -178,7 +178,8 @@ async def tcp_echo_client(message):
     
 
 if __name__ == "__main__":
-    with open("dump.txt", "r") as f:
-        l = f.read().split("\n")
-    for record in l:
-        asyncio.run(tcp_echo_client(record))
+    # with open("dump.txt", "r") as f:
+    #     l = f.read().split("\n")
+    # for record in l:
+    #     asyncio.run(tcp_echo_client(record))
+    test_clustering()
