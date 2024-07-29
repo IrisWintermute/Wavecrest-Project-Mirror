@@ -196,6 +196,7 @@ def plot_clustered_data_batch(clustered_data):
 #  <<FUNCTION PROFILING>>
 
 def profile_t(func):
+    """Wraps function, prints execution time to terminal."""
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -206,6 +207,7 @@ def profile_t(func):
     return wrapper
 
 def profile_t_plot(func):
+    """Wraps function, writes execution time to file."""
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -217,6 +219,7 @@ def profile_t_plot(func):
     return wrapper 
 
 def profile_m_plot(func):
+    """Wraps function, writes memory usage to file."""
     def wrapper(*args, **kwargs):
         start = process_memory()
         result = func(*args, **kwargs)
@@ -227,13 +230,14 @@ def profile_m_plot(func):
         return result
     return wrapper 
 
-# inner psutil function
 def process_memory():
+    """inner psutil function."""
     process = psutil.Process(os.getpid())
     mem_info = process.memory_info()
     return mem_info.rss
 
 def profile_m(func):
+    """Wraps function, prints execution time to terminal."""
     def wrapper(*args, **kwargs):
 
         start = process_memory()
@@ -247,6 +251,7 @@ def profile_m(func):
 #  <<K-MEANS CLUSTERING>>
 
 def reassign(wrap):
+    """Reassigns record to closest centroid."""
     (record, centroids) = wrap
     (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
     closest_centroid_index = index_1
@@ -264,9 +269,13 @@ def reassign(wrap):
 # cluster data using k-means algorithm
 #@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
+    """Runs K-means clustering algorithm on data_array.
+       1) Centroids are chosen.
+       2) Records are assigned to closest centroids.
+       3) Centroids are recalculated.
+       4) 2 and 3 repeat until <1% of records are reassigned."""
 
     (k, data_array_r) = wrap
-    # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
     centroid_list = [data_array_r[i] for i in np.random.randint(data_array_r.shape[0], size=k)]
     centroids = np.stack(centroid_list)
@@ -297,7 +306,6 @@ def kmeans(wrap: tuple) -> np.ndarray:
         wrap = [(record, centroids) for record in data_array]
         with Pool(processes=cores) as p:
             data_array = p.map(reassign, wrap)
-        # print(data_array)
         data_array = np.array(data_array)
         o_array = t(data_array[:, -1])
 
@@ -318,13 +326,8 @@ def kmeans(wrap: tuple) -> np.ndarray:
 
         centroids = centroids_new
 
-# get data from S3 bucket
-# when user_data script is run upon EC2 deployment, all data in s3 bucket is synced to data repository
-# data copied will include CDR and MDL data
-
-# K++ algorithm
-# randomly select initial centroids from unclustered data
 def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
+    """K++ algorithm: randomly select initial centroids from unclustered data."""
     data = np.array([np.array(vec) for vec in data_r])
     chosen_indexes = [np.random.randint(0, data.shape[0])]
     centroids = [data[chosen_indexes[0]]]
@@ -346,17 +349,19 @@ def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
     return np.array(centroids)
 
 def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
-    # calculate distance between record and centroid
+    """Calculate Euclidean distance between record and centroid."""
     return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
 def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
-    # returns tuple of distance between record and nearest centroid, and index of nearest centroid
+    """Calculates tuple of distance between record and nearest centroid, and index of nearest centroid.
+       Returns tuples for closest and 2nd closest centroids."""
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     distances.sort()
     return distances[0], distances[1]
 
-# return optimal k and clustered data from kmeans(k, data)
+
 def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> float:
+    """Calculate CH Index of clustered data set."""
     vectors = data.shape[0] * data.shape[1]
     clusters = centroids.shape[0]
     overall_centroid = np.apply_along_axis(np.average, 0, centroids)
@@ -373,7 +378,19 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
 
 #  <<DATA PREPROCESSING>>
 
+def get_latest_data():
+    """Download most recent CDR data from S3."""
+    subprocess.run(["chmod", "+x", "main/get_keys.sh"])
+    subprocess.call(["./main/get_keys.sh"])
+    with open("main/data/cache.txt", "r") as f:
+        l = re.findall("\n[^}{]+\n", f.read())[0]
+    l = re.findall("[0-9]{14}", l)
+    t = max([int(s) for s in l])
+    subprocess.run(["chmod", "+x", "main/reload.sh"])
+    subprocess.run(["bash", "main/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
+
 def get_destination(number):
+    """Get destination from MDL using number prefix."""
     with open("main/data/MDL_160524.csv", "r") as f:
         lines = [(line.split(",")[4], line.split(",")[1]) for line in f.readlines()]
         match = ("", "")
@@ -404,12 +421,9 @@ def can_cast_to_int(v: str) -> bool:
         return False
     else:
         return True
-    
-def diagonal_mirror(nested_list: np.ndarray) -> np.ndarray:
-    return np.rot90(np.fliplr(nested_list))
 
-# regex hacking to capture double-quoted 
 def sanitise_string(string):
+    """Remove format-breaking commas from text fields."""
     comma_str = re.findall('"[^,"]+,[^,"]+"', string)
     hyphen_str = [re.sub(',', '-', s) for s in comma_str]
     for i, h in enumerate(hyphen_str):
@@ -417,9 +431,11 @@ def sanitise_string(string):
     return string
 
 def to_record(s):
+    """Map record from comma-delineated string to python list."""
     return sanitise_string(s).split(',')[:25]
 
 def load_attrs(data_array, single = False):
+    """Compress 2D array of strings, preserving relevant fields."""
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     t = lambda a: np.array([a]).T
     if not single:
@@ -436,6 +452,7 @@ def load_attrs(data_array, single = False):
     return np.vstack((attrs, data_array))
 
 def process_number(num):
+    """Preprocess phone numbers."""
     if num == "anonymous": 
         return (0) 
     # convert number to international format
@@ -448,6 +465,7 @@ def process_number(num):
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
+    """Preprocess each field according to its label."""
     col = attrs[0]
     attrs = np.delete(attrs, 0)
     if col == "Calling Number" or col == "Called Number":
@@ -489,7 +507,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     return attributes_out
 
 def normalise(attributes: np.ndarray) -> np.ndarray:
-    # normalise dimension to have a range of 1
+    """Normalise dimension to have a range of 1."""
     mx, mn = np.max(attributes), np.min(attributes)
     if not mx: mx += 1
     rnge = mx - mn if mx - mn else mx
@@ -497,12 +515,14 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     return norm(attributes)
 
 def save_minmax(data_array: np.ndarray):
+    """Save max and min values of each dimension to file."""
     minmax = lambda attrs: ",".join([str(np.max(attrs)), str(np.min(attrs))])
     out = np.apply_along_axis(minmax, 0, data_array).T.tolist()
     with open("minmax.txt", "w") as f:
         f.write(";".join(out))
 
 def normalise_single(attributes: np.ndarray) -> np.ndarray:
+    """Normalise vectorised CDR relative to dataset."""
     with open("minmax.txt", "r") as f:
         mxmn = f.read().split(";")
     out = np.empty(attributes.shape[0])
@@ -514,6 +534,7 @@ def normalise_single(attributes: np.ndarray) -> np.ndarray:
     return out
 
 def get_raw_data(mxg):
+    """Loads data from file and maps to 2D numpy array."""
     mx = int(float(mxg) * 1024**3)
     size = os.path.getsize("main/data/cdr.csv")
     filestep = size // mx if size // mx >= 1 else 1
@@ -533,6 +554,7 @@ def get_raw_data(mxg):
     return data_array
 
 def get_preprocessed_data(mxg):
+    """Loads data and runs function chain to produce normalised data."""
     data_array = get_raw_data(mxg)
     print(f"CDR data ({data_array.shape[0]} records) loaded.")
 
@@ -556,6 +578,8 @@ def get_preprocessed_data(mxg):
 #  <<RESULT MANAGEMENT AND INCOMING RECORD ASSIGNMENT>>
 
 def save_clustering_parameters(centroids, data_array, o_array):
+    """Generates means and standard deviations of centroids.
+       Saves data to file."""
     print(centroids)
     # 1: get mean and stdev for each cluster
     stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
@@ -570,12 +594,16 @@ def save_clustering_parameters(centroids, data_array, o_array):
         f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
 
 def get_clustering_parameters():
+    """Loads features of clusters from file."""
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("main/data/clustering_parameters.txt", "r") as f:
         out = f.readlines()[2:]
     return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
 
 def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
+    """Calculates mean position of normalised record along normal
+       distributions of each centroid. Appends to record index of
+       centroid record is most closely aligned with."""
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
     # alpha = 4
@@ -590,6 +618,7 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
 
 # naive solution
 def rate_cluster_fraud(stdevs):
+    """Produces map of centroid indexes to fraud ratings."""
     hash = {}
     ls = [float(np.average(c)) for c in stdevs]
     mx = max(ls)
@@ -599,6 +628,7 @@ def rate_cluster_fraud(stdevs):
     return hash
 
 def preprocess_incoming_record(raw_record):
+    """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = np.array(to_record(raw_record))
     r_loaded = load_attrs(r_arr, single = True)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
@@ -607,6 +637,8 @@ def preprocess_incoming_record(raw_record):
     return normalise_single(r_vec)
 
 def assign(raw_record):
+    """Takes individual CDR, runs function chain to determine CDR's 
+       rating of fraudulence relative to the locally stored cluster features."""
     # needs to use values_dump generated from dataset preprocessing
     preprocessed_record = preprocess_incoming_record(raw_record)
 

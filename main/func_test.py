@@ -31,18 +31,6 @@ def test_clustering():
         chi = optimal_k_decision(data, centroids, o_array)
         k_optimal[i][0] = k
         k_optimal[i][1] = chi
-    #print(k_optimal)
-    optimal_plot = diagonal_mirror(k_optimal)
-    plt.plot(optimal_plot[0], optimal_plot[1], "b-")
-    plt.show()
-    
-    # for i in range(20):
-    #     p = [val for val in out if val[-1] == i]
-    #     plot = diagonal_mirror(p)
-    #     plt.plot(plot[0], plot[1], marker[i % len(marker)])
-    # cen_plt = diagonal_mirror(centroids)
-    # plt.plot(cen_plt[0], cen_plt[1], "ks")
-    # plt.show()
 
 def test_clustering_graphing():
     data = get_pseudorandom_coords(50, 0, 1, 0, 1, 5, 0.2)

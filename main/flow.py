@@ -13,20 +13,8 @@ import time
 # instance recieves command to process data
 # @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
-    # get latest cdr data from s3
-    # subprocess.run(["chmod", "+x", "main/get_keys.sh"])
-    # subprocess.call(["./main/get_keys.sh"])
-    # with open("cache.txt", "r") as f:
-    #     l = re.findall("\n[^}{]+\n", f.read())[0]
-    # print(l)
-    # # l = l[1:len(l) - 1].split(",")
-    # # l = [int(k.split("_")[-1].split(".")[0]) for k in l]
-    # # t = max(l)
-    # l = re.findall("[0-9]{14}", l)
-    # t = max([int(s) for s in l])
-    # print(t)
-    # subprocess.run(["chmod", "+x", "main/reload.sh"])
-    # subprocess.run(["bash", "main/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
+    """Runs clustering operation."""
+    get_latest_data()
 
     if mxg:
         pass

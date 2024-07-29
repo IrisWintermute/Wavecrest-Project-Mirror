@@ -23,7 +23,9 @@ with open("ctime.txt", "w") as g:
     g.write(str(day))
 
 def daily_cluster_update():
+    """Updates clustering_parameters.txt every 24 hours."""
     def cluster():
+        """Runs clustering operation with predetermined k and dataset size in GB."""
         if sys.argv[1] == "test":
             size = 2.5
         else:
@@ -52,6 +54,7 @@ def daily_cluster_update():
         time.sleep(cluster_time * 1.5)
 
 async def handle_echo(reader, writer):
+    """Handles incoming CDRs. Passes then to assign() and returns results to sender."""
     data = await reader.read(1024)
     start = time.time()
     record = data.decode()
@@ -71,6 +74,7 @@ async def handle_echo(reader, writer):
     await writer.wait_closed()
 
 async def main():
+    """Launches server to provide indefinite service on open port."""
     server = await asyncio.start_server(
         handle_echo, '127.0.0.1', 8888)
 
