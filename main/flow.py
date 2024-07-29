@@ -137,8 +137,6 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     cluster_data = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step 0...")
     k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1)]
-    # needed for optimal_k_decision
-    vector_array_n
     graph_data = []
     cores = os.cpu_count()
     lock = Lock()

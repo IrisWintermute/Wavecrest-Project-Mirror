@@ -252,8 +252,9 @@ def kmeans(wrap: tuple) -> np.ndarray:
     (k, data_array_r) = wrap
     # use kmeans++ to get initial centroid coordinates
     # centroids = k_means_pp(k, data_array_r)
-    centroid_list = [data_array_r[i] for i in np.random.randint(len(data_array_r), size=k)]
+    centroid_list = [data_array_r[i] for i in np.random.randint(data_array_r.shape[0], size=k)]
     centroids = np.stack(centroid_list)
+    print(centroids)
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
@@ -545,6 +546,7 @@ def get_preprocessed_data(mxg):
 #  <<RESULT MANAGEMENT AND INCOMING RECORD ASSIGNMENT>>
 
 def save_clustering_parameters(centroids, data_array, o_array):
+    print(centroids)
     # 1: get mean and stdev for each cluster
     stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
     for i, centroid in enumerate(centroids):
@@ -590,7 +592,8 @@ def preprocess_incoming_record(raw_record):
     r_arr = np.array(to_record(raw_record))
     r_loaded = load_attrs(r_arr, single = True)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
-    r_vec = np.apply_along_axis(vectorise, 0, r_preprocessed).flatten()
+    wrap = [(r_preprocessed, True) for _ in r_preprocessed.shape[0]]
+    r_vec = np.apply_along_axis(vectorise, 0, wrap).flatten()
     return normalise_single(r_vec)
 
 def assign(raw_record):
