@@ -296,7 +296,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         wrap = [(record, centroids) for record in data_array]
         with Pool(processes=cores) as p:
             data_array = p.map(reassign, wrap)
-
+        print(data_array)
         data_array = np.array(data_array)
         o_array = t(data_array[:, -1])
 
