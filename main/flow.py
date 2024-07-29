@@ -56,7 +56,8 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # print(f"sanitise string took {counter_stop - counter_start} seconds")
 
     counter_start = time.perf_counter()
-    csv_nested_list = list(map(to_record, csv_list))
+    csv_nested_list = np.array(list(map(sanitise_string, csv_list)))
+    csv_nested_list = np.char.split(csv_nested_list, sep=',')
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
 
@@ -70,12 +71,12 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
 
     del csv_list
 
-    """counter_start = time.perf_counter()
-    data_array = np.array(csv_nested_list, dtype=object)
+    counter_start = time.perf_counter()
+    data_array = csv_nested_list[:,:25]
     counter_stop = time.perf_counter()
     print(f"converting list to array took {counter_stop - counter_start} seconds")
 
-    del csv_nested_list
+    """del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
 
