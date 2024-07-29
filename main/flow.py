@@ -51,7 +51,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
 
     # data in csv has row length of 129
     # counter_start = time.perf_counter()
-    to_record = lambda s: sanitise_string(s).split(",")[:25]
+    # to_record = lambda s: sanitise_string(s).split(",")[:25]
     # counter_stop = time.perf_counter()
     # print(f"sanitise string took {counter_stop - counter_start} seconds")
 
@@ -68,7 +68,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # counter_stop = time.perf_counter()
     # print(f"generating data_array took {counter_stop - counter_start} seconds")
 
-    del csv_list
+    del csv_list, to_record
 
     counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
