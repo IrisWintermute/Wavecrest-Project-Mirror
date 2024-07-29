@@ -407,7 +407,7 @@ def sanitise_string(string):
     return string
 
 def to_record(s):
-    return sanitise_string(str(s)).split(",")[:25]
+    return sanitise_string(s).split(",")[:25]
 
 def load_attrs(data_array, single = False):
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
