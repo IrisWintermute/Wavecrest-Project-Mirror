@@ -258,6 +258,7 @@ def reassign(wrap):
         #     o_hash[closest_centroid_index] = 1
         record[-1] = closest_centroid_index
         return record
+    else: return record
 
 
 # cluster data using k-means algorithm
@@ -296,7 +297,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         wrap = [(record, centroids) for record in data_array]
         with Pool(processes=cores) as p:
             data_array = p.map(reassign, wrap)
-        print(data_array)
+        # print(data_array)
         data_array = np.array(data_array)
         o_array = t(data_array[:, -1])
 
