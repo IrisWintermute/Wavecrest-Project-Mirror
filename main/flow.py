@@ -11,7 +11,7 @@ import sys
 import time
 
 # instance recieves command to process data
-@profile
+# @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # get latest cdr data from s3
     # subprocess.run(["chmod", "+x", "main/get_keys.sh"])
@@ -70,12 +70,12 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
 
     del csv_list
 
-    """counter_start = time.perf_counter()
+    counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
     counter_stop = time.perf_counter()
     print(f"converting list to array took {counter_stop - counter_start} seconds")
 
-    del csv_nested_list
+    """del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
 
