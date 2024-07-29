@@ -136,18 +136,26 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     t = lambda a: np.array([a]).T
     cluster_data = (None, None, 0, start)
     print(f"Searching for optimal clustering in range {start}-{end} with step 0...")
-    k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1)]
     graph_data = []
-    cores = os.cpu_count()
-    lock = Lock()
-    with Pool(processes=cores) as p:
-        for k, o_array, centroids in p.imap_unordered(kmeans, k_range_wrap):
-            with lock:
-                ch_index = optimal_k_decision(vector_array_n, centroids, o_array)
-                graph_data.append(np.array([k, ch_index]))
-                print(f"Evaluated data set with {k} clusters.")
-                if ch_index > cluster_data[2]:
-                    cluster_data = (o_array, centroids, ch_index, k)
+    # cores = os.cpu_count()
+    # lock = Lock()
+    # k_range_wrap = [(k, vector_array_n) for k in range(start, end + 1)]
+    # with Pool(processes=cores) as p:
+    #     for k, o_array, centroids in p.imap_unordered(kmeans, k_range_wrap):
+    #         with lock:
+    #             ch_index = optimal_k_decision(vector_array_n, centroids, o_array)
+    #             graph_data.append(np.array([k, ch_index]))
+    #             print(f"Evaluated data set with {k} clusters.")
+    #             if ch_index > cluster_data[2]:
+    #                 cluster_data = (o_array, centroids, ch_index, k)
+
+    for k in range(start, end + 1):
+        k, o_array, centroids = kmeans((k, vector_array_n))
+        ch_index = optimal_k_decision(vector_array_n, centroids, o_array)
+        graph_data.append(np.array([k, ch_index]))
+        print(f"Evaluated data set with {k} clusters.")
+        if ch_index > cluster_data[2]:
+            cluster_data = (o_array, centroids, ch_index, k)
     print(f"Range searched. Optimal clustering found with {cluster_data[3]} (CH index of {cluster_data[2]}).")
 
 
