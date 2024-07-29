@@ -3,6 +3,7 @@ import asyncio
 import flow
 from lib import assign
 import threading as th
+import sys
 
 # reading from port on server to collect incoming data
 # function to run assign.py and return assessments
@@ -23,9 +24,13 @@ with open("ctime.txt", "w") as g:
 
 def daily_cluster_update():
     def cluster():
+        if sys.argv[1] == "test":
+            size = 0.1
+        else:
+            size = 10
         start = time.time()
         print(f"Clustering operation begun at {time.ctime(start)}.")
-        flow.main(0, 0.1, 4, 4)
+        flow.main(0, size, 4, 4)
         end = time.time()
         print(f"Clustering operation finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
