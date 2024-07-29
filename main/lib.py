@@ -9,6 +9,7 @@ import os
 import psutil
 import matplotlib.pyplot as plt
 import subprocess
+from multiprocessing import Pool, Lock
 
 #  <<DATA VISUALISATION>>
 
@@ -245,6 +246,20 @@ def profile_m(func):
 
 #  <<K-MEANS CLUSTERING>>
 
+def reassign(wrap):
+    (record, centroids) = wrap
+    (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
+    closest_centroid_index = index_1
+    if record[-1] != closest_centroid_index and abs(dist_1 - dist_2) > 1e-4: 
+        # o_hash[record[-1]] -= 1
+        # if o_hash.get(closest_centroid_index):
+        #     o_hash[closest_centroid_index] += 1
+        # else:
+        #     o_hash[closest_centroid_index] = 1
+        record[-1] = closest_centroid_index
+        return record
+
+
 # cluster data using k-means algorithm
 #@profile_t_plot
 def kmeans(wrap: tuple) -> np.ndarray:
@@ -265,34 +280,27 @@ def kmeans(wrap: tuple) -> np.ndarray:
     iter = 0
     while True:
 
-        o_count = data_array[:, -1]
-        o_hash = {}
-        for c_r in np.nditer(o_count):
-            c = int(c_r)
-            if o_hash.get(c): o_hash[c] += 1
-            else: o_hash[c] = 1
+        # o_count = data_array[:, -1]
+        # o_hash = {}
+        # for c_r in np.nditer(o_count):
+        #     c = int(c_r)
+        #     if o_hash.get(c): o_hash[c] += 1
+        #     else: o_hash[c] = 1
 
         reassignments = 0
         # assign each data point to closest centroid
         print("Reassigning records.")
-        for i, record in enumerate(data_array):
-            (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
-            closest_centroid_index = index_1
-            if record[-1] != closest_centroid_index and o_hash[record[-1]] > 1 and abs(dist_1 - dist_2) > 1e-4: 
-                o_hash[record[-1]] -= 1
-                # if o_hash.get(closest_centroid_index):
-                #     o_hash[closest_centroid_index] += 1
-                # else:
-                #     o_hash[closest_centroid_index] = 1
-                data_array[i,-1] = closest_centroid_index
-                reassignments += 1
-
-            if i % (data_array.shape[0] // 25) == 0:
-                print(f"{100 * (i / data_array.shape[0]):.4f}%")
+        cores = os.cpu_count()
+        lock = Lock()
+        o_array_prev = t(data_array[:, -1])
+        wrap = [(record, centroids) for record in data_array]
+        with Pool(processes=cores) as p:
+            data_array = p.map(reassign, wrap)
 
         o_array = t(data_array[:, -1])
 
-        # stop algorithm when <0.1% of records are reassigned
+        # stop algorithm when <1% of records are reassigned
+        reassignments = np.sum(o_array_prev != o_array)
         if reassignments <= (data_array.shape[0] // 100): 
             return k, o_array, centroids
         print(f"\tIter {iter} ({reassignments} reassignments) with {k} clusters")
