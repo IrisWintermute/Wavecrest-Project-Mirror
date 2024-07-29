@@ -25,7 +25,7 @@ with open("ctime.txt", "w") as g:
 def daily_cluster_update():
     def cluster():
         if sys.argv[1] == "test":
-            size = 0.1
+            size = 3
         else:
             size = 10
         start = time.time()
