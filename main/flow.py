@@ -75,7 +75,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     counter_stop = time.perf_counter()
     print(f"converting list to array took {counter_stop - counter_start} seconds")
 
-    """del csv_nested_list
+    del csv_nested_list
 
     # enrich and truncate records to optimise for clustering and fraud detection
 
@@ -198,7 +198,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
                 f.write(",".join(record.tolist()))
                 f.write("\n")
         test_assignments(np.concatenate((vector_array_n, t(o_array)), axis=1), o_array, cluster_data[1], 3)
-"""
+
 
 if __name__ == "__main__":
     counter_start = time.perf_counter()
