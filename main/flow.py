@@ -186,14 +186,40 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         print("Clustered data written to output_data.txt.")
 
     if plot == 0:
-        save_clustering_parameters(cluster_data[1], vector_array_n, o_array)
         mx = np.max(o_array)
         with open("main/dump.txt", "w") as f:
             for i in range(int(mx) + 1):
                 record = data_array[o_array == i][0]
                 f.write(",".join(record.tolist()))
                 f.write("\n")
-        test_assignments(np.concatenate((vector_array_n, t(o_array)), axis=1), o_array, cluster_data[1], 3)
+
+        a = np.array([0.5, 4,5])
+        b = np.array([0.5, 2])
+        mid = lambda p: 0.5 * (p[0] + p[1])
+        o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
+        for i in range(5):
+            alignment = {}
+            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
+            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
+            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
+            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
+            opt = sorted(v for v in alignment.keys())[-1]
+            if opt == 0:
+                a[0] = mid(a)
+                b[0] = mid(b)
+            elif opt == 1:
+                a[1] = mid(a)
+                b[0] = mid(b)
+            elif opt == 2:
+                a[0] = mid(a)
+                b[1] = mid(b)
+            elif opt == 3:
+                a[1] = mid(a)
+                b[1] = mid(b)
+        
+        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, mid(a), mid(b))
+
+
 
 
 if __name__ == "__main__":

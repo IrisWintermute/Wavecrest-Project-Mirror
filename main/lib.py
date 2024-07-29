@@ -577,7 +577,7 @@ def get_preprocessed_data(mxg):
     
 #  <<RESULT MANAGEMENT AND INCOMING RECORD ASSIGNMENT>>
 
-def save_clustering_parameters(centroids, data_array, o_array):
+def save_clustering_parameters(centroids, data_array, o_array, alpha, beta):
     """Generates means and standard deviations of centroids.
        Saves data to file."""
     print(centroids)
@@ -591,14 +591,16 @@ def save_clustering_parameters(centroids, data_array, o_array):
 
     to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
     with open("main/data/clustering_parameters.txt", "w") as f:
-        f.write(str(time.time()) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
+        f.write(str(time.time()) + "\n" + ",".join(alpha, beta) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
 
 def get_clustering_parameters():
     """Loads features of clusters from file."""
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("main/data/clustering_parameters.txt", "r") as f:
-        out = f.readlines()[2:]
-    return tuple([to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:])])
+        ab = f.readlines()[1].split(",")
+        out = f.readlines()[3:]
+    
+    return (to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:]), ab[0], ab[1])
 
 def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     """Calculates mean position of normalised record along normal
@@ -606,11 +608,9 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
        centroid record is most closely aligned with."""
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
-    # alpha = 4
-    # beta = 0.99
     s_eval = (0, 0)
     for j, means in enumerate(centroids):
-        eval_list = [normaldist(mean, stdevs[j,k] * alpha, record[k]) * ((stdevs[j,k] / np.max(stdevs[:,k])) ** beta) for k, mean in enumerate(means)]
+        eval_list = [(normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta for k, mean in enumerate(means)]
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
     (_, c_i) = s_eval
@@ -642,12 +642,12 @@ def assign(raw_record):
     # needs to use values_dump generated from dataset preprocessing
     preprocessed_record = preprocess_incoming_record(raw_record)
 
-    (centroids, stdevs) = get_clustering_parameters()
+    (centroids, stdevs, alpha, beta) = get_clustering_parameters()
 
     # cluster indexes as keys, fraud ratings as values
     fraud_hash = rate_cluster_fraud(stdevs)
     print(fraud_hash)
-    assigned_record = assign_cluster(preprocessed_record, centroids, stdevs)
+    assigned_record = assign_cluster(preprocessed_record, centroids, stdevs, alpha, beta)
 
     rating = str(fraud_hash.get(assigned_record[-1]))
 
