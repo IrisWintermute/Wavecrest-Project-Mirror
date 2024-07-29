@@ -56,7 +56,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # print(f"sanitise string took {counter_stop - counter_start} seconds")
 
     counter_start = time.perf_counter()
-    csv_nested_list = np.array(list(map(sanitise_string, csv_list)), dtype=object)
+    csv_nested_list = np.array(list(map(sanitise_string, csv_list)), dtype=bytes)
     csv_nested_list = np.char.split(csv_nested_list, sep=',')
     counter_stop = time.perf_counter()
     print(f"mapping csv list took {counter_stop - counter_start} seconds")
