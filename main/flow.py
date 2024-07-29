@@ -68,7 +68,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # counter_stop = time.perf_counter()
     # print(f"generating data_array took {counter_stop - counter_start} seconds")
 
-    del csv_list, to_record
+    del csv_list
 
     counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
