@@ -633,7 +633,6 @@ def get_preprocessed_data(mxg):
 def save_clustering_parameters(centroids, data_array, o_array, alpha, beta):
     """Generates means and standard deviations of centroids.
        Saves data to file."""
-    print(centroids)
     # 1: get mean and stdev for each cluster
     stdevs = np.empty([centroids.shape[0], centroids.shape[1]])
     for i, centroid in enumerate(centroids):

@@ -117,6 +117,8 @@ def test_optimal_ab():
     print(f"Accuracy at test proportion of {test_p}%, depth of {depth}: {acc}")
     opt_list = np.array(opt_list)
     plt.plot(opt_list[:, 0], opt_list[:, 1])
+    plt.set_xlim(0.5, 4.5)
+    plt.set_ylim(0.5, 2)
     plt.savefig("savefig.png")
 
 def graph_test_assignments():
