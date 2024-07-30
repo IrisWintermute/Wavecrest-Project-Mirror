@@ -414,19 +414,19 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
         if alignment[opt] == 0:
             a[0] = mid(a)
             b[0] = mid(b)
-            opt_list.append(mid([mid(a), a[1]]), mid([mid(b), b[1]]))
+            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[1]])])
         elif alignment[opt] == 1:
             a[1] = mid(a)
             b[0] = mid(b)
-            opt_list.append(mid([mid(a), a[0]]), mid([mid(b), b[1]]))
+            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[1]])])
         elif alignment[opt] == 2:
             a[0] = mid(a)
             b[1] = mid(b)
-            opt_list.append(mid([mid(a), a[1]]), mid([mid(b), b[0]]))
+            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[0]])])
         elif alignment[opt] == 3:
             a[1] = mid(a)
             b[1] = mid(b)
-            opt_list.append(mid([mid(a), a[0]]), mid([mid(b), b[0]]))
+            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[0]])])
     return mid(a), mid(b), opt_list
 
 #  <<DATA PREPROCESSING>>
