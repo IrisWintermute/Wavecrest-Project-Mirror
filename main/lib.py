@@ -413,7 +413,7 @@ def optimal_ab_decision(vector_array_n, o_array, centroids):
         alignment[-opt + test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
         opt = sorted([v for v in alignment.keys()])[-1]
         if opt < 0: break
-        print(f"Optimal alignment: {opt}")
+        print(f"Optimal alignment at step {i + 1}: {opt}")
         if alignment[opt] == 0:
             a[0] = mid(a)
             b[0] = mid(b)

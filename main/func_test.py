@@ -106,6 +106,15 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
+def test_optimal_ab():
+    vector_array_n = get_pseudorandom_coords(1000, 0, 1, 0, 1, 6, 0.2)
+    _, o_array, cs = kmeans((4, vector_array_n))
+    a, b = optimal_ab_decision(vector_array_n, o_array, cs)
+    print(a, b)
+    for i in [1, 2, 5, 10]:
+        acc = test_assignments(vector_array_n, o_array, cs, i, a, b)
+        print(f"Accuracy at test proportion of {i}%: {acc}")
+
 def graph_test_assignments():
     
     fig, ax = plt.subplots()
@@ -148,4 +157,4 @@ if __name__ == "__main__":
     #     l = f.read().split("\n")
     # for record in l:
     #     asyncio.run(tcp_echo_client(record))
-    test_clustering()
+    test_optimal_ab()
