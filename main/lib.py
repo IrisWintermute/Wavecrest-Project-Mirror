@@ -394,7 +394,7 @@ def test_assignments(out, o_array, test_p, alpha, beta):
     # print(f"Alignment: {alignment_p:.2f}%")
     return alignment_p
 
-def optimal_ab_decision(vector_array_n, o_array):
+def optimal_ab_decision(vector_array_n, o_array, test_p):
     a = np.array([0.5, 4,5])
     b = np.array([0.5, 2])
     mid = lambda p: 0.5 * (p[0] + p[1])
@@ -405,10 +405,10 @@ def optimal_ab_decision(vector_array_n, o_array):
     for i in range(5):
         alignment = {}
         # top right, top left, bottom right, bottom left
-        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
-        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
-        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
-        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
+        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
+        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
+        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
+        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
         opt = sorted([v for v in alignment.keys()])[-1]
         if opt < 0: break
         print(f"Optimal alignment at step {i + 1}: {opt}")
@@ -424,7 +424,6 @@ def optimal_ab_decision(vector_array_n, o_array):
         elif alignment[opt] == 3:
             a[1] = mid(a)
             b[1] = mid(b)
-    print(mid(a), mid(b))
     return mid(a), mid(b)
 
 #  <<DATA PREPROCESSING>>
