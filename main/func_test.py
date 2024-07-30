@@ -120,6 +120,7 @@ def test_optimal_ab():
     plt.set_xlim(0.5, 4.5)
     plt.set_ylim(0.5, 2)
     plt.savefig("savefig.png")
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
 def graph_test_assignments():
     
