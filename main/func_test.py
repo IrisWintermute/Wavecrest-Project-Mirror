@@ -110,10 +110,9 @@ def test_optimal_ab():
     vector_array_n = get_preprocessed_data(sys.argv[1])
     _, o_array, cs = kmeans((4, vector_array_n))
     save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-    for i in [5, 10, 15]:
-        a, b = optimal_ab_decision(vector_array_n, o_array, 5, i)
-        acc = test_assignments(vector_array_n, o_array, i, a, b)
-        print(f"Accuracy at test proportion of {i}%: {acc}")
+    a, b = optimal_ab_decision(vector_array_n, o_array, sys.srgv[2], sys.srgv[3])
+    acc = test_assignments(vector_array_n, o_array, sys.srgv[2], a, b)
+    print(f"Accuracy at test proportion of {sys.srgv[2]}%, depth of {sys.argv[3]}: {acc}")
 
 def graph_test_assignments():
     
