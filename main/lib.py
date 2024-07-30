@@ -385,7 +385,7 @@ def test_assignments(out, o_array, test_p, alpha, beta):
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
     incoming_records = np.delete(incoming_records, -1, 1)
 
-    (centroids, stdevs) = get_clustering_parameters()
+    (centroids, stdevs, _, _) = get_clustering_parameters()
     assigned_records = np.array([assign_cluster(record, centroids, stdevs, alpha, beta) for record in incoming_records])
     o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
 
