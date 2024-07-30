@@ -108,7 +108,8 @@ def plot_cluster_dist():
 
 def test_optimal_ab():
     vector_array_n = get_pseudorandom_coords(1000, 0, 1, 0, 1, 6, 0.2)
-    _, o_array, _ = kmeans((6, vector_array_n))
+    _, o_array, cs = kmeans((6, vector_array_n))
+    save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
     a, b = optimal_ab_decision(vector_array_n, o_array)
     print(a, b)
     for i in [1, 2, 5, 10]:
