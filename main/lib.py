@@ -642,7 +642,7 @@ def save_clustering_parameters(centroids, data_array, o_array, alpha, beta):
 
     to_str = lambda arr: "\n".join([",".join([str(v) for v in l]) for l in arr.tolist()])
     with open("main/data/clustering_parameters.txt", "w") as f:
-        f.write(str(time.time()) + "\n" + ",".join([alpha, beta]) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
+        f.write(str(time.time()) + "\n" + ",".join([str(alpha), str(beta)]) + "\n\n" + to_str(centroids) + "\n\n" + to_str(stdevs))
 
 def get_clustering_parameters():
     """Loads features of clusters from file."""
