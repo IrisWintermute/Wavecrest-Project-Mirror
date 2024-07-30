@@ -320,10 +320,8 @@ def kmeans(wrap: tuple) -> np.ndarray:
         for i, _ in enumerate(centroids):
             owned_records = data_array[o_array == i]
             owned_records = np.delete(owned_records, -1, 1)
-            print(owned_records[0])
             if owned_records.any(): 
                 centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
-        print(centroids)
         centroids = centroids_new
 
 def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
