@@ -112,9 +112,12 @@ def test_optimal_ab():
     save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
     test_p = int(sys.argv[2])
     depth = int(sys.argv[3])
-    a, b = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+    a, b, opt_list = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
     acc = test_assignments(vector_array_n, o_array, test_p, a, b)
     print(f"Accuracy at test proportion of {test_p}%, depth of {depth}: {acc}")
+    opt_list = np.array(opt_list)
+    plt.plot(opt_list[:, 0], opt_list[:, 1])
+    plt.savefig("savefig.png")
 
 def graph_test_assignments():
     

@@ -399,6 +399,7 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
     t = lambda a: np.array([a]).T
     o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
     opt = test_assignments(o_data_array_n, o_array, 2, 1, 1)
+    opt_list = [[1, 1]]
     print(f"Initial alignment: {opt}")
     for i in range(depth):
         alignment = {}
@@ -413,16 +414,20 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
         if alignment[opt] == 0:
             a[0] = mid(a)
             b[0] = mid(b)
+            opt_list.append(mid([mid(a), a[1]]), mid([mid(b), b[1]]))
         elif alignment[opt] == 1:
             a[1] = mid(a)
             b[0] = mid(b)
+            opt_list.append(mid([mid(a), a[0]]), mid([mid(b), b[1]]))
         elif alignment[opt] == 2:
             a[0] = mid(a)
             b[1] = mid(b)
+            opt_list.append(mid([mid(a), a[1]]), mid([mid(b), b[0]]))
         elif alignment[opt] == 3:
             a[1] = mid(a)
             b[1] = mid(b)
-    return mid(a), mid(b)
+            opt_list.append(mid([mid(a), a[0]]), mid([mid(b), b[0]]))
+    return mid(a), mid(b), opt_list
 
 #  <<DATA PREPROCESSING>>
 

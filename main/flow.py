@@ -193,7 +193,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
                 f.write("\n")
         save_clustering_parameters(cluster_data[1], vector_array_n, o_array, 1, 1)
         
-        a, b = optimal_ab_decision(vector_array_n, o_array, 5, 5)
+        a, b, _ = optimal_ab_decision(vector_array_n, o_array, 5, 5)
         
         save_clustering_parameters(cluster_data[1], vector_array_n, o_array, a, b)
 
