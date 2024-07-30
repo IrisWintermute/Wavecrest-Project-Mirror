@@ -279,6 +279,8 @@ def kmeans(wrap: tuple) -> np.ndarray:
     # centroids = k_means_pp(k, data_array_r)
     centroid_list = [data_array_r[i] for i in np.random.randint(data_array_r.shape[0], size=k)]
     centroids = np.stack(centroid_list)
+    z = np.array([np.zeros(centroids.shape[0])])
+    centroids = np.concatenate((centroids, z.T), axis=1)
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
@@ -320,7 +322,7 @@ def kmeans(wrap: tuple) -> np.ndarray:
         for i, _ in enumerate(centroids):
             owned_records = data_array[o_array == i]
             owned_records = np.delete(owned_records, -1, 1)
-            print(owned_records)
+            print(owned_records[0])
             if owned_records.any(): 
                 centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
         print(centroids)
