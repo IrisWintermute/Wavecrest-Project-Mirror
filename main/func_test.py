@@ -108,11 +108,11 @@ def plot_cluster_dist():
 
 def test_optimal_ab():
     vector_array_n = get_pseudorandom_coords(1000, 0, 1, 0, 1, 6, 0.2)
-    _, o_array, cs = kmeans((4, vector_array_n))
+    _, o_array, cs = kmeans((6, vector_array_n))
     a, b = optimal_ab_decision(vector_array_n, o_array, cs)
     print(a, b)
     for i in [1, 2, 5, 10]:
-        acc = test_assignments(vector_array_n, o_array, cs, i, a, b)
+        acc = test_assignments(vector_array_n, o_array, i, a, b)
         print(f"Accuracy at test proportion of {i}%: {acc}")
 
 def graph_test_assignments():
@@ -122,10 +122,10 @@ def graph_test_assignments():
     test_p = 5
 
     vector_array_n = get_preprocessed_data(sys.argv[1])
-    _, o_array, cs = kmeans((4, vector_array_n))
+    _, o_array, _ = kmeans((4, vector_array_n))
 
     x = [v * 0.01 for v in range(95, 104)] * 2
-    y = [test_assignments(vector_array_n, o_array, cs, test_p, alpha=1, beta=j) for j in x]
+    y = [test_assignments(vector_array_n, o_array, test_p, alpha=1, beta=j) for j in x]
     ax.scatter(x, y)
     ax.set_xlabel("Value of exp. factor applied to n.d. magnitude")
     ax.set_ylabel(f"Assignment accuracy % (relative to clustering, {test_p}% of input data)")

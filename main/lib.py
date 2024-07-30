@@ -376,10 +376,8 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
 
-def test_assignments(out, o_array, cs, test_p, alpha, beta):
+def test_assignments(out, o_array, test_p, alpha, beta):
     get_last = lambda v: v[-1]
-    
-    save_clustering_parameters(cs, out, o_array)
 
     # chosen randomly from input records for testing
     sample_size = out.shape[0] // (100 // test_p)
@@ -407,10 +405,10 @@ def optimal_ab_decision(vector_array_n, o_array, centroids):
     for i in range(5):
         alignment = {}
         # top right, top left, bottom right, bottom left
-        alignment[-opt + test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
-        alignment[-opt + test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
-        alignment[-opt + test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
-        alignment[-opt + test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
+        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
+        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
+        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
+        alignment[-opt + test_assignments(o_data_array_n, o_array, 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
         opt = sorted([v for v in alignment.keys()])[-1]
         if opt < 0: break
         print(f"Optimal alignment at step {i + 1}: {opt}")
