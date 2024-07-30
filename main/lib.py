@@ -392,7 +392,7 @@ def test_assignments(out, o_array, test_p, alpha, beta):
     # print(f"Alignment: {alignment_p:.2f}%")
     return alignment_p
 
-def optimal_ab_decision(vector_array_n, o_array, test_p):
+def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
     a = np.array([0.5, 4,5])
     b = np.array([0.5, 2])
     mid = lambda p: 0.5 * (p[0] + p[1])
@@ -400,7 +400,7 @@ def optimal_ab_decision(vector_array_n, o_array, test_p):
     o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
     opt = test_assignments(o_data_array_n, o_array, 2, 1, 1)
     print(f"Initial alignment: {opt}")
-    for i in range(5):
+    for i in range(depth):
         alignment = {}
         # top right, top left, bottom right, bottom left
         alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
