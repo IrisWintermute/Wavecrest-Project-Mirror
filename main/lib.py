@@ -376,6 +376,58 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
 
+def test_assignments(out, o_array, cs, test_p, alpha, beta):
+    get_last = lambda v: v[-1]
+    
+    save_clustering_parameters(cs, out, o_array)
+
+    # chosen randomly from input records for testing
+    sample_size = out.shape[0] // (100 // test_p)
+    incoming_records = np.stack([np.append(out[i], [o_array[i]]) for i in np.random.randint(out.shape[0], size=sample_size)])
+    o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
+    incoming_records = np.delete(incoming_records, -1, 1)
+
+    (centroids, stdevs) = get_clustering_parameters()
+    assigned_records = np.array([assign_cluster(record, centroids, stdevs, alpha, beta) for record in incoming_records])
+    o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
+
+    alignment = np.sum(o_array_test == o_array_assigned)
+    alignment_p = alignment * 100 / incoming_records.shape[0]
+    # print(f"Alignment: {alignment_p:.2f}%")
+    return alignment_p
+
+def optimal_ab_decision(vector_array_n, o_array, centroids):
+    a = np.array([0.5, 4,5])
+    b = np.array([0.5, 2])
+    mid = lambda p: 0.5 * (p[0] + p[1])
+    t = lambda a: np.array([a]).T
+    o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
+    opt_init = test_assignments(o_data_array_n, o_array, centroids, 2, 1, 1)
+    print(f"Initial alignment: {opt_init}")
+    for i in range(5):
+        alignment = {}
+        # top right, top left, bottom right, bottom left
+        alignment[test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
+        alignment[test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
+        alignment[test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
+        alignment[test_assignments(o_data_array_n, o_array, centroids, 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
+        opt = sorted([v for v in alignment.keys()])[-1]
+        print(f"Optimal alignment: {opt}")
+        if alignment[opt] == 0:
+            a[0] = mid(a)
+            b[0] = mid(b)
+        elif alignment[opt] == 1:
+            a[1] = mid(a)
+            b[0] = mid(b)
+        elif alignment[opt] == 2:
+            a[0] = mid(a)
+            b[1] = mid(b)
+        elif alignment[opt] == 3:
+            a[1] = mid(a)
+            b[1] = mid(b)
+    print(mid(a), mid(b))
+    return mid(a), mid(b)
+
 #  <<DATA PREPROCESSING>>
 
 def get_latest_data():

@@ -2,7 +2,6 @@
 # ||control flow of k-means program||
 # ||running inside an AWS EC2 instance||
 from lib import *
-from func_test import test_assignments
 import numpy as np
 from memory_profiler import profile
 import os
@@ -193,31 +192,9 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
                 f.write(",".join(record.tolist()))
                 f.write("\n")
 
-        a = np.array([0.5, 4,5])
-        b = np.array([0.5, 2])
-        mid = lambda p: 0.5 * (p[0] + p[1])
-        o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
-        for i in range(5):
-            alignment = {}
-            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
-            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
-            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
-            alignment[test_assignments(o_data_array_n, o_array, cluster_data[1], 2, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
-            opt = sorted(v for v in alignment.keys())[-1]
-            if opt == 0:
-                a[0] = mid(a)
-                b[0] = mid(b)
-            elif opt == 1:
-                a[1] = mid(a)
-                b[0] = mid(b)
-            elif opt == 2:
-                a[0] = mid(a)
-                b[1] = mid(b)
-            elif opt == 3:
-                a[1] = mid(a)
-                b[1] = mid(b)
+        a, b = optimal_ab_decision(vector_array_n, o_array, centroids)
         
-        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, mid(a), mid(b))
+        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, a, b)
 
 
 

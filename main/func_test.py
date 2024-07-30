@@ -106,28 +106,6 @@ def plot_cluster_dist():
     ax.set_ylabel('Cluster size (as fraction of total dataset size)')
     plt.show()
 
-def test_assignments(out, o_array, cs, test_p, alpha, beta):
-    get_last = lambda v: v[-1]
-    
-    save_clustering_parameters(cs, out, o_array)
-
-    # chosen randomly from input records for testing
-    sample_size = out.shape[0] // (100 // test_p)
-    incoming_records = np.stack([np.append(out[i], [o_array[i]]) for i in np.random.randint(out.shape[0], size=sample_size)])
-    o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
-    incoming_records = np.delete(incoming_records, -1, 1)
-
-    (centroids, stdevs) = get_clustering_parameters()
-    assigned_records = np.array([assign_cluster(record, centroids, stdevs, alpha, beta) for record in incoming_records])
-    o_array_assigned = np.apply_along_axis(get_last, 1, assigned_records)
-    # print(f"Assigned: {o_array_assigned}")
-    # print(f"test: {o_array_test}")
-
-    alignment = np.sum(o_array_test == o_array_assigned)
-    alignment_p = alignment * 100 / incoming_records.shape[0]
-    print(f"Alignment: {alignment_p:.2f}%")
-    return alignment_p
-
 def graph_test_assignments():
     
     fig, ax = plt.subplots()
