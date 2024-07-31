@@ -214,4 +214,4 @@ if __name__ == "__main__":
     #     l = f.read().split("\n")
     # for record in l:
     #     asyncio.run(tcp_echo_client(record))
-    graph_ab_over_size()
+    test_optimal_ab()
