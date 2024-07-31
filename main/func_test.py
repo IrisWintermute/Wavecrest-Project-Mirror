@@ -144,9 +144,10 @@ def graph_ab_over_size():
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
         for j in [0, 15]:
-            test_p = 10
+            test_p = 3
             depth = j
-            a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+            if j == 0: a, b = 1, 1
+            else: a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
             acc = round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)
             print(f"Optimal alignment: {acc:.4f}%")
             if data.get(j):
