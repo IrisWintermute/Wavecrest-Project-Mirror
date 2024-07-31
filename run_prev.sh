@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-git pull
-python3 main/flow.py $1 $2 $3 $4
-
-#sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key main/data/output_data.txt --body main/data/output_data.txt
-#sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key main/data/output_data_vectorised.txt --body main/data/output_data_vectorised.txt
-#sudo aws s3api put-object --bucket wavecrest-terraform-ops-ew1-ai --key main/data/savefig.png --body main/data/savefig.png

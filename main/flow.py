@@ -153,7 +153,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         plot_clustering_range(graph_data, len(cluster_data[0]))
         plot_clustered_data_batch(cluster_data[0])
 
-        with open("clustering_stats.txt", "a") as f:
+        with open("main/data/clustering_stats.txt.txt", "a") as f:
             sizes = [str(cluster_data[0][o_array == i].shape[0]) for i in range(len(cluster_data[1]))]
             f.write(str(cluster_data[0].shape[0]) + "," + ",".join(sizes) + "\n")
         return 0
