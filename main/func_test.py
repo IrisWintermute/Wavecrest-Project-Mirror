@@ -143,8 +143,8 @@ def graph_ab_over_size():
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-        for j in [0, 15]:
-            test_p = 3
+        for j in [0, 10, 20]:
+            test_p = 5
             depth = j
             if j == 0: a, b = 1, 1
             else: a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
