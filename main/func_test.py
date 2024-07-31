@@ -164,7 +164,7 @@ def graph_ab_over_size():
     ax.set_xlabel("Dataset size (GB)")
     ax.set_title("Effect of parameter optimization on accuracy")
     ax.set_xticks(x + width, sizes)
-    ax.legend(loc='upper left', ncols=3)
+    ax.legend(loc='upper left')
     ax.set_ylim(0, 100)
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
