@@ -374,12 +374,12 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
     # calculate Calinski–Harabasz (CH) index
     return bcss * (vectors - clusters) / (wcss * (clusters - 1))
 
-def test_assignments(out, o_array, test_p, alpha, beta):
+def test_assignments(vector_array_n, o_array, test_p, alpha, beta):
     get_last = lambda v: v[-1]
 
     # chosen randomly from input records for testing
-    sample_size = out.shape[0] // (100 // test_p)
-    incoming_records = np.stack([np.append(out[i], [o_array[i]]) for i in np.random.randint(out.shape[0], size=sample_size)])
+    sample_size = vector_array_n.shape[0] // (100 // test_p)
+    incoming_records = np.stack([np.append(vector_array_n[i], [o_array[i]]) for i in np.random.randint(vector_array_n.shape[0], size=sample_size)])
     o_array_test = np.apply_along_axis(get_last, 1, incoming_records)
     incoming_records = np.delete(incoming_records, -1, 1)
 
@@ -396,37 +396,23 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
     a = np.array([1.5, 4,5])
     b = np.array([0.5, 1.5])
     mid = lambda p: 0.5 * (p[0] + p[1])
-    t = lambda a: np.array([a]).T
-    o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
-    opt = test_assignments(o_data_array_n, o_array, 2, 1, 1)
-    opt_list = [[1, 1]]
-    print(f"Initial alignment: {opt}")
+    t = lambda a: (a // 2, a % 2)
+    opt = test_assignments(vector_array_n, o_array, 2, 1, 1)
+    opt_list = [[1, 1, opt]]
+    print(f"Initial alignment: {opt:.4f}%")
     for i in range(depth):
         alignment = {}
         # top right, top left, bottom right, bottom left
-        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[1]]), mid([mid(b), b[1]]))] = 0
-        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[0]]), mid([mid(b), b[1]]))] = 1
-        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[1]]), mid([mid(b), b[0]]))] = 2
-        alignment[-opt + test_assignments(o_data_array_n, o_array, test_p, mid([mid(a), a[0]]), mid([mid(b), b[0]]))] = 3
+        for j in range(4):
+            (x, y) = t(j)
+            alignment[-opt + test_assignments(vector_array_n, o_array, test_p, mid([mid(a), a[x]]), mid([mid(b), b[y]]))] = j
         opt = sorted([v for v in alignment.keys()])[-1]
-        # if opt < 0: break
+        if opt < 0: return opt_list[i][0], opt_list[i][1], opt_list
         print(f"Alignment increase at step {i + 1}: {opt:.4f}, direction: {alignment[opt]}")
-        if alignment[opt] == 0:
-            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[1]])])
-            a[0] = mid(a)
-            b[0] = mid(b)
-        elif alignment[opt] == 1:
-            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[1]])])
-            a[1] = mid(a)
-            b[0] = mid(b)
-        elif alignment[opt] == 2:
-            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[0]])])
-            a[0] = mid(a)
-            b[1] = mid(b)
-        elif alignment[opt] == 3:
-            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[0]])])
-            a[1] = mid(a)
-            b[1] = mid(b)
+        (x, y) = t(alignment[opt])
+        opt_list.append([mid([mid(a), a[x]]), mid([mid(b), b[y]]), opt])
+        a[0] = mid(a)
+        b[0] = mid(b)
     return mid(a), mid(b), opt_list
 
 #  <<DATA PREPROCESSING>>

@@ -108,20 +108,26 @@ def plot_cluster_dist():
 
 def test_optimal_ab():
     vector_array_n = get_preprocessed_data(sys.argv[1])
-    _, o_array, cs = kmeans((4, vector_array_n))
+    # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
+    _, o_array, cs = kmeans((3, vector_array_n))
     save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
 
     test_p = int(sys.argv[2])
     depth = int(sys.argv[3])
     a, b, opt_list = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
     acc = test_assignments(vector_array_n, o_array, test_p, a, b)
-    print(f"Accuracy at test proportion of {test_p}%, depth of {depth}: {acc}")
+    print(f"Accuracy at test proportion of {test_p:.4f}%, depth of {depth}: {acc}")
     
-    fig, ax = plt.subplots()
+    ax = plt.figure().add_subplot(projection='3d')
     opt_list = np.array(opt_list)
-    ax.plot(opt_list[:, 0], opt_list[:, 1])
+    ax.plot(opt_list[:, 0], opt_list[:, 1], opt_list[:,2])
     ax.set_xlim(1.5, 4.5)
     ax.set_ylim(0.5, 1.5)
+    ax.set_zlim(0, 100)
+    ax.set_xlabel('Alpha')
+    ax.set_ylabel('Beta')
+    ax.set_zlabel('Accuracy (%)')
+    plt.title("Optimization for accuracy as a function of (alpha, beta)")
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
