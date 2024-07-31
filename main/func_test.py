@@ -67,13 +67,13 @@ def plot_profile():
 
 def cluster_size_dist():
     load_sizes = [0.2, 0.75]
-    with open("clustering_stats.txt", "w") as f:
+    with open("main/data/clustering_stats.txt.txt", "w") as f:
         pass
     for s in load_sizes:
         for _ in range(1):
             subprocess.run(["chmod", "+x", "run.sh"])
             subprocess.run(["./run.sh", f"{s}", "2", "9", "1"])
-    with open("clustering_stats.txt", "r") as f:
+    with open("main/data/clustering_stats.txt.txt", "r") as f:
         lines = f.readlines()
         [print(l) for l in lines]
 
@@ -82,7 +82,7 @@ def plot_cluster_dist():
     hash = {}
     artists = []
     fig, ax = plt.subplots()
-    with open("main/clustering_stats.txt", "r") as f:
+    with open("main/main/data/clustering_stats.txt.txt", "r") as f:
         lines = f.readlines()
     for l in lines:
         s = l.split(": ")[0]
@@ -207,7 +207,7 @@ async def tcp_echo_client(message):
     
 
 if __name__ == "__main__":
-    # with open("dump.txt", "r") as f:
+    # with open("main/data/dump.txt", "r") as f:
     #     l = f.read().split("\n")
     # for record in l:
     #     asyncio.run(tcp_echo_client(record))
