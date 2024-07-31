@@ -131,6 +131,44 @@ def test_optimal_ab():
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
+def graph_ab_over_size():
+    sizes = [0.01] * 3
+    data = {}
+    x = np.arange(len(sizes))
+    width = 0.25
+    multiplier = 0
+
+    for i in sizes:
+        # vector_array_n = get_preprocessed_data(i)
+        vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
+        _, o_array, cs = kmeans((4, vector_array_n))
+        save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
+        for j in [0, 10, 20]:
+            test_p = 10
+            depth = j
+            a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+            if data.get(j):
+                data[j].append(test_assignments(vector_array_n, o_array, test_p, a, b))
+            else:
+                data[j] = [test_assignments(vector_array_n, o_array, test_p, a, b)]
+
+    fig, ax = plt.subplots(layout='constrained')
+    for d, acc in data.items():
+        offset = width * multiplier
+        l = f"{d} iterations" if d != 0 else "No optimization"
+        rects = ax.bar(x + offset, acc, width, label=l)
+        ax.bar_label(rects, padding=3)
+        multiplier += 1
+    
+    ax.set_ylabel("Accuracy (%)")
+    ax.set_xlabel("Dataset size (GB)")
+    ax.set_title("Effect of parameter optimization on accuracy")
+    ax.set_xticks(x + width, sizes)
+    ax.legend(loc='upper left', ncols=3)
+    ax.set_ylim(0, 100)
+    plt.show()
+
+
 def graph_test_assignments():
     
     fig, ax = plt.subplots()
@@ -173,4 +211,4 @@ if __name__ == "__main__":
     #     l = f.read().split("\n")
     # for record in l:
     #     asyncio.run(tcp_echo_client(record))
-    test_optimal_ab()
+    graph_ab_over_size()
