@@ -399,7 +399,7 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
     t = lambda a: (a // 2, a % 2)
     opt = test_assignments(vector_array_n, o_array, 2, 1, 1)
     opt_list = [[1, 1, opt]]
-    print(f"Initial alignment: {opt:.4f}")
+    print(f"Initial alignment: {opt:.4f}%")
     for i in range(depth):
         alignment = {}
         # top right, top left, bottom right, bottom left

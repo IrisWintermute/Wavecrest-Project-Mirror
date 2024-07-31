@@ -116,7 +116,7 @@ def test_optimal_ab():
     depth = int(sys.argv[3])
     a, b, opt_list = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
     acc = test_assignments(vector_array_n, o_array, test_p, a, b)
-    print(f"Accuracy at test proportion of {test_p}%, depth of {depth}: {acc}")
+    print(f"Accuracy at test proportion of {test_p:.4f}%, depth of {depth}: {acc}")
     
     ax = plt.figure().add_subplot(projection='3d')
     opt_list = np.array(opt_list)
