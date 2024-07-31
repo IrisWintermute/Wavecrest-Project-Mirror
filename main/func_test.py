@@ -143,8 +143,8 @@ def graph_ab_over_size():
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-        for j in [0, 8, 15]:
-            test_p = 2
+        for j in [0, 15]:
+            test_p = 10
             depth = j
             a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
             acc = round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)
@@ -214,4 +214,4 @@ if __name__ == "__main__":
     #     l = f.read().split("\n")
     # for record in l:
     #     asyncio.run(tcp_echo_client(record))
-    test_optimal_ab()
+    graph_ab_over_size()
