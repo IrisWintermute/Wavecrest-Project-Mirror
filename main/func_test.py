@@ -166,7 +166,8 @@ def graph_ab_over_size():
     ax.set_xticks(x + width, sizes)
     ax.legend(loc='upper left', ncols=3)
     ax.set_ylim(0, 100)
-    plt.show()
+    plt.savefig("savefig.png")
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
 
 def graph_test_assignments():
