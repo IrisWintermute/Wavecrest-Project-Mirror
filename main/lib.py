@@ -408,7 +408,7 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
             alignment[-opt + test_assignments(vector_array_n, o_array, test_p, mid([mid(a), a[x]]), mid([mid(b), b[y]]))] = j
         opt = sorted([v for v in alignment.keys()])[-1]
         if opt < 0: return opt_list[i][0], opt_list[i][1], opt_list
-        print(f"Alignment increase at step {i + 1}: {opt:.4f}, direction: {alignment[opt]}")
+        # print(f"Alignment increase at step {i + 1}: {opt:.4f}, direction: {alignment[opt]}")
         (x, y) = t(alignment[opt])
         opt_list.append([mid([mid(a), a[x]]), mid([mid(b), b[y]]), opt])
         a[0] = mid(a)

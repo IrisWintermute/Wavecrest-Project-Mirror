@@ -149,7 +149,9 @@ def graph_ab_over_size():
             acc = []
             for _ in range(3):
                 a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
-                acc.append(test_assignments(vector_array_n, o_array, test_p, a, b))
+                opt = test_assignments(vector_array_n, o_array, test_p, a, b)
+                print(f"Optimal alignment: {opt:.4f}%")
+                acc.append(opt)
             if data.get(j):
                 data[j].append(round(sum(acc) / len(acc), 2))
             else:
