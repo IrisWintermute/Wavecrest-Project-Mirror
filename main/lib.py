@@ -399,7 +399,7 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
     t = lambda a: np.array([a]).T
     o_data_array_n = np.concatenate((vector_array_n, t(o_array)), axis=1)
     opt = test_assignments(o_data_array_n, o_array, 2, 1, 1)
-    opt_list = [[1, 1]]
+    opt_list = [[1, 1, opt]]
     print(f"Initial alignment: {opt}")
     for i in range(depth):
         alignment = {}
@@ -412,19 +412,19 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
         # if opt < 0: break
         print(f"Alignment increase at step {i + 1}: {opt:.4f}, direction: {alignment[opt]}")
         if alignment[opt] == 0:
-            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[1]])])
+            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[1]]), opt])
             a[0] = mid(a)
             b[0] = mid(b)
         elif alignment[opt] == 1:
-            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[1]])])
+            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[1]]), opt])
             a[1] = mid(a)
             b[0] = mid(b)
         elif alignment[opt] == 2:
-            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[0]])])
+            opt_list.append([mid([mid(a), a[1]]), mid([mid(b), b[0]]), opt])
             a[0] = mid(a)
             b[1] = mid(b)
         elif alignment[opt] == 3:
-            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[0]])])
+            opt_list.append([mid([mid(a), a[0]]), mid([mid(b), b[0]]), opt])
             a[1] = mid(a)
             b[1] = mid(b)
     return mid(a), mid(b), opt_list
