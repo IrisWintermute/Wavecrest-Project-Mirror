@@ -120,8 +120,8 @@ def test_optimal_ab():
     fig, ax = plt.subplots()
     opt_list = np.array(opt_list)
     ax.plot(opt_list[:, 0], opt_list[:, 1])
-    ax.set_xlim(0.5, 4.5)
-    ax.set_ylim(0.5, 2)
+    ax.set_xlim(1.5, 4.5)
+    ax.set_ylim(0.5, 1.5)
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
