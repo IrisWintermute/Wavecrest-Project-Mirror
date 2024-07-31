@@ -132,27 +132,30 @@ def test_optimal_ab():
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
 def graph_ab_over_size():
-    sizes = [0.01] * 3
+    sizes = [float(v) for v in sys.argv[1].split(",")]
     data = {}
     x = np.arange(len(sizes))
     width = 0.25
     multiplier = 0
 
     for i in sizes:
-        # vector_array_n = get_preprocessed_data(i)
-        vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
+        vector_array_n = get_preprocessed_data(i)
+        # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
         for j in [0, 10, 20]:
             test_p = 10
             depth = j
-            a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+            acc = []
+            for _ in range(3):
+                a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+                acc.append(test_assignments(vector_array_n, o_array, test_p, a, b))
             if data.get(j):
-                data[j].append(test_assignments(vector_array_n, o_array, test_p, a, b))
+                data[j].append(round(sum(acc) / len(acc), 2))
             else:
-                data[j] = [test_assignments(vector_array_n, o_array, test_p, a, b)]
+                data[j] = [round(sum(acc) / len(acc), 2)]
 
-    fig, ax = plt.subplots(layout='constrained')
+    fig, ax = plt.subplots().add_subplot()
     for d, acc in data.items():
         offset = width * multiplier
         l = f"{d} iterations" if d != 0 else "No optimization"
