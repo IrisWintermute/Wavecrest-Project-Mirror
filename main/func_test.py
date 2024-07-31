@@ -135,7 +135,7 @@ def graph_ab_over_size():
     sizes = [float(v) for v in sys.argv[1].split(",")]
     data = {}
     x = np.arange(len(sizes))
-    width = 0.25
+    width = 0.19
     multiplier = 0
 
     for i in sizes:
@@ -143,7 +143,7 @@ def graph_ab_over_size():
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-        for j in [0, 10, 20]:
+        for j in [0, 8, 15]:
             test_p = 5
             depth = j
             a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
@@ -159,14 +159,14 @@ def graph_ab_over_size():
         offset = width * multiplier
         l = f"{d} iterations" if d != 0 else "No optimization"
         rects = ax.bar(x + offset, acc, width, label=l)
-        ax.bar_label(rects, padding=3)
+        # ax.bar_label(rects, padding=3)
         multiplier += 1
     
     ax.set_ylabel("Accuracy (%)")
     ax.set_xlabel("Dataset size (GB)")
     ax.set_title("Effect of parameter optimization on accuracy")
     ax.set_xticks(x + width, sizes)
-    ax.legend(loc='upper left')
+    ax.legend(loc='bottom right')
     ax.set_ylim(0, 100)
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
