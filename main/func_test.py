@@ -108,7 +108,8 @@ def plot_cluster_dist():
 
 def test_optimal_ab():
     vector_array_n = get_preprocessed_data(sys.argv[1])
-    _, o_array, cs = kmeans((4, vector_array_n))
+    # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
+    _, o_array, cs = kmeans((3, vector_array_n))
     save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
 
     test_p = int(sys.argv[2])
@@ -126,7 +127,7 @@ def test_optimal_ab():
     ax.set_xlabel('Alpha')
     ax.set_ylabel('Beta')
     ax.set_zlabel('Accuracy (%)')
-    ax.title("Optimization for accuracy as a function of (alpha, beta)")
+    plt.title("Optimization for accuracy as a function of (alpha, beta)")
     plt.savefig("savefig.png")
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "savefig.png", "--body", "savefig.png"])
 
