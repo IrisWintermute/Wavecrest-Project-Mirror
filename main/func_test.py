@@ -144,7 +144,7 @@ def graph_ab_over_size():
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
         for j in [0, 10, 20]:
-            test_p = 10
+            test_p = 5
             depth = j
             acc = []
             for _ in range(3):
@@ -152,12 +152,13 @@ def graph_ab_over_size():
                 opt = test_assignments(vector_array_n, o_array, test_p, a, b)
                 print(f"Optimal alignment: {opt:.4f}%")
                 acc.append(opt)
+            acc = round(sum(acc) / len(acc), 2)
             if data.get(j):
-                data[j].append(round(sum(acc) / len(acc), 2))
+                data[j].append(acc)
             else:
-                data[j] = [round(sum(acc) / len(acc), 2)]
+                data[j] = [acc]
 
-    fig, ax = plt.subplots().add_subplot()
+    fig, ax = plt.subplots()
     for d, acc in data.items():
         offset = width * multiplier
         l = f"{d} iterations" if d != 0 else "No optimization"
