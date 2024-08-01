@@ -143,7 +143,7 @@ def graph_ab_over_size():
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-        for j in [0, 3, 6, 9]:
+        for j in [0, 2, 4, 6]:
             test_p = 5
             depth = j
             if j == 0: a, b = 1, 1
