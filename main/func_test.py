@@ -135,7 +135,7 @@ def graph_ab_over_size():
     sizes = [float(v) for v in sys.argv[1].split(",")]
     data = {}
     x = np.arange(len(sizes))
-    width = 0.19
+    width = 0.15
     multiplier = 0
 
     for i in sizes:
@@ -143,22 +143,29 @@ def graph_ab_over_size():
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
-        for j in [int(v) for v in sys.argv[2].split(",")]:
-            test_p = 5
-            depth = j
-            if j == 0: a, b = 1, 1
-            else: a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
-            acc = round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)
-            print(f"Optimal alignment: {acc:.4f}%")
-            if data.get(j):
-                data[j].append(acc)
-            else:
-                data[j] = [acc]
+        # for j in [int(v) for v in sys.argv[2].split(",")]:
+        #     test_p = 5
+        #     depth = j
+        #     if j == 0: a, b = 1, 1
+        #     else: a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, depth)
+        #     acc = round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)
+        #     print(f"Optimal alignment: {acc:.4f}%")
+        #     if data.get(j):
+        #         data[j].append(acc)
+        #     else:
+        #         data[j] = [acc]
+        test_p = 5
+        data["No optimization"] = [round(test_assignments(vector_array_n, o_array, test_p, 1, 1), 2)]
+        a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, 1)
+        data["Dynamic opt., depth=1"] = [round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)]
+        a, b, _ = optimal_ab_decision(vector_array_n, o_array, test_p, 2)
+        data["Dynamic opt., depth=2"] = [round(test_assignments(vector_array_n, o_array, test_p, a, b), 2)]
+        data["midrange alpha,beta"] = [round(test_assignments(vector_array_n, o_array, test_p, 3, 1), 2)]
 
     fig, ax = plt.subplots()
-    for d, acc in data.items():
+    for l, acc in data.items():
         offset = width * multiplier
-        l = f"{d} iterations" if d != 0 else "No optimization"
+        # l = f"{d} iterations" if d != 0 else "No optimization"
         rects = ax.bar(x + offset, acc, width, label=l)
         # ax.bar_label(rects, padding=3)
         multiplier += 1
