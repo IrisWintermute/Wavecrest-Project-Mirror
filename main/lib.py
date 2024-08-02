@@ -315,7 +315,6 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
 
 def k_means_pp(k: int, data: np.ndarray) -> np.ndarray:
     """K++ algorithm: randomly select initial centroids from unclustered data."""
-    data = np.delete(data, -1, 1)
     data = np.stack([data[i] for i in np.random.randint(data.shape[0], size=data.shape[0] // 20)])
     chosen_indexes = [np.random.randint(0, data.shape[0])]
     centroids = [data[chosen_indexes[0]]]
