@@ -324,7 +324,7 @@ def k_means_pp(k: int, data: np.ndarray) -> np.ndarray:
         square_distances = {}
         for i, record in enumerate(data):
             if i not in chosen_indexes:
-                (dist_to_nearest_centroid, _), _ = get_2_closest_centroids(record, centroids, single = True)
+                (dist_to_nearest_centroid, _) = get_2_closest_centroids(record, centroids, single = True)
                 square_distances[i] = dist_to_nearest_centroid ** 2
 
         sum_of_squares = sum([v for v in square_distances.values()])
