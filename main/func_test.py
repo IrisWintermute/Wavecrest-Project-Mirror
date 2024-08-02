@@ -219,7 +219,7 @@ async def tcp_echo_client(message):
 
 if __name__ == "__main__":
     with open("main/data/dump.txt", "r") as f:
-        l = f.read().split("\n")
+        l = f.readlines()
     for record in l:
         (i, rec) = tuple(record.split(",", 1))
         print(f"testing for record assigned to cluster {i}:")
