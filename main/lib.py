@@ -636,7 +636,7 @@ def get_clustering_parameters():
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("main/data/clustering_parameters.txt", "r") as f:
         data = f.readlines()
-        a, b = tuple(data[1].split(","))
+        a, b = tuple(data[1][:len(data[1]) - 2].split(","))
         out = data[3:]
     
     return (to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:]), a, b)
@@ -659,6 +659,7 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
             print(record[k])
             print(beta)
             print(np.max(stdevs[:,k]))
+            print(normaldist(mean, stdevs[j,k] * alpha, record[k]))
             eval_list.append((normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta)
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
