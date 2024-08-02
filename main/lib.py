@@ -668,8 +668,9 @@ def rate_cluster_fraud(stdevs):
 
 def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
-    r_arr = np.array(to_record(raw_record))
+    r_arr = to_record(raw_record)
     r_loaded = load_attrs(r_arr, single = True)
+    print(r_loaded)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
     print(r_preprocessed)
     r_vec = vectorise(r_preprocessed, True)
