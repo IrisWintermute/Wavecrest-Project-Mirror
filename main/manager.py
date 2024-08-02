@@ -45,7 +45,6 @@ def daily_cluster_update():
     
     cluster_time = 0
     for i in range(3):
-        print("current time: " + str(time.time()))
         prev_time = get_time("main/data/clustering_parameters.txt")
         cluster_time = get_time("ctime.txt")
         if time.time() - prev_time >= 86400 - cluster_time:
