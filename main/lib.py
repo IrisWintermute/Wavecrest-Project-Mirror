@@ -671,8 +671,7 @@ def preprocess_incoming_record(raw_record):
     r_arr = np.array(to_record(raw_record))
     r_loaded = load_attrs(r_arr, single = True)
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_loaded)
-    wrap = [(r_preprocessed, True) for _ in r_preprocessed.shape[0]]
-    r_vec = np.apply_along_axis(vectorise, 0, wrap).flatten()
+    r_vec = vectorise(r_preprocessed, True)
     return normalise_single(r_vec)
 
 def assign(raw_record):
