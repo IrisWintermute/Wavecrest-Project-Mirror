@@ -212,8 +212,7 @@ async def tcp_echo_client(message):
     data = await reader.read(100)
     print(f'Received: {data.decode()}')
 
-    print('Close the connection')
-    print("\n")
+    #print('Close the connection')
     writer.close()
     await writer.wait_closed()
     
