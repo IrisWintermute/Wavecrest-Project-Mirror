@@ -191,7 +191,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
                 record = data_array[o_array == i][0]
                 f.write(",".join(record.tolist()))
                 f.write("\n")
-        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, 1, 1)
+        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, 3, 1)
         
         # a, b, _ = optimal_ab_decision(vector_array_n, o_array, 5, 5)
         
