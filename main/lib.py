@@ -533,10 +533,10 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         if can_cast_to_int(attr):
             return int(attr)
         elif values_hash.get(attr, 0):
-            return values_hash[attr]
+            return int(values_hash[attr])
         else:
             values_hash[attr] = len(values_hash)
-            return values_hash[attr]
+            return int(values_hash[attr])
     
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
