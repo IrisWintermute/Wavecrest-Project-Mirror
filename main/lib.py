@@ -651,7 +651,15 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     print(stdevs)
     print(record)
     for j, means in enumerate(centroids):
-        eval_list = [(normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta for k, mean in enumerate(means)]
+        eval_list = []
+        for k, mean in enumerate(means):
+            print(mean)
+            print(stdevs[j,k])
+            print(alpha)
+            print(record[k])
+            print(beta)
+            print(np.max(stdevs[:,k]))
+            eval_list.append((normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta)
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
     (_, c_i) = s_eval
