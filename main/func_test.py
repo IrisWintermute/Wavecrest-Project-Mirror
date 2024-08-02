@@ -220,7 +220,10 @@ async def tcp_echo_client(message):
 if __name__ == "__main__":
     with open("main/data/dump.txt", "r") as f:
         l = f.readlines()
+    i_p = -1
     for record in l:
         (i, rec) = tuple(record.split(",", 1))
-        print(f"testing for record assigned to cluster {i}:")
+        if i_p != i:
+            print(f"testing for record assigned to cluster {i}:")
+            i_p = i
         asyncio.run(tcp_echo_client(rec))
