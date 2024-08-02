@@ -210,7 +210,7 @@ async def tcp_echo_client(message):
     await writer.drain()
 
     data = await reader.read(100)
-    print(f'Received: {float(data.decode()):.2f}')
+    print(f'Received: {data.decode():.2f}')
 
     print('Close the connection')
     writer.close()

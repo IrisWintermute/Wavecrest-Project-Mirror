@@ -694,4 +694,4 @@ def assign(raw_record):
     if rating == "1.0":
         return "Fraudulent"
     else:
-        return f"Non Fraudulent ({rating}/1.0)"
+        return f"Non Fraudulent ({rating:.2f}/1.0)"
