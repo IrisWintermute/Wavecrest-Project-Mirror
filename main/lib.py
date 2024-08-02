@@ -653,13 +653,6 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     for j, means in enumerate(centroids):
         eval_list = []
         for k, mean in enumerate(means):
-            print(mean)
-            print(stdevs[j,k])
-            print(int(alpha))
-            print(record[k])
-            print(int(beta))
-            print(np.max(stdevs[:,k]))
-            print(normaldist(mean, stdevs[j,k] * int(alpha), record[k]))
             eval_list.append((normaldist(mean, stdevs[j,k] * int(alpha), record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** int(beta))
         c_eval = sum(eval_list) / max(eval_list)
         s_eval = (c_eval, j) if s_eval[0] < c_eval else s_eval
@@ -681,10 +674,7 @@ def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = to_record(raw_record)
     r_loaded = load_attrs(r_arr, single = True)
-    print(r_loaded)
-    print(r_loaded[:,0])
     r_preprocessed = np.array([preprocess_n(r_loaded[:,i]) for i in range(r_loaded.shape[1])]).T[0]
-    print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
     return normalise_single(r_vec)
 
@@ -693,7 +683,6 @@ def assign(raw_record):
        rating of fraudulence relative to the locally stored cluster features."""
     # needs to use values_dump generated from dataset preprocessing
     preprocessed_record = preprocess_incoming_record(raw_record)
-    print(preprocessed_record)
     (centroids, stdevs, alpha, beta) = get_clustering_parameters()
 
     # cluster indexes as keys, fraud ratings as values
