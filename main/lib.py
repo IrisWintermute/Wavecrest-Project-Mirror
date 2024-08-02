@@ -389,7 +389,7 @@ def test_assignments(vector_array_n, o_array, test_p, alpha, beta):
 
     alignment = np.sum(o_array_test == o_array_assigned)
     alignment_p = alignment * 100 / incoming_records.shape[0]
-    # print(f"Alignment: {alignment_p:.2f}%")
+    print(f"Alignment: {alignment_p:.2f}%")
     return alignment_p
 
 def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
@@ -648,8 +648,6 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
     s_eval = (0, 0)
-    print(stdevs)
-    print(record)
     for j, means in enumerate(centroids):
         eval_list = []
         for k, mean in enumerate(means):
@@ -667,7 +665,7 @@ def rate_cluster_fraud(stdevs):
     mx = max(ls)
     ls = [v / mx for v in ls]
     for i, v in enumerate(ls):
-        hash[i] = v
+        hash[i] = str(v)
     return hash
 
 def preprocess_incoming_record(raw_record):
@@ -690,7 +688,7 @@ def assign(raw_record):
     print(fraud_hash)
     assigned_record = assign_cluster(preprocessed_record, centroids, stdevs, alpha, beta)
 
-    rating = str(fraud_hash.get(assigned_record[-1]))
+    rating = fraud_hash.get(assigned_record[-1])
 
     print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating} / 1.0")
     if rating == "1.0":
