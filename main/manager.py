@@ -26,8 +26,8 @@ def daily_cluster_update():
     """Updates clustering_parameters.txt every 24 hours."""
     def cluster():
         """Runs clustering operation with predetermined k and dataset size in GB."""
-        if sys.argv[1] == "test":
-            size = 2.5
+        if sys.argv[1]:
+            size = float(sys.argv[1])
         else:
             size = 10
         start = time.time()
