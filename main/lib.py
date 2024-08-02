@@ -194,6 +194,11 @@ def plot_clustered_data_batch(clustered_data):
     subprocess.call("./batch.sh")
     
 #  <<FUNCTION PROFILING>>
+"""# NOTE: the _plot() functions below write data to a cache file. 
+As well as applying the decorator to the function definition,
+file I/O needs to be handled, and graphing logic needs to be implemented.
+This hasn't been a priority because these functions are mainly
+used for testing/benchmarking and are consequently non-critical."""
 
 def profile_t(func):
     """Wraps function, prints execution time to terminal."""
@@ -255,52 +260,36 @@ def reassign(wrap):
     (record, centroids) = wrap
     (dist_1, index_1), (dist_2, _) = get_2_closest_centroids(record[:record.shape[0] - 1], centroids)
     closest_centroid_index = index_1
-    if record[-1] != closest_centroid_index and abs(dist_1 - dist_2) > 1e-4: 
-        # o_hash[record[-1]] -= 1
-        # if o_hash.get(closest_centroid_index):
-        #     o_hash[closest_centroid_index] += 1
-        # else:
-        #     o_hash[closest_centroid_index] = 1
+    if record[-1] != closest_centroid_index and abs(dist_1 - dist_2) > 1e-4:
         record[-1] = closest_centroid_index
         return record
     else: return record
 
-
 # cluster data using k-means algorithm
 #@profile_t_plot
-def kmeans(wrap: tuple) -> np.ndarray:
+def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
     """Runs K-means clustering algorithm on data_array.
        1) Centroids are chosen.
        2) Records are assigned to closest centroids.
        3) Centroids are recalculated.
        4) 2 and 3 repeat until <1% of records are reassigned."""
 
-    (k, data_array_r) = wrap
-    # centroids = k_means_pp(k, data_array_r)
-    centroid_list = [data_array_r[i] for i in np.random.randint(data_array_r.shape[0], size=k)]
-    centroids = np.stack(centroid_list)
+    centroids = k_means_pp(k, data_array_r)
+    #centroid_list = [data_array_r[i] for i in np.random.randint(data_array_r.shape[0], size=k)]
+    #centroids = np.stack(centroid_list)
     print("Initial centroids assigned.")
     z = np.array([np.zeros(data_array_r.shape[0])])
     data_array = np.concatenate((data_array_r, z.T), axis=1)
     centroids_new = centroids.copy()
     t = lambda a: np.array(a).T
     
-        
     iter = 0
     while True:
-
-        # o_count = data_array[:, -1]
-        # o_hash = {}
-        # for c_r in np.nditer(o_count):
-        #     c = int(c_r)
-        #     if o_hash.get(c): o_hash[c] += 1
-        #     else: o_hash[c] = 1
 
         reassignments = 0
         # assign each data point to closest centroid
         print("Reassigning records.")
         cores = os.cpu_count()
-        lock = Lock()
         o_array_prev = t(data_array[:, -1])
         wrap = [(record, centroids) for record in data_array]
         with Pool(processes=cores) as p:
@@ -324,9 +313,10 @@ def kmeans(wrap: tuple) -> np.ndarray:
                 centroids_new[i] = np.apply_along_axis(np.average, 0, owned_records)
         centroids = centroids_new
 
-def k_means_pp(k: int, data_r: np.ndarray) -> np.ndarray:
+def k_means_pp(k: int, data: np.ndarray) -> np.ndarray:
     """K++ algorithm: randomly select initial centroids from unclustered data."""
-    data = np.array([np.array(vec) for vec in data_r])
+    data = np.delete(data, -1, 1)
+    data = np.stack([data[i] for i in np.random.randint(data.shape[0], size=data.shape[0] // 20)])
     chosen_indexes = [np.random.randint(0, data.shape[0])]
     centroids = [data[chosen_indexes[0]]]
 
@@ -417,16 +407,19 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
 
 #  <<DATA PREPROCESSING>>
 
+def run_bash_script(adr, arg = None):
+    subprocess.run(["chmod", "+x", adr])
+    subprocess.run(["bash", adr] + [arg] if arg else [])
+
 def get_latest_data():
     """Download most recent CDR data from S3."""
-    subprocess.run(["chmod", "+x", "main/bash_scripts/get_keys.sh"])
-    subprocess.call(["./main/bash_scripts/get_keys.sh"])
+    adrs = ["main/bash_scripts/get_keys.sh", "main/bash_scripts/reload.sh"]
+    run_bash_script(adrs[0])
     with open("main/data/cache.txt", "r") as f:
         l = re.findall("\n[^}{]+\n", f.read())[0]
     l = re.findall("[0-9]{14}", l)
     t = max([int(s) for s in l])
-    subprocess.run(["chmod", "+x", "main/bash_scripts/reload.sh"])
-    subprocess.run(["bash", "main/bash_scripts/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
+    run_bash_script(adrs[1], f"exp_odine_u_332_p_1_e_270_{t}")
 
 def get_destination(number):
     """Get destination from MDL using number prefix."""
@@ -473,21 +466,15 @@ def to_record(s):
     """Map record from comma-delineated string to python list."""
     return sanitise_string(s).split(',')[:25]
 
-def load_attrs(data_array, single = False):
+def prune_attrs(data_array, single = False):
     """Compress 2D array of strings, preserving relevant fields."""
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
+    attr_indexes = [9,12,13,11,14,22]
     t = lambda a: np.array([a]).T
     if not single:
-        data_array = np.hstack((
-            t(data_array[:,9]),
-            t(data_array[:,12]),
-            t(data_array[:,13]),
-            t(data_array[:,11]),
-            t(data_array[:,14]),
-            t(data_array[:,22]),
-        ))
+        data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
     else:
-        data_array = np.array([data_array[9], data_array[12], data_array[13], data_array[11], data_array[14], data_array[22]])
+        data_array = np.array([t(data_array[:,i]) for i in attr_indexes])
     return np.vstack((attrs, data_array))
 
 def process_number(num):
@@ -582,13 +569,11 @@ def get_raw_data(mxg):
             csv_list_r = f.readlines(size)
             csv_list = csv_list_r[::filestep]
             del csv_list_r
-            del mx
     print(f"CDR file parsed.")
 
     # data in csv has row length of 129
-    to_record = lambda s: sanitise_string(str(s)).split(",")[:25]
     csv_nested_list = list(map(to_record, csv_list))
-    del csv_list, to_record
+    del csv_list
     data_array = np.array(csv_nested_list, dtype=object)
     return data_array
 
@@ -597,10 +582,10 @@ def get_preprocessed_data(mxg):
     data_array = get_raw_data(mxg)
     print(f"CDR data ({data_array.shape[0]} records) loaded.")
 
-    data_array_loaded = load_attrs(data_array)
+    data_array_pruned = prune_attrs(data_array)
     del data_array
-    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_loaded)
-    del data_array_loaded
+    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    del data_array_pruned
     print("Data preprocessed.")
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
@@ -671,8 +656,8 @@ def rate_cluster_fraud(stdevs):
 def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = to_record(raw_record)
-    r_loaded = load_attrs(r_arr, single = True)
-    r_preprocessed = np.array([preprocess_n(r_loaded[:,i]) for i in range(r_loaded.shape[1])]).T[0]
+    r_pruned = prune_attrs(r_arr, single = True)
+    r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
     return normalise_single(r_vec)
 
