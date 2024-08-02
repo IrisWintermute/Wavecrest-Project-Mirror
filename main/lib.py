@@ -636,7 +636,7 @@ def get_clustering_parameters():
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("main/data/clustering_parameters.txt", "r") as f:
         data = f.readlines()
-        a, b = tuple(data[1][:len(data[1]) - 2].split(","))
+        a, b = tuple(data[1].split(","))
         out = data[3:]
     
     return (to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:]), a, b)
