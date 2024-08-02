@@ -649,6 +649,7 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     # experimentally determined to be optimal
     s_eval = (0, 0)
     print(stdevs)
+    print(record)
     for j, means in enumerate(centroids):
         eval_list = [(normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta for k, mean in enumerate(means)]
         c_eval = sum(eval_list) / max(eval_list)
