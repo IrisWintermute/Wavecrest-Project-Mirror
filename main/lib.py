@@ -636,10 +636,10 @@ def get_clustering_parameters():
     to_arr = lambda l_list: np.array([[float(v) for v in l.split(",")] for l in l_list])
     with open("main/data/clustering_parameters.txt", "r") as f:
         data = f.readlines()
-        ab = data[1].split(",")
+        a, b = tuple(data[1].split(","))
         out = data[3:]
     
-    return (to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:]), ab[0], ab[1])
+    return (to_arr(out[:len(out) // 2]), to_arr(out[len(out) // 2 + 1:]), a, b)
 
 def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     """Calculates mean position of normalised record along normal
@@ -648,6 +648,7 @@ def assign_cluster(record, centroids, stdevs, alpha = 1, beta = 1):
     normaldist = lambda mu, sd, x: np.power(sd*np.sqrt(2*np.pi),-1)*np.power(np.e,-np.power(x-mu,2)/(2*np.power(sd, 2)))
     # experimentally determined to be optimal
     s_eval = (0, 0)
+    print(stdevs)
     for j, means in enumerate(centroids):
         eval_list = [(normaldist(mean, stdevs[j,k] * alpha, record[k]) * (stdevs[j,k] / np.max(stdevs[:,k]))) ** beta for k, mean in enumerate(means)]
         c_eval = sum(eval_list) / max(eval_list)
