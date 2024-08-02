@@ -37,7 +37,7 @@ def daily_cluster_update():
         print(f"Clustering operation finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
             f.write(str(end - start))
-        print(f"Cluster data has been successfully updated. {86400 - (time.time() - start)} seconds until next automatic update.")
+        print(f"Cluster data has been successfully updated. {int(86400 - (time.time() - start))} seconds until next automatic update.")
 
     def get_time(fname):
         with open(fname, "r") as f:
