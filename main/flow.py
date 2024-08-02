@@ -13,7 +13,7 @@ import time
 # @profile
 def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     """Runs clustering operation."""
-    get_latest_data()
+    # get_latest_data()
 
     if mxg:
         pass

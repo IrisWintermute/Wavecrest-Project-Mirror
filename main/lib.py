@@ -419,14 +419,14 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
 
 def get_latest_data():
     """Download most recent CDR data from S3."""
-    subprocess.run(["chmod", "+x", "main/data/get_keys.sh"])
-    subprocess.call(["./main/data/get_keys.sh"])
+    subprocess.run(["chmod", "+x", "main/bash_scripts/get_keys.sh"])
+    subprocess.call(["./main/bash_scripts/get_keys.sh"])
     with open("main/data/cache.txt", "r") as f:
         l = re.findall("\n[^}{]+\n", f.read())[0]
     l = re.findall("[0-9]{14}", l)
     t = max([int(s) for s in l])
-    subprocess.run(["chmod", "+x", "main/data/reload.sh"])
-    subprocess.run(["bash", "main/data/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
+    subprocess.run(["chmod", "+x", "main/bash_scripts/reload.sh"])
+    subprocess.run(["bash", "main/bash_scripts/reload.sh", f"exp_odine_u_332_p_1_e_270_{t}"])
 
 def get_destination(number):
     """Get destination from MDL using number prefix."""
