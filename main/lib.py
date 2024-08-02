@@ -665,7 +665,7 @@ def rate_cluster_fraud(stdevs):
     mx = max(ls)
     ls = [v / mx for v in ls]
     for i, v in enumerate(ls):
-        hash[i] = str(v)
+        hash[i] = v
     return hash
 
 def preprocess_incoming_record(raw_record):
