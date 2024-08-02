@@ -324,7 +324,7 @@ def k_means_pp(k: int, data: np.ndarray) -> np.ndarray:
         square_distances = {}
         for i, record in enumerate(data):
             if i not in chosen_indexes:
-                (dist_to_nearest_centroid, _), _ = get_2_closest_centroids(record, centroids)
+                (dist_to_nearest_centroid, _), _ = get_2_closest_centroids(record, centroids, single = True)
                 square_distances[i] = dist_to_nearest_centroid ** 2
 
         sum_of_squares = sum([v for v in square_distances.values()])
@@ -340,11 +340,12 @@ def distance_to_centroid(record: np.ndarray, centroid: np.ndarray) -> float:
     """Calculate Euclidean distance between record and centroid."""
     return np.sqrt(np.sum(np.power((np.subtract(record, centroid)), 2)))
 
-def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray) -> tuple:
+def get_2_closest_centroids(record: np.ndarray, centroids: np.ndarray, single = False) -> tuple:
     """Calculates tuple of distance between record and nearest centroid, and index of nearest centroid.
        Returns tuples for closest and 2nd closest centroids."""
     distances = [(distance_to_centroid(record, centroid), i) for i, centroid in enumerate(centroids)]
     distances.sort()
+    if single: return distances[0]
     return distances[0], distances[1]
 
 
