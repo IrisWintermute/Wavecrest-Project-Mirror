@@ -690,7 +690,7 @@ def assign(raw_record):
 
     rating = fraud_hash.get(assigned_record[-1])
 
-    print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating} / 1.0")
+    print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating:.2f} / 1.0")
     if rating == "1.0":
         return "Fraudulent"
     else:
