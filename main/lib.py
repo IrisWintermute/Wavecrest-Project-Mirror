@@ -288,7 +288,6 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
 
         reassignments = 0
         # assign each data point to closest centroid
-        print("Reassigning records.")
         cores = os.cpu_count()
         o_array_prev = t(data_array[:, -1])
         wrap = [(record, centroids) for record in data_array]
@@ -305,7 +304,6 @@ def kmeans(k: int, data_array_r: np.ndarray) -> np.ndarray:
         iter += 1
 
         # calculate new centroid coordinates
-        print("Recalculating centroids.")
         for i, _ in enumerate(centroids):
             owned_records = data_array[o_array == i]
             owned_records = np.delete(owned_records, -1, 1)
