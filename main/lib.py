@@ -513,7 +513,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
             elif values_hash.get(attr, 0):
                 attributes_out[i] = values_hash[attr]
             else:
-                values_hash[attr] = len(values_hash)
+                l = len(values_hash)
+                values_hash[attr] = l
                 attributes_out[i] = values_hash[attr]
         #print(values_hash)
     else:
@@ -524,7 +525,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         elif values_hash.get(attr, 0):
             return int(values_hash[attr])
         else:
-            values_hash[attr] = len(values_hash)
+            l = len(values_hash)
+            values_hash[attr] = l
             return int(values_hash[attr])
     
     if values_hash:
