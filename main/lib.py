@@ -517,7 +517,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
                 attributes_out[i] = values_hash[attr]
         #print(values_hash)
     else:
-        #print(values_hash)
+        print(values_hash)
         attr = attributes
         if can_cast_to_int(attr):
             return int(attr)
