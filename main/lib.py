@@ -579,7 +579,6 @@ def get_preprocessed_data(data_array):
     data_array_pruned = prune_attrs(data_array)
     del data_array
     data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
-    print(data_array_preprocessed)
     del data_array_pruned
     print("Data preprocessed.")
 
@@ -589,6 +588,7 @@ def get_preprocessed_data(data_array):
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
+    print(vector_array)
     return vector_array
 
     save_minmax(vector_array)
@@ -656,9 +656,9 @@ def preprocess_incoming_record(raw_record):
     r_pruned = prune_attrs(r_arr, single = True)
     #print(r_pruned)
     r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
-    print(r_preprocessed)
+    # print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
-    #print(r_vec)
+    print(r_vec)
     # r_n = normalise_single(r_vec)
     #print(r_n)
     return r_vec
