@@ -567,16 +567,14 @@ def get_raw_data(mxg):
             csv_list_r = f.readlines(size)
             csv_list = csv_list_r[::filestep]
             del csv_list_r
-    print(f"CDR file parsed.")
+    print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    # data in csv has row length of 129
-    csv_nested_list = list(map(to_record, csv_list))
-    del csv_list
-    data_array = np.array(csv_nested_list, dtype=object)
-    return data_array
+    return list(map(to_record, csv_list))
 
 def get_preprocessed_data(data_array):
     """Runs function chain to produce normalised data from raw data."""
+    
+    data_array = np.array(data_array, dtype=object)
 
     data_array_pruned = prune_attrs(data_array)
     del data_array
