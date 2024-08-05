@@ -502,6 +502,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
 
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.split(": ")) for l in f.readlines() if l.count(": ") == 1]) or {}
+        
+    print(values_hash)
 
     if not single:
         attributes_out = np.empty(attributes.shape[0])
@@ -513,6 +515,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
             else:
                 values_hash[attr] = len(values_hash)
                 attributes_out[i] = values_hash[attr]
+        print(values_hash)
     else:
         attr = attributes
         if can_cast_to_int(attr):
@@ -588,7 +591,7 @@ def get_preprocessed_data(data_array):
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
-    print(vector_array)
+    # print(vector_array)
     return vector_array
 
     save_minmax(vector_array)
@@ -658,7 +661,7 @@ def preprocess_incoming_record(raw_record):
     r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
     # print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
-    print(r_vec)
+    # print(r_vec)
     # r_n = normalise_single(r_vec)
     #print(r_n)
     return r_vec
