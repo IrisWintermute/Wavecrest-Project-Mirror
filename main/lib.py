@@ -503,7 +503,6 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.split(": ")) for l in f.readlines() if l.count(": ") == 1]) or {}
         
-    print(values_hash)
 
     if not single:
         attributes_out = np.empty(attributes.shape[0])
@@ -517,6 +516,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
                 attributes_out[i] = values_hash[attr]
         print(values_hash)
     else:
+        print(values_hash)
         attr = attributes
         if can_cast_to_int(attr):
             return int(attr)
