@@ -471,10 +471,8 @@ def prune_attrs(data_array, single = False):
     t = lambda a: np.array([a]).T
     if not single:
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
-        print(data_array)
     else:
         data_array = np.array([data_array[i] for i in attr_indexes]).T
-        print(data_array)
     return np.vstack((attrs, data_array))
 
 def process_number(num):
@@ -581,6 +579,7 @@ def get_preprocessed_data(data_array):
     data_array_pruned = prune_attrs(data_array)
     del data_array
     data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    print(data_array_preprocessed)
     del data_array_pruned
     print("Data preprocessed.")
 
@@ -657,7 +656,7 @@ def preprocess_incoming_record(raw_record):
     r_pruned = prune_attrs(r_arr, single = True)
     #print(r_pruned)
     r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
-    #print(r_preprocessed)
+    print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
     #print(r_vec)
     # r_n = normalise_single(r_vec)
