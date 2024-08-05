@@ -107,7 +107,7 @@ def plot_cluster_dist():
     plt.show()
 
 def test_optimal_ab():
-    vector_array_n = get_preprocessed_data(sys.argv[1])
+    vector_array_n = get_preprocessed_data(get_raw_data(sys.argv[1]))
     # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
     _, o_array, cs = kmeans((4, vector_array_n))
     save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
@@ -139,7 +139,7 @@ def graph_ab_over_size():
     multiplier = 0
 
     for i in sizes:
-        vector_array_n = get_preprocessed_data(i)
+        vector_array_n = get_preprocessed_data(get_raw_data(i))
         # vector_array_n = get_pseudorandom_coords(5000, 0, 1, 0, 1, 3, 0.2)
         _, o_array, cs = kmeans((4, vector_array_n))
         save_clustering_parameters(cs, vector_array_n, o_array, 1, 1)
@@ -186,7 +186,7 @@ def graph_test_assignments():
     color = ["r", "g", "b"]
     test_p = 5
 
-    vector_array_n = get_preprocessed_data(sys.argv[1])
+    vector_array_n = get_preprocessed_data(get_raw_data(sys.argv[1]))
     _, o_array, _ = kmeans((4, vector_array_n))
 
     x = [v * 0.01 for v in range(95, 104)] * 2
@@ -216,14 +216,24 @@ async def tcp_echo_client(message):
     writer.close()
     await writer.wait_closed()
     
+def test_single_group_preprocessing():
+    s = sys.argv[1] * (1024 ** 2) # size in KB
+    d_arr = get_raw_data(s)
+    group_p = get_preprocessed_data(d_arr)
+    for i, record in enumerate(d_arr):
+        single_p = preprocess_incoming_record(record)
+        print(group_p[i])
+        print(single_p)
+        print("Equivalent" if single_p == group_p[i] else "Not equivalent")
 
 if __name__ == "__main__":
-    with open("main/data/dump.txt", "r") as f:
-        l = f.readlines()[::int(sys.argv[1])]
-    i_p = -1
-    for record in l:
-        (i, rec) = tuple(record.split(",", 1))
-        if i_p != i:
-            print(f"testing for record assigned to cluster {i}:")
-            i_p = i
-        asyncio.run(tcp_echo_client(rec))
+    # with open("main/data/dump.txt", "r") as f:
+    #     l = f.readlines()[::int(sys.argv[1])]
+    # i_p = -1
+    # for record in l:
+    #     (i, rec) = tuple(record.split(",", 1))
+    #     if i_p != i:
+    #         print(f"testing for record assigned to cluster {i}:")
+    #         i_p = i
+    #     asyncio.run(tcp_echo_client(rec))
+    test_single_group_preprocessing()

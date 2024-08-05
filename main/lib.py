@@ -575,10 +575,8 @@ def get_raw_data(mxg):
     data_array = np.array(csv_nested_list, dtype=object)
     return data_array
 
-def get_preprocessed_data(mxg):
-    """Loads data and runs function chain to produce normalised data."""
-    data_array = get_raw_data(mxg)
-    print(f"CDR data ({data_array.shape[0]} records) loaded.")
+def get_preprocessed_data(data_array):
+    """Runs function chain to produce normalised data from raw data."""
 
     data_array_pruned = prune_attrs(data_array)
     del data_array
@@ -593,6 +591,7 @@ def get_preprocessed_data(mxg):
     del data_array_preprocessed
     print("Data vectorised.")  
 
+    save_minmax(vector_array)
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
     print("Data normalised.")
     return vector_array_n
@@ -653,7 +652,7 @@ def rate_cluster_fraud(stdevs):
 
 def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
-    r_arr = to_record(raw_record)
+    r_arr = np.array(to_record(raw_record), dtype=object)
     r_pruned = prune_attrs(r_arr, single = True)
     print(r_pruned)
     r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
