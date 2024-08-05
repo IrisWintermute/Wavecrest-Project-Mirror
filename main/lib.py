@@ -502,6 +502,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
 
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.split(": ")) for l in f.readlines() if l.count(": ") == 1])
+        print(values_hash)
         
 
     if not single:
