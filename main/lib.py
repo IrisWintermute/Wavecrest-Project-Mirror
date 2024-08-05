@@ -588,6 +588,7 @@ def get_preprocessed_data(data_array):
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
     print("Data vectorised.")  
+    return vector_array
 
     save_minmax(vector_array)
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
@@ -657,9 +658,9 @@ def preprocess_incoming_record(raw_record):
     #print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
     #print(r_vec)
-    r_n = normalise_single(r_vec)
+    # r_n = normalise_single(r_vec)
     #print(r_n)
-    return r_n
+    return r_vec
 
 def assign(raw_record):
     """Takes individual CDR, runs function chain to determine CDR's 
