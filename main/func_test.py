@@ -217,7 +217,7 @@ async def tcp_echo_client(message):
     await writer.wait_closed()
     
 def test_single_group_preprocessing():
-    s = sys.argv[1] * (1024 ** 2) # size in KB
+    s = int(sys.argv[1]) / (1024 ** 2) # size in KB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
     for i, record in enumerate(d_arr):
