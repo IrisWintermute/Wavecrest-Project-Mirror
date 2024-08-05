@@ -569,11 +569,11 @@ def get_raw_data(mxg):
             del csv_list_r
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
-    return list(map(to_record, csv_list))
+    return csv_list
 
 def get_preprocessed_data(data_array):
     """Runs function chain to produce normalised data from raw data."""
-    
+    data_array = list(map(to_record, data_array))
     data_array = np.array(data_array, dtype=object)
 
     data_array_pruned = prune_attrs(data_array)
