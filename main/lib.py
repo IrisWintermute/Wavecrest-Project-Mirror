@@ -501,7 +501,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
     with open("main/data/values_dump.txt", "r") as f:
-        values_hash = dict([tuple(l.split(": ")) for l in f.readlines()])
+        values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
         print(values_hash)
         
 
@@ -530,7 +530,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
             for (v, k) in values_hash.items():
-                f.write(f"{v}: {k}")
+                f.write(f"{v}: {k}\n")
         
     return attributes_out
 
