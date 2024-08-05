@@ -219,7 +219,7 @@ async def tcp_echo_client(message):
 
 if __name__ == "__main__":
     with open("main/data/dump.txt", "r") as f:
-        l = f.readlines()
+        l = f.readlines()[::sys.argv[1]]
     i_p = -1
     for record in l:
         (i, rec) = tuple(record.split(",", 1))
