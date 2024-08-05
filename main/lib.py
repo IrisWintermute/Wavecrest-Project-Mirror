@@ -660,7 +660,9 @@ def preprocess_incoming_record(raw_record):
     print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
     print(r_vec)
-    return normalise_single(r_vec)
+    r_n = normalise_single(r_vec)
+    print(r_n)
+    return r_n
 
 def assign(raw_record):
     """Takes individual CDR, runs function chain to determine CDR's 
