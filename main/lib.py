@@ -652,13 +652,13 @@ def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = np.array(to_record(raw_record), dtype=object)
     r_pruned = prune_attrs(r_arr, single = True)
-    print(r_pruned)
+    #print(r_pruned)
     r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
-    print(r_preprocessed)
+    #print(r_preprocessed)
     r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
-    print(r_vec)
+    #print(r_vec)
     r_n = normalise_single(r_vec)
-    print(r_n)
+    #print(r_n)
     return r_n
 
 def assign(raw_record):
