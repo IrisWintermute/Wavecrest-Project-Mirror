@@ -27,14 +27,14 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     counter_start = time.perf_counter()
     csv_nested_list = list(map(to_record, csv_list))
     counter_stop = time.perf_counter()
-    print(f"mapping csv list took {counter_stop - counter_start:.4f} seconds")
+    print(f"mapping csv list took {counter_stop - counter_start:.2f} seconds")
 
     del csv_list
 
     counter_start = time.perf_counter()
     data_array = np.array(csv_nested_list, dtype=object)
     counter_stop = time.perf_counter()
-    print(f"converting list to array took {counter_stop - counter_start:.4f} seconds")
+    print(f"converting list to array took {counter_stop - counter_start:.2f} seconds")
 
     del csv_nested_list
 
@@ -43,13 +43,13 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     counter_start = time.perf_counter()
     data_array_pruned = prune_attrs(data_array)
     counter_stop = time.perf_counter()
-    print(f"prune_attrs took {counter_stop - counter_start:.4f} seconds")
+    print(f"prune_attrs took {counter_stop - counter_start:.2f} seconds")
     data_array
 
     counter_start = time.perf_counter()
     data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
     counter_stop = time.perf_counter()
-    print(f"data_array_preprocessed took {counter_stop - counter_start:.4f} seconds")
+    print(f"data_array_preprocessed took {counter_stop - counter_start:.2f} seconds")
     del data_array_pruned
 
     print("Data preprocessed.")

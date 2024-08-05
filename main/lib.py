@@ -670,6 +670,7 @@ def assign(raw_record):
 
     # cluster indexes as keys, fraud ratings as values
     fraud_hash = rate_cluster_fraud(stdevs)
+    print(fraud_hash)
     assigned_record = assign_cluster(preprocessed_record, centroids, stdevs, alpha, beta)
 
     rating = fraud_hash.get(assigned_record[-1])
