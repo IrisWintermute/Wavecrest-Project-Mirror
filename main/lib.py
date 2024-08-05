@@ -471,8 +471,10 @@ def prune_attrs(data_array, single = False):
     t = lambda a: np.array([a]).T
     if not single:
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
+        print(data_array)
     else:
         data_array = np.array([data_array[i] for i in attr_indexes]).T
+        print(data_array)
     return np.vstack((attrs, data_array))
 
 def process_number(num):
