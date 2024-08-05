@@ -528,8 +528,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
-            values_to_write = "\n".join([f"{v}: {k}" for (v, k) in values_hash.items()])
-            f.write(values_to_write)
+            for (v, k) in values_hash.items():
+                f.write(f"{v}: {k}")
         
     return attributes_out
 
