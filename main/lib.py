@@ -567,13 +567,15 @@ def normalise_single(attributes: np.ndarray) -> np.ndarray:
 def get_raw_data(mxg):
     """Loads data from file and maps to 2D numpy array."""
     mx = int(float(mxg) * 1024**3)
-    size = os.path.getsize("main/data/cdr.csv")
-    filestep = size // mx if size // mx >= 1 else 1
+    # size = os.path.getsize("main/data/cdr.csv")
+    #filestep = size // mx if size // mx >= 1 else 1
+
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
-            csv_list_r = f.readlines(size)
-            csv_list = csv_list_r[::filestep]
-            del csv_list_r
+            # csv_list_r = f.readlines(size)
+            # csv_list = csv_list_r[::filestep]
+            # del csv_list_r
+            csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     return csv_list
