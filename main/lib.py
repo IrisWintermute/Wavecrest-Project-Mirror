@@ -508,6 +508,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     if not single:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
+            attr = str(attr)
             if can_cast_to_int(attr):
                 attributes_out[i] = int(attr)
             elif values_hash.get(attr, 0):
@@ -520,7 +521,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         #print(values_hash)
     else:
         # print(values_hash)
-        attr = attributes
+        attr = str(attributes)
         if can_cast_to_int(attr):
             return int(attr)
         elif values_hash.get(attr, 0):
