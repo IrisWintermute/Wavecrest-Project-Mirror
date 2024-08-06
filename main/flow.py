@@ -15,11 +15,12 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         mxg = sys.argv[2]
     mx = int(float(mxg) * 1024**3)
     # bring data -2D CSV array- into scope
-    size = os.path.getsize("main/data/cdr.csv")
-    filestep = size // mx if size // mx >= 1 else 1
+    # size = os.path.getsize("main/data/cdr.csv")
+    # filestep = size // mx if size // mx >= 1 else 1
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
-            csv_list = f.readlines()[::filestep]
+            # csv_list = f.readlines()[::filestep]
+            csv_list = f.read(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     # data in csv has row length of 129
