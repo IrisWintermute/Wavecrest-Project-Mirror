@@ -591,6 +591,7 @@ def get_preprocessed_data(data_array):
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    print(vector_array[0])
     del data_array_preprocessed
     print("Data vectorised.")
 
@@ -660,6 +661,7 @@ def preprocess_incoming_record(raw_record):
     # r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
+    print(r_vec)
     r_n = normalise_single(r_vec)
     return r_n
 
