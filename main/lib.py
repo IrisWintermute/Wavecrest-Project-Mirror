@@ -442,9 +442,9 @@ def get_day_from_date(date):
     j = year // 100
     return (day + ((13 * (month + 1)) // 5) + k + (k // 4) + (j // 4) - (2 * j) - 2) % 7
     
-def can_cast_to_int(v: str) -> bool:
+def can_cast_to_float(v: str) -> bool:
     try:
-        _ = int(v)
+        _ = float(v)
     except ValueError:
         return False
     except TypeError:
@@ -502,35 +502,33 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
 
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
-        if not single: print("from file read", values_hash)
+        #if not single: print("from file read", values_hash)
         
     esc = "Narnia-Ca7ac1y5m" # escape string - should never appear in dataset
 
     if not single:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
-            if can_cast_to_int(attr):
-                attributes_out[i] = int(attr)
+            if can_cast_to_float(attr):
+                attributes_out[i] = float(attr)
             elif values_hash.get(attr, esc) != esc:
                 attributes_out[i] = values_hash[attr]
             else:
-                print(attr)
-                print("from conditional", values_hash)
-                l = len(values_hash)
-                values_hash[attr] = l
+                #print(attr)
+                #print("from conditional", values_hash)
+                values_hash[attr] = len(values_hash)
                 attributes_out[i] = values_hash[attr]
         #print(values_hash)
     else:
         # print(values_hash)
         attr = attributes
-        if can_cast_to_int(attr):
-            return int(attr)
+        if can_cast_to_float(attr):
+            return float(attr)
         elif values_hash.get(attr, esc) != esc:
-            return int(values_hash[attr])
+            return float(values_hash[attr])
         else:
-            l = len(values_hash)
-            values_hash[attr] = l
-            return int(values_hash[attr])
+            values_hash[attr] = len(values_hash)
+            return float(values_hash[attr])
     
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
@@ -595,7 +593,7 @@ def get_preprocessed_data(data_array):
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
-    print(vector_array[0])
+    #print(vector_array[0])
     del data_array_preprocessed
     print("Data vectorised.")
 
@@ -665,7 +663,7 @@ def preprocess_incoming_record(raw_record):
     # r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
     r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
-    print(r_vec)
+    #print(r_vec)
     r_n = normalise_single(r_vec)
     return r_n
 
