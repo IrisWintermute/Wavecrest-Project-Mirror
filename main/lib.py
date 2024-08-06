@@ -489,7 +489,6 @@ def process_number(num):
     return (p_int + "0" * (13 - len(p_int)))[:13]
 
 def preprocess_n(attrs):
-    print(attrs)
     """Preprocess each field according to its label."""
     col = attrs[0]
     attrs = np.delete(attrs, 0)
@@ -590,7 +589,6 @@ def get_preprocessed_data(data_array):
     t = lambda a: np.array(a).T
     lng = data_array_pruned.shape[1]
     data_array_preprocessed = np.array([preprocess_n(t(data_array_pruned[:,i])) for i in range(lng)], dtype = object)
-    print(data_array_preprocessed)
     del data_array_pruned
     print("Data preprocessed.")
 
@@ -670,7 +668,6 @@ def preprocess_incoming_record(raw_record):
     t = lambda a: np.array(a).T
     lng = r_pruned.shape[1]
     r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object)
-    print(r_preprocessed)
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     #print(r_vec)
     r_n = normalise_single(r_vec)
