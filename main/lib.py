@@ -588,6 +588,7 @@ def get_preprocessed_data(data_array):
     del data_array
     # data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
     data_array_preprocessed = np.array([preprocess_n(v) for v in data_array_pruned], dtype = object)
+    print(data_array_preprocessed)
     del data_array_pruned
     print("Data preprocessed.")
 
