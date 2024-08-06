@@ -458,7 +458,6 @@ def sanitise_string(string):
     hyphen_str = [re.sub(',', '-', s) for s in comma_str]
     for i, h in enumerate(hyphen_str):
         string = re.sub(comma_str[i], h, string)
-    string = string.replace("N/A", "n-a")
     return string
 
 def to_record(s):
@@ -505,13 +504,14 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
         if not single: print("from file read", values_hash)
         
+    esc = "Narnia-Ca7ac1y5m" # escape string - should never appear in dataset
 
     if not single:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
             if can_cast_to_int(attr):
                 attributes_out[i] = int(attr)
-            elif values_hash.get(attr, 0):
+            elif values_hash.get(attr, esc) == esc:
                 attributes_out[i] = values_hash[attr]
             else:
                 print(attr)
@@ -525,7 +525,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         attr = attributes
         if can_cast_to_int(attr):
             return int(attr)
-        elif values_hash.get(attr, 0):
+        elif values_hash.get(attr, esc) == esc:
             return int(values_hash[attr])
         else:
             l = len(values_hash)
