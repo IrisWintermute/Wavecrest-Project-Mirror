@@ -493,9 +493,9 @@ def preprocess_n(attrs):
     """Preprocess each field according to its label."""
     col = attrs[0]
     attrs = np.delete(attrs, 0)
-    print(attrs)
-    print(col)
-    if col == "Calling Number" or col == "Called Number":
+    if (col == "Calling Number" or col == "Called Number"):
+        print(col == "Calling Number")
+        print(col == "Called Number")
         return np.array(list(map(process_number, attrs)))
     else:
         return attrs
