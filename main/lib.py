@@ -502,8 +502,6 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
 
     with open("main/data/values_dump.txt", "r") as f:
         values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
-        if values_hash: print(type(values_hash.items()[0][0]))
-        #print(values_hash)
         
 
     if not single:
@@ -521,8 +519,6 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     else:
         # print(values_hash)
         attr = attributes
-        print(attr)
-        print(type(attr))
         if can_cast_to_int(attr):
             return int(attr)
         elif values_hash.get(attr, 0):
@@ -530,7 +526,6 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         else:
             l = len(values_hash)
             values_hash[attr] = l
-            print(values_hash)
             return int(values_hash[attr])
     
     if values_hash:
@@ -597,9 +592,7 @@ def get_preprocessed_data(data_array):
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     del data_array_preprocessed
-    print("Data vectorised.")  
-    print(vector_array)
-    return vector_array
+    print("Data vectorised.")
 
     save_minmax(vector_array)
     vector_array_n = np.apply_along_axis(normalise, 0, vector_array)
@@ -664,14 +657,11 @@ def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = np.array(to_record(raw_record), dtype=object)
     r_pruned = prune_attrs(r_arr, single = True)
-    #print(r_pruned)
-    r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
-    # print(r_preprocessed)
-    r_vec = np.array([vectorise(v, True) for v in r_preprocessed])
-    print(r_vec)
-    # r_n = normalise_single(r_vec)
-    #print(r_n)
-    return r_vec
+    # r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
+    r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
+    r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed])
+    r_n = normalise_single(r_vec)
+    return r_n
 
 def assign(raw_record):
     """Takes individual CDR, runs function chain to determine CDR's 
