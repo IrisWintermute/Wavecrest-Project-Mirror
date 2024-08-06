@@ -217,7 +217,7 @@ async def tcp_echo_client(message):
     await writer.wait_closed()
     
 def test_single_group_preprocessing():
-    s = int(sys.argv[1]) / (1024 ** 2) # size in KB
+    s = int(sys.argv[2]) / (1024 ** 2) # size in KB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
     eq = 0
@@ -228,12 +228,15 @@ def test_single_group_preprocessing():
     print(f"Single and group preprocessing equivalent for {eq}/{len(d_arr)} records.")
 
 if __name__ == "__main__":
-    with open("main/data/dump.txt", "r") as f:
-        l = f.readlines()[::int(sys.argv[1])]
-    i_p = -1
-    for record in l:
-        (i, rec) = tuple(record.split(",", 1))
-        if i_p != i:
-            print(f"testing for record assigned to cluster {i}:")
-            i_p = i
-        asyncio.run(tcp_echo_client(rec))
+    if sys.argv[1] == "ensemble":
+        with open("main/data/dump.txt", "r") as f:
+            l = f.readlines()[::int(sys.argv[2])]
+        i_p = -1
+        for record in l:
+            (i, rec) = tuple(record.split(",", 1))
+            if i_p != i:
+                print(f"testing for record assigned to cluster {i}:")
+                i_p = i
+            asyncio.run(tcp_echo_client(rec))
+    elif sys.argv[1] == "preprocessing":
+        test_single_group_preprocessing()
