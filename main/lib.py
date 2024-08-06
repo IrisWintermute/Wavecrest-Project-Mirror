@@ -666,7 +666,10 @@ def preprocess_incoming_record(raw_record):
     r_arr = np.array(to_record(raw_record), dtype=object)
     r_pruned = prune_attrs(r_arr, single = True)
     # r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
-    r_preprocessed = np.array([preprocess_n(v) for v in r_pruned], dtype = object)
+    # r_preprocessed = np.array([preprocess_n(v) for v in r_pruned], dtype = object)
+    t = lambda a: np.array(a).T
+    lng = r_pruned.shape[1]
+    r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object)
     print(r_preprocessed)
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     #print(r_vec)
