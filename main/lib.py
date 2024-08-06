@@ -588,9 +588,7 @@ def get_preprocessed_data(data_array):
     del data_array
     # data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
     t = lambda a: np.array(a).T
-    lng = data_array_pruned.shape[0]
-    print(lng)
-    print(data_array_pruned)
+    lng = data_array_pruned.shape[1]
     data_array_preprocessed = np.array([preprocess_n(t(data_array_pruned[:,i])) for i in range(lng)], dtype = object)
     print(data_array_preprocessed)
     del data_array_pruned
