@@ -219,7 +219,6 @@ async def tcp_echo_client(message):
 def test_single_group_preprocessing():
     s = int(sys.argv[1]) / (1024 ** 2) # size in KB
     d_arr = get_raw_data(s)
-    print(d_arr[40:])
     group_p = get_preprocessed_data(d_arr)
     for i, record in enumerate(d_arr):
         single_p = preprocess_incoming_record(record)
