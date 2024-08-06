@@ -20,7 +20,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     with open("main/data/cdr.csv", "r", encoding="utf-8") as f:
             # systematic sampling of dataset
             # csv_list = f.readlines()[::filestep]
-            csv_list = f.read(mx)
+            csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     # data in csv has row length of 129
