@@ -222,8 +222,9 @@ def test_single_group_preprocessing():
     group_p = get_preprocessed_data(d_arr)
     for i, record in enumerate(d_arr):
         single_p = preprocess_incoming_record(record)
-        # print(group_p[i])
-        # print(single_p)
+        if i == 0:
+            print(group_p[i])
+            print(single_p)
         print("Equivalent" if np.all([single_p == group_p[i]]) else "Not equivalent")
 
 if __name__ == "__main__":
