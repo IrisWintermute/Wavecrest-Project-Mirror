@@ -668,7 +668,7 @@ def preprocess_incoming_record(raw_record):
     # r_preprocessed = np.array([preprocess_n(v) for v in r_pruned], dtype = object)
     t = lambda a: np.array(a).T
     lng = r_pruned.shape[1]
-    r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object)
+    r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object).T
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     #print(r_vec)
     r_n = normalise_single(r_vec)

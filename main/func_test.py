@@ -225,8 +225,7 @@ def test_single_group_preprocessing():
         if np.all([single_p == group_p[i]]):
             print("Equivalent")
         else:
-            print(group_p[i])
-            print(single_p)
+            print("Not equivalent")
 
 if __name__ == "__main__":
     # with open("main/data/dump.txt", "r") as f:
