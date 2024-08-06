@@ -494,8 +494,6 @@ def preprocess_n(attrs):
     col = attrs[0]
     attrs = np.delete(attrs, 0)
     if (col == "Calling Number" or col == "Called Number"):
-        print(col == "Calling Number")
-        print(col == "Called Number")
         return np.array(list(map(process_number, attrs)))
     else:
         return attrs
@@ -588,7 +586,8 @@ def get_preprocessed_data(data_array):
 
     data_array_pruned = prune_attrs(data_array)
     del data_array
-    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    # data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    data_array_preprocessed = np.array([preprocess_n(v) for v in data_array_pruned], type = object)
     del data_array_pruned
     print("Data preprocessed.")
 
@@ -663,8 +662,8 @@ def preprocess_incoming_record(raw_record):
     """Takes raw CDR, runs function chain to produce normalised vector."""
     r_arr = np.array(to_record(raw_record), dtype=object)
     r_pruned = prune_attrs(r_arr, single = True)
-    # r_preprocessed = np.array([preprocess_n(r_pruned[:,i]) for i in range(r_pruned.shape[1])]).T[0]
-    r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
+    # r_preprocessed = np.apply_along_axis(preprocess_n, 0, r_pruned)
+    r_preprocessed = np.array([preprocess_n(v) for v in r_pruned], type = object)
     print(r_preprocessed)
     r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     #print(r_vec)
