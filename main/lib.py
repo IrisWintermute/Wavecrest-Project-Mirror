@@ -575,7 +575,7 @@ def get_raw_data(mxg):
             # csv_list_r = f.readlines(size)
             # csv_list = csv_list_r[::filestep]
             # del csv_list_r
-            csv_list = f.read(mx)
+            csv_list = f.readlines(mx)
     print(f"CDR data ({len(csv_list)} records) loaded.")
 
     return csv_list
