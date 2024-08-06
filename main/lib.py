@@ -494,6 +494,7 @@ def preprocess_n(attrs):
     col = attrs[0]
     attrs = np.delete(attrs, 0)
     print(attrs)
+    print(col)
     if col == "Calling Number" or col == "Called Number":
         return np.array(list(map(process_number, attrs)))
     else:
