@@ -501,10 +501,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
     with open("main/data/values_dump.txt", "r") as f:
-        if f.readlines() != [""]:
-            values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
-        else:
-            values_hash = {}
+        print(f.readlines())
+        values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
         
 
     if not single:
