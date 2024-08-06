@@ -220,12 +220,12 @@ def test_single_group_preprocessing():
     s = int(sys.argv[1]) / (1024 ** 2) # size in KB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
+    eq = 0
     for i, record in enumerate(d_arr):
         single_p = preprocess_incoming_record(record)
         if np.all([single_p == group_p[i]]):
-            print("Equivalent")
-        else:
-            print("Not equivalent")
+            eq += 1
+    print(f"Single and group preprocessing equivalent for {eq}/{len(d_arr)} records.")
 
 if __name__ == "__main__":
     # with open("main/data/dump.txt", "r") as f:

@@ -591,7 +591,6 @@ def get_preprocessed_data(data_array):
     t = lambda a: np.array(a).T
     lng = data_array_pruned.shape[1]
     data_array_preprocessed = np.array([preprocess_n(t(data_array_pruned[:,i])) for i in range(lng)], dtype = object).T
-    print(data_array_preprocessed[:,1])
     del data_array_pruned
     print("Data preprocessed.")
 
