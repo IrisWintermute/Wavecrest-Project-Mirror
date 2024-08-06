@@ -453,11 +453,12 @@ def can_cast_to_int(v: str) -> bool:
         return True
 
 def sanitise_string(string):
-    """Remove format-breaking commas from text fields."""
+    """Remove format-breaking commas and N/a values from text fields."""
     comma_str = re.findall('"[^,"]+,[^,"]+"', string)
     hyphen_str = [re.sub(',', '-', s) for s in comma_str]
     for i, h in enumerate(hyphen_str):
         string = re.sub(comma_str[i], h, string)
+    string = string.replace("N/A", "n-a")
     return string
 
 def to_record(s):
@@ -510,7 +511,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         for i, attr in enumerate(attributes):
             if can_cast_to_int(attr):
                 attributes_out[i] = int(attr)
-            elif values_hash.get(attr, 0) == 0:
+            elif values_hash.get(attr, 0):
                 attributes_out[i] = values_hash[attr]
             else:
                 print(attr)
