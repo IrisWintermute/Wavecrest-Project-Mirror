@@ -541,7 +541,7 @@ def normalise(attributes: np.ndarray) -> np.ndarray:
     """Normalise dimension to have a range of 1."""
     mx, mn = np.max(attributes), np.min(attributes)
     if not mx: mx += 1
-    rnge = mx - mn if (mx - mn) != 0 else mx
+    rnge = mx - mn if np.isfinite(mx - mn) and (mx - mn) else mx
     norm = lambda a: (a - mn) / rnge
     return norm(attributes)
 
