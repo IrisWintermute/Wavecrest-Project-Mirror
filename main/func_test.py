@@ -220,7 +220,7 @@ def test_single_group_preprocessing():
     s = float(sys.argv[2]) # size in GB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
-    rnge = np.random.randint(d_arr.shape[0], size=100)
+    rnge = np.random.randint(len(d_arr), size=100)
     for i, record in enumerate(d_arr):
         if i in rnge:
             single_p = preprocess_incoming_record(record)
