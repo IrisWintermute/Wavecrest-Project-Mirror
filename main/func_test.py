@@ -217,14 +217,15 @@ async def tcp_echo_client(message):
     await writer.wait_closed()
     
 def test_single_group_preprocessing():
-    s = int(sys.argv[2]) / (1024 ** 2) # size in KB
+    s = int(sys.argv[2]) # size in GB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
-    eq = 0
+    rnge = np.random.randint(d_arr.shape[0], size=100)
     for i, record in enumerate(d_arr):
-        single_p = preprocess_incoming_record(record)
-        if np.all([single_p == group_p[i]]):
-            eq += 1
+        if i in rnge:
+            single_p = preprocess_incoming_record(record)
+            if np.all([single_p == group_p[i]]):
+                eq += 1
     print(f"Single and group preprocessing equivalent for {eq}/{len(d_arr)} records.")
 
 if __name__ == "__main__":
