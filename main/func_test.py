@@ -221,12 +221,13 @@ def test_single_group_preprocessing():
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
     rnge = np.random.randint(len(d_arr), size=100)
+    eq = 0
     for i, record in enumerate(d_arr):
         if i in rnge:
             single_p = preprocess_incoming_record(record)
             if np.all([single_p == group_p[i]]):
                 eq += 1
-    print(f"Single and group preprocessing equivalent for {eq}/{len(d_arr)} records.")
+    print(f"Single and group preprocessing equivalent for {eq}/{100} tested records. Tested with group of {len(d_arr)} records.")
 
 if __name__ == "__main__":
     if sys.argv[1] == "ensemble":
