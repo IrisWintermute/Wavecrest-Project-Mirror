@@ -217,7 +217,7 @@ async def tcp_echo_client(message):
     await writer.wait_closed()
     
 def test_single_group_preprocessing():
-    s = int(sys.argv[2]) # size in GB
+    s = float(sys.argv[2]) # size in GB
     d_arr = get_raw_data(s)
     group_p = get_preprocessed_data(d_arr)
     rnge = np.random.randint(d_arr.shape[0], size=100)
