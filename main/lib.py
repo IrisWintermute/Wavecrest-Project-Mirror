@@ -442,9 +442,9 @@ def get_day_from_date(date):
     j = year // 100
     return (day + ((13 * (month + 1)) // 5) + k + (k // 4) + (j // 4) - (2 * j) - 2) % 7
     
-def can_cast_to_float(v: str) -> bool:
+def can_cast_to_int(v: str) -> bool:
     try:
-        _ = float(v)
+        _ = int(v)
     except ValueError:
         return False
     except TypeError:
@@ -509,8 +509,8 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     if not single:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
-            if can_cast_to_float(attr):
-                attributes_out[i] = float(attr)
+            if can_cast_to_int(attr):
+                attributes_out[i] = int(attr) if np.isfinite(int(attr)) else 0
             elif values_hash.get(attr, esc) != esc:
                 attributes_out[i] = values_hash[attr]
             else:
@@ -522,13 +522,13 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     else:
         # print(values_hash)
         attr = attributes
-        if can_cast_to_float(attr):
-            return float(attr)
+        if can_cast_to_int(attr):
+            return int(attr) if np.isfinite(int(attr)) else 0
         elif values_hash.get(attr, esc) != esc:
-            return float(values_hash[attr])
+            return int(values_hash[attr])
         else:
             values_hash[attr] = len(values_hash)
-            return float(values_hash[attr])
+            return int(values_hash[attr])
     
     if values_hash:
         with open("main/data/values_dump.txt", "w") as f:
