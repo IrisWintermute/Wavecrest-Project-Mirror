@@ -489,12 +489,18 @@ def process_number(num):
     z_l = 12 - len(p_int) if (12 - len(p_int)) >= 0 else 0
     return (p_int + "0" * z_l)[:12]
 
+def process_pdd(pdd):
+    # cap pdd field at 30 seconds
+    return pdd if float(pdd) < 30000 else '30000'
+
 def preprocess_n(attrs):
     """Preprocess each field according to its label."""
     col = attrs[0]
     attrs = np.delete(attrs, 0)
     if (col == "Calling Number" or col == "Called Number"):
         return np.array(list(map(process_number, attrs)))
+    elif col == "PDD (ms)":
+        return np.array(list(map(process_pdd, attrs)))
     else:
         return attrs
     
