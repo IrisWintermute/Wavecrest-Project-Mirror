@@ -486,8 +486,8 @@ def process_number(num):
         p_int = re.sub("[ +-]", "", num)
     except phonenumbers.phonenumberutil.NumberParseException:
         p_int = num
-    z_l = 13 - len(p_int) if (13 - len(p_int)) >= 0 else 0
-    return (p_int + "0" * z_l)[:13]
+    z_l = 12 - len(p_int) if (12 - len(p_int)) >= 0 else 0
+    return (p_int + "0" * z_l)[:12]
 
 def preprocess_n(attrs):
     """Preprocess each field according to its label."""
