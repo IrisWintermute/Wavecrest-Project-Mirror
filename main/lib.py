@@ -470,9 +470,6 @@ def prune_attrs(data_array, single = False):
     attr_indexes = [9,12,13,11,14,22]
     # print(data_array[:,22])
     # print(max(data_array[:,12]))
-    with open("test.txt", "w") as f:
-        f.write("\n".join(list(map(str, data_array[:,22]))))
-    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text.txt", "--body", "test.txt"])
     t = lambda a: np.array([a]).T
     if not single:
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
@@ -606,6 +603,9 @@ def get_preprocessed_data(data_array):
     t = lambda a: np.array(a).T
     lng = data_array_pruned.shape[1]
     data_array_preprocessed = np.array([preprocess_n(t(data_array_pruned[:,i])) for i in range(lng)], dtype = object).T
+    with open("test_2.txt", "w") as f:
+        f.write("\n".join(list(map(str, data_array_preprocessed[:,5]))))
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text_2.txt", "--body", "test_2.txt"])
     del data_array_pruned
     print("Data preprocessed.")
 
@@ -613,6 +613,9 @@ def get_preprocessed_data(data_array):
     with open("main/data/values_dump.txt", "w") as f:
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    with open("test_3.txt", "w") as f:
+        f.write("\n".join(list(map(str, data_array_preprocessed[:,5]))))
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text_3.txt", "--body", "test_3.txt"])
     #print(vector_array[0])
     del data_array_preprocessed
     print("Data vectorised.")
