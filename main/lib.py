@@ -633,9 +633,6 @@ def get_preprocessed_data(data_array):
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, data_array_preprocessed))
     vector_array = np.apply_along_axis(vectorise, 0, wrap_arr)
-    with open("test_3.txt", "w") as f:
-        f.write("\n".join(list(map(str, vector_array[:,5]))))
-    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text_3.txt", "--body", "test_3.txt"])
     #print(vector_array[0])
     del data_array_preprocessed
     print("Data vectorised.")
@@ -710,7 +707,6 @@ def preprocess_incoming_record(raw_record):
     r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object).T
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, r_preprocessed))
-    print(wrap_arr)
     r_vec = np.apply_along_axis(vectorise_single, 0, wrap_arr)
     # r_vec = np.array([vectorise(v, single = True) for v in wrap_arr])
     # r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
