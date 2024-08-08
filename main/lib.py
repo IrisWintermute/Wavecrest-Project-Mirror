@@ -470,6 +470,9 @@ def prune_attrs(data_array, single = False):
     attr_indexes = [9,12,13,11,14,22]
     # print(data_array[:,22])
     # print(max(data_array[:,12]))
+    with open("test.txt", "w") as f:
+        f.write("\n".join(list(map(str, data_array[:,22]))))
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text.txt", "--body", "test.txt"])
     t = lambda a: np.array([a]).T
     if not single:
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
@@ -515,7 +518,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
         #if not single: print("from file read", values_hash)
         
-    esc = "Narnia-Ca7ac1y5m" # escape string - should never appear in dataset
+    esc = "------------" # escape string - should never appear in dataset
 
     if not single:
         attributes_out = np.empty(attributes.shape[0])
