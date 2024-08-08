@@ -470,6 +470,10 @@ def prune_attrs(data_array, single = False):
     attr_indexes = [9,12,13,11,14,22]
     t = lambda a: np.array([a]).T
     if not single:
+        x = data_array[:,14]
+        m = np.array(list(map(can_cast_to_int, x)))
+        x = x[m]
+        print(x)
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
     else:
         data_array = np.array([data_array[i] for i in attr_indexes]).T
