@@ -468,6 +468,8 @@ def prune_attrs(data_array, single = False):
     """Compress 2D array of strings, preserving relevant fields."""
     attrs = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     attr_indexes = [9,12,13,11,14,22]
+    print(max(data_array[:,9]))
+    print(max(data_array[:,12]))
     t = lambda a: np.array([a]).T
     if not single:
         data_array = np.hstack(tuple([t(data_array[:,i]) for i in attr_indexes]))
