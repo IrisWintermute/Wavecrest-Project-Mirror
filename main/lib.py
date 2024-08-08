@@ -508,12 +508,17 @@ def preprocess_n(attrs):
     else:
         return attrs
     
-def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
+def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
     """https://i.kym-cdn.com/entries/icons/facebook/000/023/977/cover3.jpg"""
 
-    with open("main/data/values_dump.txt", "r") as f:
-        values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
-        #if not single: print("from file read", values_hash)
+    attr_name = wrap[0]
+    attributes = np.delete(wrap, 0)
+
+    values_hash = {}
+    if single:
+        with open(f"main/data/values_dump_{attr_name}.txt", "r") as f:
+            values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
+            #if not single: print("from file read", values_hash)
         
     esc = "------------" # escape string - should never appear in dataset
 
@@ -542,7 +547,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
             return int(values_hash[attr])
     
     if values_hash:
-        with open("main/data/values_dump.txt", "w") as f:
+        with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
             for (v, k) in values_hash.items():
                 f.write(f"{v}: {k}\n")
         
@@ -607,9 +612,9 @@ def get_preprocessed_data(data_array):
     print("Data preprocessed.")
 
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
-    with open("main/data/values_dump.txt", "w") as f:
-        f.write("")
-    vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
+    names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
+    wrap_arr = np.vstack((names, data_array_preprocessed))
+    vector_array = np.apply_along_axis(vectorise, 0, wrap_arr)
     with open("test_3.txt", "w") as f:
         f.write("\n".join(list(map(str, vector_array[:,5]))))
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text_3.txt", "--body", "test_3.txt"])
@@ -685,7 +690,11 @@ def preprocess_incoming_record(raw_record):
     t = lambda a: np.array(a).T
     lng = r_pruned.shape[1]
     r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object).T
-    r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
+    names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
+    wrap_arr = np.vstack((names, data_array_preprocessed))
+    print(wrap_arr)
+    r_vec = np.array([vectorise(v, single = True) for v in wrap_arr])
+    #r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     #print(r_vec)
     r_n = normalise_single(r_vec)
     return r_n
