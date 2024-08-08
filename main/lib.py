@@ -530,10 +530,12 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
             attributes_out[i] = values_hash[attr]
     #print(values_hash)
     
-    if values_hash:
-        with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
+    with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
+        if values_hash:
             for (v, k) in values_hash.items():
                 f.write(f"{v}: {k}\n")
+        else:
+            f.write("")
         
     return attributes_out
 
@@ -545,7 +547,10 @@ def vectorise_single(wrap: np.ndarray) -> np.ndarray:
     attributes = np.delete(wrap, 0)
 
     with open(f"main/data/values_dump_{attr_name}.txt", "r") as f:
-        values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
+        if f.readline():
+            values_hash = dict([tuple(l.replace("\n", "").split(": ")) for l in f.readlines()])
+        else:
+            values_hash = {}
         #if not single: print("from file read", values_hash)
         
     esc = "------------" # escape string - should never appear in dataset
