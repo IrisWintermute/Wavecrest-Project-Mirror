@@ -499,7 +499,7 @@ def preprocess_n(attrs):
     attrs = np.delete(attrs, 0)
     if (col == "Calling Number" or col == "Called Number"):
         return np.array(list(map(process_number, attrs)))
-    elif col == "PDD (ms)":
+    elif (col == "PDD (ms)"):
         return np.array(list(map(process_pdd, attrs)))
     else:
         return attrs
