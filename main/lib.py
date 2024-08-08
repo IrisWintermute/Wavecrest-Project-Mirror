@@ -495,7 +495,7 @@ def process_number(num):
 def process_pdd(pdd):
     # cap pdd field at 30 seconds
     if can_cast_to_float(pdd):
-        return pdd if int(pdd) < 30000 else '30000'
+        return pdd if float(pdd) < 30000 else '30000'
 
 def preprocess_n(attrs):
     """Preprocess each field according to its label."""
@@ -521,7 +521,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
             if can_cast_to_float(attr):
-                attributes_out[i] = int(attr) if np.isfinite(int(attr)) else 0
+                attributes_out[i] = float(attr) if np.isfinite(float(attr)) else 0
             elif values_hash.get(attr, esc) != esc:
                 attributes_out[i] = values_hash[attr]
             else:
@@ -534,7 +534,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
         # print(values_hash)
         attr = attributes
         if can_cast_to_float(attr):
-            return int(attr) if np.isfinite(int(attr)) else 0
+            return float(attr) if np.isfinite(float(attr)) else 0
         elif values_hash.get(attr, esc) != esc:
             return int(values_hash[attr])
         else:
