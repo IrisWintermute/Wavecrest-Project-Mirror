@@ -633,6 +633,9 @@ def get_preprocessed_data(data_array):
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, data_array_preprocessed))
     vector_array = np.apply_along_axis(vectorise, 0, wrap_arr)
+    with open("test.txt", "w") as f:
+        f.write("\n",join(vector_array[:,22]))
+    subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "test.txt", "--body", "test.txt"])
     #print(vector_array[0])
     del data_array_preprocessed
     print("Data vectorised.")
