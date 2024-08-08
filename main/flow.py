@@ -48,7 +48,10 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     data_array
 
     counter_start = time.perf_counter()
-    data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    # data_array_preprocessed = np.apply_along_axis(preprocess_n, 0, data_array_pruned)
+    t = lambda a: np.array(a).T
+    lng = data_array_pruned.shape[1]
+    data_array_preprocessed = np.array([preprocess_n(t(data_array_pruned[:,i])) for i in range(lng)], dtype = object).T
     counter_stop = time.perf_counter()
     print(f"data_array_preprocessed took {counter_stop - counter_start:.2f} seconds")
     del data_array_pruned
