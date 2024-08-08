@@ -611,7 +611,7 @@ def get_preprocessed_data(data_array):
         f.write("")
     vector_array = np.apply_along_axis(vectorise, 0, data_array_preprocessed)
     with open("test_3.txt", "w") as f:
-        f.write("\n".join(list(map(str, data_array_vectorised[:,5]))))
+        f.write("\n".join(list(map(str, vector_array[:,5]))))
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "text_3.txt", "--body", "test_3.txt"])
     #print(vector_array[0])
     del data_array_preprocessed
