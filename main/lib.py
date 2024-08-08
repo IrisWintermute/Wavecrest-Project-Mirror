@@ -442,9 +442,9 @@ def get_day_from_date(date):
     j = year // 100
     return (day + ((13 * (month + 1)) // 5) + k + (k // 4) + (j // 4) - (2 * j) - 2) % 7
     
-def can_cast_to_int(v: str) -> bool:
+def can_cast_to_float(v: str) -> bool:
     try:
-        _ = int(v)
+        _ = float(v)
     except ValueError:
         return False
     except TypeError:
@@ -494,7 +494,7 @@ def process_number(num):
 
 def process_pdd(pdd):
     # cap pdd field at 30 seconds
-    if can_cast_to_int(pdd):
+    if can_cast_to_float(pdd):
         return pdd if int(pdd) < 30000 else '30000'
 
 def preprocess_n(attrs):
@@ -520,7 +520,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     if not single:
         attributes_out = np.empty(attributes.shape[0])
         for i, attr in enumerate(attributes):
-            if can_cast_to_int(attr):
+            if can_cast_to_float(attr):
                 attributes_out[i] = int(attr) if np.isfinite(int(attr)) else 0
             elif values_hash.get(attr, esc) != esc:
                 attributes_out[i] = values_hash[attr]
@@ -533,7 +533,7 @@ def vectorise(attributes: np.ndarray, single = False) -> np.ndarray:
     else:
         # print(values_hash)
         attr = attributes
-        if can_cast_to_int(attr):
+        if can_cast_to_float(attr):
             return int(attr) if np.isfinite(int(attr)) else 0
         elif values_hash.get(attr, esc) != esc:
             return int(values_hash[attr])
