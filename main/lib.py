@@ -691,7 +691,7 @@ def preprocess_incoming_record(raw_record):
     lng = r_pruned.shape[1]
     r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object).T
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
-    wrap_arr = np.vstack((names, data_array_preprocessed))
+    wrap_arr = np.vstack((names, r_preprocessed))
     print(wrap_arr)
     r_vec = np.array([vectorise(v, single = True) for v in wrap_arr])
     #r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
