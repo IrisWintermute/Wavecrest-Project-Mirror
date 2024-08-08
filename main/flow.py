@@ -61,7 +61,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, data_array_preprocessed))
-    vector_array = np.apply_along_axis(vectorise, 0, wrap_arr)
+    vector_array = np.array(np.apply_along_axis(vectorise, 0, wrap_arr), dtype=float)
     del data_array_preprocessed
     print("Data vectorised.")  
 

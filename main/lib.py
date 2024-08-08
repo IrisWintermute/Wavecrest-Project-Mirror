@@ -522,12 +522,12 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
         if can_cast_to_float(attr):
             attributes_out[i] = float(attr) if np.isfinite(float(attr)) else 0
         elif values_hash.get(attr, esc) != esc:
-            attributes_out[i] = values_hash[attr]
+            attributes_out[i] = float(values_hash[attr])
         else:
             #print(attr)
             #print("from conditional", values_hash)
             values_hash[attr] = len(values_hash)
-            attributes_out[i] = values_hash[attr]
+            attributes_out[i] = float(values_hash[attr])
     #print(values_hash)
     
     with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
@@ -558,12 +558,12 @@ def vectorise_single(wrap: np.ndarray) -> np.ndarray:
     # print(values_hash)
     attr = attributes
     if can_cast_to_float(attr):
-        out = float(attr) if np.isfinite(float(attr)) else 0
+        out = float(attr) if np.isfinite(float(attr)) else 0.0
     elif values_hash.get(attr, esc) != esc:
-        out = int(values_hash[attr])
+        out = float(values_hash[attr])
     else:
         values_hash[attr] = len(values_hash)
-        out = int(values_hash[attr])
+        out = float(values_hash[attr])
     
     with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
         for (v, k) in values_hash.items():
@@ -632,7 +632,7 @@ def get_preprocessed_data(data_array):
     # (vectorise) convert each record to array with uniform numerical type - data stored as nested array
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, data_array_preprocessed))
-    vector_array = np.apply_along_axis(vectorise, 0, wrap_arr)
+    vector_array = np.array(np.apply_along_axis(vectorise, 0, wrap_arr), dtype=float)
     with open("test.txt", "w") as f:
         f.write("\n".join(list(map(str,vector_array[:,5]))))
     subprocess.run(["sudo", "aws", "s3api", "put-object", "--bucket", "wavecrest-terraform-ops-ew1-ai", "--key", "test.txt", "--body", "test.txt"])
@@ -710,7 +710,7 @@ def preprocess_incoming_record(raw_record):
     r_preprocessed = np.array([preprocess_n(t(r_pruned[:,i])) for i in range(lng)], dtype = object).T
     names = np.array(["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"])
     wrap_arr = np.vstack((names, r_preprocessed))
-    r_vec = np.apply_along_axis(vectorise_single, 0, wrap_arr)
+    r_vec = np.array(np.apply_along_axis(vectorise_single, 0, wrap_arr), dtype=float)
     # r_vec = np.array([vectorise(v, single = True) for v in wrap_arr])
     # r_vec = np.array([vectorise(v, single = True) for v in r_preprocessed.flatten().tolist()])
     # print(r_vec)
