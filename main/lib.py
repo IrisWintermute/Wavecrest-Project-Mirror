@@ -167,7 +167,7 @@ def evaluate_assignment_accuracy():
     # tp, tn, fp, fn
     results = [0, 0, 0, 0]
     for i, recs in hash.items():
-        r = asyncio.run(group_echo_test(i, recs))
+        r = asyncio.run(group_echo_test(int(i), recs))
         for j in range(4):
             results[j] += r[j]
     x = ["True positives", "True negatives", "False positives", "False negatives"]
