@@ -132,11 +132,12 @@ async def group_echo_test(i, recs):
         data = data_r.decode()
         print(f'Received: {data}')
         if not fraud_hash_r: fraud_hash_r = data.split("; ")[1]
-        assignments.append(int(data.split("; ")[0]))
+        assignments.append(int(float(data.split("; ")[0])))
 
     fraud_hash = dict([tuple(map(float,pair.split(": "))) for pair in fraud_hash_r[1:len(fraud_hash_r)-1].split(", ")])
     results = [0, 0, 0, 0]
     for v in assignments:
+        v = float(v)
         if fraud_hash[v] == 1.0:
             if v == i: result_hash[0] += 1
             else: result_hash[2] += 1
