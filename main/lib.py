@@ -172,7 +172,7 @@ def evaluate_assignment_accuracy():
     x = ["True positives", "True negatives", "False positives", "False negatives"]
     print(f"Total values tested: {ll}")
     for i in range(4):
-        print(f"{x[i]}:\t{results[i]}")
+        print(f"{x[i]}: {results[i]}")
 
 #  <<DATA PREPROCESSING>>
 
