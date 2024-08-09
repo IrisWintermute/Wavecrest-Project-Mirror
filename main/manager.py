@@ -64,7 +64,7 @@ async def handle_echo(reader, writer):
     result, fraud_hash = assign(record)
 
     print(f"Send: {result}, {fraud_hash}")
-    wrap = "; ".join([result, str(fraud_hash)])
+    wrap = "; ".join([str(result), str(fraud_hash)])
     writer.write(result.encode())
     await writer.drain()
     end = time.time()
