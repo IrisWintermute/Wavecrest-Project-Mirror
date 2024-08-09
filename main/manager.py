@@ -32,7 +32,7 @@ def daily_cluster_update():
             size = 10
         start = time.time()
         print(f"Clustering operation begun at {time.ctime(start)}.")
-        flow.main(0, size, 4, 4)
+        flow.main(0, size, 4, 4, 25)
         end = time.time()
         print(f"Finished at {time.ctime(end)} ({(end - start) / 60:.4f} minutes taken).")
         with open("ctime.txt", "w") as f:
@@ -61,10 +61,10 @@ async def handle_echo(reader, writer):
     addr = writer.get_extra_info('peername')
 
     print(f"Received {record} from {addr}")
+    result, fraud_hash = assign(record)
 
-    result = assign(record)
-
-    print(f"Send: {result}")
+    print(f"Send: {result}, {fraud_hash}")
+    wrap = "; ".join([result, str(fraud_hash)])
     writer.write(result.encode())
     await writer.drain()
     end = time.time()

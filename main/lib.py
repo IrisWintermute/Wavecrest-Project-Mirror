@@ -403,6 +403,55 @@ def optimal_ab_decision(vector_array_n, o_array, test_p, depth):
         b[0] = mid(b)
     return mid(a), mid(b), opt_list
 
+async def group_echo_test(i, recs):
+    reader, writer = await asyncio.open_connection(
+        '127.0.0.1', 8888)
+    fraud_hash_r = ""
+    assignments = []
+    for record in recs:
+        writer.write(record.encode())
+        await writer.drain()
+        data = await reader.read(100)
+
+        print(f'Received: {data.decode()}')
+        if not fraud_hash_r: fraud_hash_r = data.split("; ")[1]
+        assignments.append(int(data.split("; ")[0]))
+
+    fraud_hash = dict([tuple(map(float,pair.split(": "))) for pair in fraud_hash_r[1:len(fraud_hash_r)-1].split(", ")])
+    results = [0, 0, 0, 0]
+    for v in assignments:
+        if fraud_hash[v] == 1.0:
+            if v == i: result_hash[0] += 1
+            else: result_hash[2] += 1
+        else:
+            if v == i: result_hash[1] += 1
+            else: result_hash[3] += 1
+
+    writer.close()
+    await writer.wait_closed()
+
+    return result_hash
+
+def evaluate_assignment_accuracy():
+    with open("main/data/dump.txt", "r") as f:
+        l = f.readlines()
+        ll = len(l)
+    hash = {}
+    for record in l:
+        (i, rec) = tuple(record.split(",", 1))
+        if hash.get(i): hash[i].append(rec)
+        else: hash[i] = [rec]
+    # tp, tn, fp, fn
+    results = [0, 0, 0, 0]
+    for i, recs in hash.items():
+        r = asyncio.run(tcp_echo_client(i, recs))
+        for i in range(4):
+            results[i] += r[i]
+    x = ["True positives", "True negatives", "False positives", "False negatives"]
+    print(f"Total values tested: {ll}")
+    for i in range(4):
+        print(f"{x[i]}:\t{results[i]}")
+
 #  <<DATA PREPROCESSING>>
 
 def run_bash_script(adr, arg = None):
@@ -733,6 +782,4 @@ def assign(raw_record):
 
     print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating:.2f} / 1.0")
     if int(rating) == 1:
-        return "Fraudulent"
-    else:
-        return f"Non Fraudulent ({rating:.2f}/1.0)"
+        return assigned_record[-1], fraud_hash
