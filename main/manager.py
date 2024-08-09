@@ -65,7 +65,7 @@ async def handle_echo(reader, writer):
 
     print(f"Send: {result}, {fraud_hash}")
     wrap = "; ".join([str(result), str(fraud_hash)])
-    writer.write(result.encode())
+    writer.write(wrap.encode())
     await writer.drain()
     end = time.time()
     print(f"Record handled and processed in {end - start:.4f} seconds.")
