@@ -141,6 +141,8 @@ async def group_echo_test(i, recs):
 
     fraud_hash = dict([tuple(map(float,pair.split(": "))) for pair in fraud_hash_r[1:len(fraud_hash_r)-1].split(", ")])
     results = [0, 0, 0, 0]
+    print(assignments)
+    print(i)
     for v in assignments:
         if fraud_hash[float(v)] == 1.0:
             if v == i: results[0] += 1
