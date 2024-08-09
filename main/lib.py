@@ -129,7 +129,7 @@ async def group_echo_test(i, recs):
         '127.0.0.1', 8888)
         writer.write(record.encode())
         await writer.drain()
-        
+
         data_r = await reader.read(100)
         data = data_r.decode()
         print(f'Received: {data}')
@@ -144,13 +144,13 @@ async def group_echo_test(i, recs):
     for v in assignments:
         v = float(v)
         if fraud_hash[v] == 1.0:
-            if v == i: result_hash[0] += 1
-            else: result_hash[2] += 1
+            if v == i: results[0] += 1
+            else: results[2] += 1
         else:
-            if v == i: result_hash[1] += 1
-            else: result_hash[3] += 1
+            if v == i: results[1] += 1
+            else: results[3] += 1
 
-    return result_hash
+    return results
 
 def evaluate_assignment_accuracy():
     """Passes cached records from clustering to assignment pipeline,

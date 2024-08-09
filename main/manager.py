@@ -60,16 +60,16 @@ async def handle_echo(reader, writer):
     record = data.decode()
     addr = writer.get_extra_info('peername')
 
-    print(f"Received {record} from {addr}")
+    # print(f"Received {record} from {addr}")
     result, fraud_hash = assign(record)
 
-    print(f"Send: {result}, {fraud_hash}")
+    # print(f"Send: {result}, {fraud_hash}")
     wrap = "; ".join([str(result), str(fraud_hash)])
     writer.write(wrap.encode())
     await writer.drain()
     end = time.time()
     print(f"Record handled and processed in {end - start:.4f} seconds.")
-    print("Closing connection...")
+    # print("Closing connection...")
     writer.close()
     await writer.wait_closed()
 
