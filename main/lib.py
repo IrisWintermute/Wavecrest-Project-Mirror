@@ -128,9 +128,9 @@ async def group_echo_test(i, recs):
     for record in recs:
         writer.write(record.encode())
         await writer.drain()
-        data = await reader.read(100)
-
-        print(f'Received: {data.decode()}')
+        data_r = await reader.read(100)
+        data = data.decode()
+        print(f'Received: {data}')
         if not fraud_hash_r: fraud_hash_r = data.split("; ")[1]
         assignments.append(int(data.split("; ")[0]))
 
