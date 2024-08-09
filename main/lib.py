@@ -121,18 +121,23 @@ def optimal_k_decision(data: np.ndarray, centroids: np.ndarray, o_array) -> floa
 
 async def group_echo_test(i, recs):
     """Passes record to assignment logic, receives and decodes result."""
-    reader, writer = await asyncio.open_connection(
-        '127.0.0.1', 8888)
+    
     fraud_hash_r = ""
     assignments = []
     for record in recs:
+        reader, writer = await asyncio.open_connection(
+        '127.0.0.1', 8888)
         writer.write(record.encode())
         await writer.drain()
+        
         data_r = await reader.read(100)
         data = data_r.decode()
         print(f'Received: {data}')
         if not fraud_hash_r: fraud_hash_r = data.split("; ")[1]
         assignments.append(int(float(data.split("; ")[0])))
+            
+        writer.close()
+        await writer.wait_closed()
 
     fraud_hash = dict([tuple(map(float,pair.split(": "))) for pair in fraud_hash_r[1:len(fraud_hash_r)-1].split(", ")])
     results = [0, 0, 0, 0]
@@ -144,9 +149,6 @@ async def group_echo_test(i, recs):
         else:
             if v == i: result_hash[1] += 1
             else: result_hash[3] += 1
-
-    writer.close()
-    await writer.wait_closed()
 
     return result_hash
 
