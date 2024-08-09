@@ -136,7 +136,7 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, sample_size = 0):
                     record = data_array[o_array == i][j]
                     f.write(",".join([str(i)] + record.tolist()) + "\n")
         print("Saving cluster features...")
-        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, 3, 1)
+        save_clustering_parameters(cluster_data[1], vector_array_n, o_array, 1, 1)
         evaluate_assignment_accuracy()
         
         # a, b, _ = optimal_ab_decision(vector_array_n, o_array, 5, 5)
