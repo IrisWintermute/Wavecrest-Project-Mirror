@@ -144,10 +144,10 @@ async def group_echo_test(i, recs):
     for v in assignments:
         v = float(v)
         if fraud_hash[v] == 1.0:
-            if v == i: results[0] += 1
+            if int(v) == i: results[0] += 1
             else: results[2] += 1
         else:
-            if v == i: results[1] += 1
+            if int(v) == i: results[1] += 1
             else: results[3] += 1
 
     return results
