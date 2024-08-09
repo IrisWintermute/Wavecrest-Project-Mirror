@@ -7,7 +7,7 @@ import time
 
 
 # @profile
-def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
+def main(plot = 0, mxg = 0, start = 0, end = 0, sample_size = 0):
     """Runs clustering operation."""
     # get_latest_data()
 
@@ -80,6 +80,8 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         start = int(sys.argv[3])
     if end == 0: 
         end = int(sys.argv[4])
+
+    
     
     t = lambda a: np.array([a]).T
     cluster_data = (None, None, 0, start)
@@ -124,11 +126,13 @@ def main(plot = 0, mxg = 0, start = 0, end = 0, step = 0):
         print("Clustered data written to output_data.txt.")
 
     if plot == 0:
+        if (sample_size == 0):
+            sample_size = sys.argv[5]
         print("Saving data samples from each cluster...")
         mx = np.max(o_array)
         with open("main/data/dump.txt", "w") as f:
             for i in range(int(mx) + 1):
-                for j in range(sys.argv[5]):
+                for j in range(sample_size):
                     record = data_array[o_array == i][j]
                     f.write(",".join([str(i)] + record.tolist()) + "\n")
         print("Saving cluster features...")
