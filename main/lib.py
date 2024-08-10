@@ -294,7 +294,7 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
     max = 0
     vals = [12, 12, 5, 5, 6, 3]
     attr_names = ["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]
-    cutoff = dict([(attr_names[i], v) for v, i in enumerate(vals)])
+    cutoff = dict([(attr_names[i], v) for i, v in enumerate(vals)])
 
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
