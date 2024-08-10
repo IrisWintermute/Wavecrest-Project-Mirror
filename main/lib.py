@@ -132,7 +132,7 @@ async def group_echo_test(i, recs):
 
         data_r = await reader.read(100)
         data = data_r.decode()
-        print(f'Received: {data}')
+        # print(f'Received: {data}')
         if not fraud_hash_r: fraud_hash_r = data.split("; ")[1]
         assignments.append(int(float(data.split("; ")[0])))
             
@@ -141,8 +141,6 @@ async def group_echo_test(i, recs):
 
     fraud_hash = dict([tuple(map(float,pair.split(": "))) for pair in fraud_hash_r[1:len(fraud_hash_r)-1].split(", ")])
     results = [0, 0, 0, 0]
-    print(assignments)
-    print(i)
     for v in assignments:
         if fraud_hash[float(v)] == 1.0:
             if v == i: results[0] += 1
@@ -301,8 +299,9 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
             #print("from conditional", values_hash)
             values_hash[attr] = len(values_hash)
             attributes_out[i] = float(values_hash[attr])
-        if max < attributes_out[i]: max = attributes_out[i]
-        print(max)
+        if max < attributes_out[i]:
+            max = attributes_out[i]
+            print(max)
     #print(values_hash)
     
     with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:

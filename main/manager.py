@@ -68,7 +68,7 @@ async def handle_echo(reader, writer):
     writer.write(wrap.encode())
     await writer.drain()
     end = time.time()
-    print(f"Record handled and processed in {end - start:.4f} seconds.")
+    # print(f"Record handled and processed in {end - start:.4f} seconds.")
     # print("Closing connection...")
     writer.close()
     await writer.wait_closed()
