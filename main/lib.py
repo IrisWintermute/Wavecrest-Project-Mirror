@@ -258,14 +258,19 @@ def process_number(num):
     # except phonenumbers.phonenumberutil.NumberParseException:
     #     p_int = num
     p_int = re.sub("[ +-]", "", num)
-    cutoff = 10
+    cutoff = 12
     z_l = cutoff - len(p_int) if (cutoff - len(p_int)) >= 0 else 0
     return (p_int + "0" * z_l)[:cutoff]
 
 def process_pdd(pdd):
-    # cap pdd field at 30 seconds
+    # cap pdd field at 240 seconds
     if can_cast_to_float(pdd):
-        return pdd if float(pdd) < 30000 else '30000'
+        return pdd if float(pdd) < 2.4e5 else '240000'
+
+def process_duration(pdd):
+    # cap pdd field at 240 seconds
+    if can_cast_to_float(pdd):
+        return pdd if float(pdd) < 1000 else '1000'
 
 def preprocess_n(attrs):
     """Preprocess each field according to its label."""
