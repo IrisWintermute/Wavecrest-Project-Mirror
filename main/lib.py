@@ -288,6 +288,7 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
 
     values_hash = {}
     esc = "------------" # escape string - should never appear in dataset
+    max = 0
 
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
@@ -300,6 +301,8 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
             #print("from conditional", values_hash)
             values_hash[attr] = len(values_hash)
             attributes_out[i] = float(values_hash[attr])
+        if max < attributes_out[i]: max = attributes_out[i]
+        print(max)
     #print(values_hash)
     
     with open(f"main/data/values_dump_{attr_name}.txt", "w") as f:
