@@ -292,11 +292,14 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
     values_hash = {}
     esc = "------------" # escape string - should never appear in dataset
     max = 0
+    vals = [12, 12, 5, 5, 6, 3]
+    attr_names = ["Calling Number", "Called Number", "Buy Destination", "Destination", "PDD (ms)", "Duration (min)"]
+    cutoff = dict([(attr_names[i], v) for v, i in enumerate(vals)])
 
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
         if can_cast_to_float(attr):
-            attributes_out[i] = float(attr) if np.isfinite(float(attr)) else 0
+            attributes_out[i] = float(attr) if len(str(int(attr))) <= cutoff[attr_name] else 10 ** cutoff[attr_name] 
         elif values_hash.get(attr, esc) != esc:
             attributes_out[i] = float(values_hash[attr])
         else:
