@@ -299,7 +299,7 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
     attributes_out = np.empty(attributes.shape[0])
     for i, attr in enumerate(attributes):
         if can_cast_to_float(attr):
-            attributes_out[i] = float(attr) if len(str(int(attr))) <= cutoff[attr_name] else 10 ** cutoff[attr_name] 
+            attributes_out[i] = float(attr) if len(attr.split(".")[0]) <= cutoff[attr_name] else 10 ** cutoff[attr_name] 
         elif values_hash.get(attr, esc) != esc:
             attributes_out[i] = float(values_hash[attr])
         else:
