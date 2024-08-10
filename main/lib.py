@@ -299,7 +299,7 @@ def vectorise(wrap: np.ndarray, single = False) -> np.ndarray:
             #print("from conditional", values_hash)
             values_hash[attr] = len(values_hash)
             attributes_out[i] = float(values_hash[attr])
-        if max < attributes_out[i]:
+        if max < attributes_out[i] and attr_name in ["Called Number", "Calling Number", "PDD (ms)", "Duration (min)"]:
             max = attributes_out[i]
             print(max)
     #print(values_hash)
@@ -500,10 +500,10 @@ def assign(raw_record):
 
     # cluster indexes as keys, fraud ratings as values
     fraud_hash = rate_cluster_fraud(stdevs)
-    print(fraud_hash)
+    # print(fraud_hash)
     assigned_record = assign_cluster(preprocessed_record, centroids, stdevs, alpha, beta)
 
     rating = fraud_hash.get(assigned_record[-1])
 
-    print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating:.2f} / 1.0")
+    # print(f"Record assigned to cluster with index {assigned_record[-1]} with fraudulence rating of {rating:.2f} / 1.0")
     return assigned_record[-1], fraud_hash
